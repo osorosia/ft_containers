@@ -1,5 +1,5 @@
 CXX = c++
-CXXFLAGS = -g -std=c++98 -Wall -Wextra -Werror
+CXXFLAGS = -std=c++98 # -Wall -Wextra -Werror
 DEPFLAGS = -MMD -MP
 
 TEST_NAME = a.out
