@@ -1,4 +1,4 @@
-#include "../src/vector.h"
+#include "test.h"
 
 void vector_at() {
     ft::vector< int > vec;

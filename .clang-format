@@ -62,3 +62,5 @@ SpacesBeforeTrailingComments: 1
 
 # template < T >
 SpacesInAngles: true
+
+AlwaysBreakTemplateDeclarations: true

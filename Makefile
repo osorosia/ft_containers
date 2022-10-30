@@ -36,4 +36,8 @@ re: fclean all
 test: $(TEST_NAME)
 	./$(TEST_NAME)
 
+t:
+	${CXX} -o tmp tmp.cpp
+	./tmp
+
 .PHONY: all clean fclean re test
