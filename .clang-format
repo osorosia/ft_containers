@@ -37,7 +37,7 @@ BraceWrapping:
 BreakBeforeBraces: Custom
 
 # 1行の文字数を制限する (0で無制限)
-ColumnLimit: 80
+ColumnLimit: 100
 
 # includeを名前順にソートする
 IncludeBlocks: Preserve
@@ -49,7 +49,7 @@ IndentCaseLabels: true
 IndentWidth: 4
 
 # ポインターの * & は変数宣言の左に記述する
-PointerAlignment: Right
+PointerAlignment: Left
 
 # キャストの後ろにスペースを入れない
 SpaceAfterCStyleCast: false
@@ -57,7 +57,7 @@ SpaceAfterCStyleCast: false
 # 制御文の ( の前にスペースを入れる
 SpaceBeforeParens: ControlStatements
 
-# コメントの前に4スペース入れる
+# code; [soace size] // comment
 SpacesBeforeTrailingComments: 1
 
 # template < T >
