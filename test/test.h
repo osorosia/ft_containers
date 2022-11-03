@@ -44,6 +44,9 @@ using namespace std;
         }                                                                                          \
     }
 
+#define TODO()                                                                                     \
+    { std::cout << CYAN << "TODO " << END; }
+
 template < class T >
 void OK(T expected, T actual) {
     if (expected == actual) {
