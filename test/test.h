@@ -40,21 +40,21 @@ using namespace std;
         if (ok) {                                                                                  \
             std::cout << GREEN << "OK " << END;                                                    \
         } else {                                                                                   \
-            std::cout << RED << "KO " << END;                                                      \
+            std::cout << RED << "KO(" << __FILE__ << ":" << __LINE__ << ") " << END;               \
         }                                                                                          \
     }
 
 #define TODO()                                                                                     \
     { std::cout << CYAN << "TODO " << END; }
 
-template < class T >
-void OK(T expected, T actual) {
-    if (expected == actual) {
-        std::cout << GREEN << "OK " << END;
-    } else {
-        std::cout << RED << "KO " << END;
+#define OK(expected, actual)                                                                       \
+    {                                                                                              \
+        if (expected == actual) {                                                                  \
+            std::cout << GREEN << "OK " << END;                                                    \
+        } else {                                                                                   \
+            std::cout << RED << "KO(" << __FILE__ << ":" << __LINE__ << ") " << END;               \
+        }                                                                                          \
     }
-}
 
 void vector_test();
 void reverse_iterator_test();
