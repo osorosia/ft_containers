@@ -40,7 +40,7 @@ using namespace std;
         if (ok) {                                                                                  \
             std::cout << GREEN << "OK " << END;                                                    \
         } else {                                                                                   \
-            std::cout << RED << "KO(" << __FILE__ << ":" << __LINE__ << ") " << END;               \
+            std::cout << RED << "KO(line:" << ":" << __LINE__ << ") " << END;               \
         }                                                                                          \
     }
 
@@ -52,7 +52,7 @@ using namespace std;
         if (expected == actual) {                                                                  \
             std::cout << GREEN << "OK " << END;                                                    \
         } else {                                                                                   \
-            std::cout << RED << "KO(" << __FILE__ << ":" << __LINE__ << ") " << END;               \
+            std::cout << RED << "KO(line:" << __LINE__ << ") " << END;               \
         }                                                                                          \
     }
 
