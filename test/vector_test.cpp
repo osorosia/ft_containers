@@ -1,4 +1,4 @@
-#include "test.h"
+#include "test.hpp"
 
 void vector_constructor() {
     CASE_NAME("vector_constructor");
@@ -180,7 +180,7 @@ void vector_max_size() {
     vec.push_back(1);
     OK(sz, vec.max_size());
 
-    std::cout << CYAN << "max_size=" << vec.max_size() << END;
+    std::cout << MAGENTA << "max_size=" << vec.max_size() << END;
 }
 
 void vector_reserve() {
@@ -235,7 +235,23 @@ void vector_pop_back() {
 
 void vector_resize() {
     CASE_NAME("vector_resize");
-    TODO();
+
+    vector< int > vec;
+    OK(0, vec.size());
+
+    vec.resize(3);
+    OK(3, vec.size());
+    OK(0, vec[0]);
+    OK(0, vec[1]);
+    OK(0, vec[2]);
+
+    vec.resize(5, 42);
+    OK(5, vec.size());
+    OK(0, vec[0]);
+    OK(0, vec[1]);
+    OK(0, vec[2]);
+    OK(42, vec[3]);
+    OK(42, vec[4]);
 }
 
 void vector_swap() {
@@ -245,12 +261,52 @@ void vector_swap() {
 
 void vector_operator_eq() {
     CASE_NAME("vector_operator_eq");
-    TODO();
+
+    vector< int > vec0;
+    vec0.push_back(1);
+    vec0.push_back(2);
+    vec0.push_back(3);
+    vector< int > vec1;
+    vec1.push_back(1);
+    vec1.push_back(2);
+    vec1.push_back(3);
+
+    OK(true, vec0 == vec1);
+
+    vec0.push_back(1);
+    OK(false, vec0 == vec1);
+    vec1.push_back(1);
+    OK(true, vec0 == vec1);
+
+    vec0.push_back(5);
+    OK(false, vec0 == vec1);
+    vec1.push_back(42);
+    OK(false, vec0 == vec1);
 }
 
 void vector_operator_ne() {
     CASE_NAME("vector_operator_ne");
-    TODO();
+
+    vector< int > vec0;
+    vec0.push_back(1);
+    vec0.push_back(2);
+    vec0.push_back(3);
+    vector< int > vec1;
+    vec1.push_back(1);
+    vec1.push_back(2);
+    vec1.push_back(3);
+
+    OK(false, vec0 != vec1);
+
+    vec0.push_back(1);
+    OK(true, vec0 != vec1);
+    vec1.push_back(1);
+    OK(false, vec0 != vec1);
+
+    vec0.push_back(5);
+    OK(true, vec0 != vec1);
+    vec1.push_back(42);
+    OK(true, vec0 != vec1);
 }
 
 void vector_operator_lt() {
