@@ -1,9 +1,9 @@
-#ifndef TEST_H
-#define TEST_H
+#ifndef TEST_HPP
+#define TEST_HPP
 
-#include "../src/iterator_traits.h"
-#include "../src/reverse_iterator.h"
-#include "../src/vector.h"
+#include "../src/iterator_traits.hpp"
+#include "../src/reverse_iterator.hpp"
+#include "../src/vector.hpp"
 
 #include <cstdlib>
 #include <iostream>
@@ -49,7 +49,7 @@ using namespace std;
 
 #define OK(expected, actual)                                                                       \
     {                                                                                              \
-        if (expected == actual) {                                                                  \
+        if ((expected) == (actual)) {                                                                  \
             std::cout << GREEN << "OK " << END;                                                    \
         } else {                                                                                   \
             std::cout << RED << "KO(line:" << __LINE__ << ") " << END;               \
@@ -60,4 +60,4 @@ void vector_test();
 void reverse_iterator_test();
 void iterator_traits_test();
 
-#endif /* TEST_H */
+#endif /* TEST_HPP */

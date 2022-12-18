@@ -1,5 +1,5 @@
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 
 #include <memory>
 
@@ -34,4 +34,4 @@ class vector {
 
 } // namespace ft
 
-#endif /* VECTOR_H */
+#endif /* VECTOR_HPP */

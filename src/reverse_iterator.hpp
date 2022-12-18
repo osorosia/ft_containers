@@ -1,7 +1,7 @@
-#ifndef REVERSE_ITERATOR_H
-#define REVERSE_ITERATOR_H
+#ifndef REVERSE_ITERATOR_HPP
+#define REVERSE_ITERATOR_HPP
 
-#include "iterator_traits.h"
+#include "iterator_traits.hpp"
 
 namespace ft {
 
@@ -31,4 +31,4 @@ class reverse_iterator {
 
 } // namespace ft
 
-#endif /* REVERSE_ITERATOR_H */
+#endif /* REVERSE_ITERATOR_HPP */
