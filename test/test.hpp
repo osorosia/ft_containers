@@ -40,7 +40,8 @@ using namespace std;
         if (ok) {                                                                                  \
             std::cout << GREEN << "OK " << END;                                                    \
         } else {                                                                                   \
-            std::cout << RED << "KO(line:" << ":" << __LINE__ << ") " << END;               \
+            std::cout << RED << "KO(line:"                                                         \
+                      << ":" << __LINE__ << ") " << END;                                           \
         }                                                                                          \
     }
 
@@ -49,10 +50,10 @@ using namespace std;
 
 #define OK(expected, actual)                                                                       \
     {                                                                                              \
-        if ((expected) == (actual)) {                                                                  \
+        if ((expected) == (actual)) {                                                              \
             std::cout << GREEN << "OK " << END;                                                    \
         } else {                                                                                   \
-            std::cout << RED << "KO(line:" << __LINE__ << ") " << END;               \
+            std::cout << RED << "KO(line:" << __LINE__ << ") " << END;                             \
         }                                                                                          \
     }
 
