@@ -2,6 +2,18 @@
 
 ## TODO
 - [ ] vector
+  - [ ] Iterator invalidation
+  - [ ] Member types
+  - [ ] Member functions
+    - [ ] Normal
+    - [ ] Element access
+    - [ ] Iteraotrs
+    - [ ] Capacity
+    - [ ] Modifiers
+  - [ ] Non-member functions
+    - [ ] operator
+    - [ ] std::swap
+
 - [ ] map
 
 - [x] std::iterator_traits
@@ -9,17 +21,17 @@
 - [ ] std::is_integral
 - [x] std::equal 
 - [ ] (and/or) std::lexicographical_compale
-- std::pair
-  - Member types
+- [x] std::pair
+  - [x] Member types
     - [x] first_type
     - [x] second_type
-  - Member objects
+  - [x] Member objects
     - [x] first
     - [x] second
-  - Member functions
+  - [x] Member functions
     - [x] (constructor)
     - [x] operator=
-  - Non-member fucntions
+  - [x] Non-member fucntions
     - [x] make_pair
     - [x] operator=
     - [x] operator==
@@ -29,3 +41,5 @@
     - [x] operator>
     - [x] operator>=
 - std::make_pair (-> pair)
+
+
