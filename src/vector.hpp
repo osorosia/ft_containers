@@ -84,8 +84,9 @@ class vector {
     // Capacity
     bool      empty() const { return begin_ == end_; }
     size_type size() const { return end_ - begin_; }
-    // TODO: max_size
+    size_type max_size() const { return alloc_.max_size(); }
     // TODO: reserve
+    // void      reserve(size_type new_cap);
     size_type capacity() const { return end_cap_ - begin_; }
 
     // Modifiers
@@ -101,7 +102,6 @@ class vector {
     //
     // Private
     //
-    pointer allocate(size_type n);
 };
 
 //
