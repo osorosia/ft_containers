@@ -60,14 +60,19 @@ class vector {
     reference       operator[](size_type pos) const { return begin_ + pos; }
     reference       front() { return *begin_; }
     const_reference front() const { return *begin_; }
-    // TODO: back
+    reference       back() { return *(end_ - 1); }
+    const_reference back() const { return *(end_ - 1); };
     // TODO: data
 
     // Iterators
-    // TODO: begin
-    // TODO: end
-    // TODO: rbegin
-    // TODO: rend
+    iterator               begin() { return begin_; }
+    const_iterator         begin() const { return begin_; }
+    iterator               end() { return end_; }
+    const_iterator         end() const { return end_; }
+    reverse_iterator       rbegin() { return reverse_iterator(end_); }
+    const_reverse_iterator rbegin() const { return reverse_iterator(end_); }
+    reverse_iterator       rend() { return reverse_iterator(begin_); }
+    const_reverse_iterator rend() const { return reverse_iterator(begin_); }
 
     // Capacity
     bool      empty() const { return begin_ == end_; }
