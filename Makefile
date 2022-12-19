@@ -2,10 +2,10 @@ CXX = c++
 CXXFLAGS = -std=c++98 # -Wall -Wextra -Werror
 DEPFLAGS = -MMD -MP
 
-TEST_NAME = a.out
-TEST_SRCS = $(wildcard test/*.cpp test/*/*.cpp)
-TEST_OBJS = $(TEST_SRCS:test/%.cpp=obj/%.o)
-DEPS = $(TEST_SRCS:test/%.cpp=obj/%.d)
+TEST_NAME = test.out
+TEST_SRCS = $(wildcard src/*.cpp)
+TEST_OBJS = $(TEST_SRCS:src/%.cpp=obj/%.o)
+DEPS = $(TEST_SRCS:src/%.cpp=obj/%.d)
 
 OBJS_DIR := $(sort $(dir $(TEST_OBJS)))
 OBJS_DIR := $(addsuffix .keep, $(OBJS_DIR))
@@ -17,7 +17,7 @@ all: $(TEST_NAME)
 $(TEST_NAME): $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $(TEST_OBJS)
 
-obj/%.o: test/%.cpp $(OBJS_DIR)
+obj/%.o: src/%.cpp $(OBJS_DIR)
 	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -o $@ -c $<
 
 $(OBJS_DIR):
