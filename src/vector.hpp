@@ -2,7 +2,6 @@
 #define VECTOR_HPP
 
 #include <memory>
-
 namespace ft {
 
 // https://en.cppreference.com/w/cpp/container/vector
@@ -50,19 +49,27 @@ class vector {
     // TODO: (destructor)
     // TODO: operator=
     // TODO: assign
-    // TODO: get_allocator
+    allocator_type get_allocator() const { return alloc_; }
 
     // Element access
-    // TODO: at(): out_of_rangeを追加
-    reference       at(size_type pos) { return *this[pos]; }
-    const_reference at(size_type pos) const { return *this[pos]; }
+    reference at(size_type pos) {
+        if (pos >= size())
+            throw std::out_of_range("vector");
+        return *this[pos];
+    }
+    const_reference at(size_type pos) const {
+        if (pos >= size())
+            throw std::out_of_range("vector");
+        return *this[pos];
+    }
     reference       operator[](size_type pos) { return begin_ + pos; }
     reference       operator[](size_type pos) const { return begin_ + pos; }
     reference       front() { return *begin_; }
     const_reference front() const { return *begin_; }
     reference       back() { return *(end_ - 1); }
     const_reference back() const { return *(end_ - 1); };
-    // TODO: data
+    T*              data() { return begin_; }
+    const T*        data() const { return begin_; };
 
     // Iterators
     iterator               begin() { return begin_; }
@@ -79,7 +86,7 @@ class vector {
     size_type size() const { return end_ - begin_; }
     // TODO: max_size
     // TODO: reserve
-    // TODO: capacity
+    size_type capacity() const { return end_cap_ - begin_; }
 
     // Modifiers
     // TODO: clear
@@ -89,6 +96,12 @@ class vector {
     // TODO: pop_back
     // TODO: resize
     // TODO: swap
+
+  private:
+    //
+    // Private
+    //
+    pointer allocate(size_type n);
 };
 
 //
