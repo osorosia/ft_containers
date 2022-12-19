@@ -2,4 +2,5 @@
 
 int main() {
     pair_test();
+    vector_test();
 }

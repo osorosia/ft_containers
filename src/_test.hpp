@@ -1,10 +1,8 @@
 #ifndef TEST_HPP
 #define TEST_HPP
 
-// #include "iterator_traits.hpp"
-// #include "reverse_iterator.hpp"
-// #include "vector.hpp"
 #include "pair.hpp"
+#include "vector.hpp"
 
 #include <cstdlib>
 #include <iostream>
@@ -37,5 +35,6 @@
     { std::cout << GREEN << "OK" << END << std::endl; }
 
 void pair_test();
+void vector_test();
 
 #endif /* TEST_HPP */
