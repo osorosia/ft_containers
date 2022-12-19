@@ -20,7 +20,7 @@
 - [x] std::enable_if
 - [ ] std::is_integral
 - [x] std::equal 
-- [ ] (and/or) std::lexicographical_compale
+- [x] std::lexicographical_compale
 - [x] std::pair
   - [x] Member types
     - [x] first_type
