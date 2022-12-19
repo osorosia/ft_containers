@@ -20,7 +20,7 @@
     - [x] (constructor)
     - [x] operator=
   - Non-member fucntions
-    - [ ] make_pair
+    - [x] make_pair
     - [x] operator=
     - [x] operator==
     - [x] operator!=

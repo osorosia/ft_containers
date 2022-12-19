@@ -42,7 +42,9 @@ void pair_operator_comp_test() {
 }
 
 void make_pair_test() {
-    TODO();
+    ft::pair<int, int> x = ft::make_pair(1, 2);
+    assert(x.first == 1);
+    assert(x.second == 2);
 }
 
 void pair_test() {
