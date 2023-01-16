@@ -42,7 +42,7 @@ ColumnLimit: 100
 # includeを名前順にソートする
 IncludeBlocks: Preserve
 
-# swicth分のcaseにインデントを設定する
+# swicth文のcaseにインデントを設定する
 IndentCaseLabels: true
 
 # インデントは4スペース
@@ -64,3 +64,6 @@ SpacesBeforeTrailingComments: 1
 SpacesInAngles: true
 
 AlwaysBreakTemplateDeclarations: true
+
+# アクセス修飾子のインデント位置
+AccessModifierOffset: -4
