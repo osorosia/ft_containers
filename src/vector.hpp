@@ -10,7 +10,7 @@ namespace ft {
 // https://en.cppreference.com/w/cpp/container/vector
 template < class T, class Allocator = std::allocator< T > >
 class vector {
-  protected:
+protected:
     //
     // Member types
     //
@@ -34,7 +34,7 @@ class vector {
     pointer        end_cap_;
     allocator_type alloc_;
 
-  public:
+public:
     //
     // Member functions
     //
@@ -102,7 +102,7 @@ class vector {
     // TODO: swap
     void swap(vector& other) {}
 
-  private:
+private:
     //
     // Private
     //
