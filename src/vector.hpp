@@ -1,8 +1,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include "equal.hpp"
-#include "lexicographical_compare.hpp"
+#include "utils.hpp"
 #include <memory>
 
 namespace ft {
