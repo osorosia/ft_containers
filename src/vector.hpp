@@ -88,8 +88,9 @@ public:
     bool      empty() const { return begin_ == end_; }
     size_type size() const { return end_ - begin_; }
     size_type max_size() const { return alloc_.max_size(); }
-    // TODO: reserve
-    // void      reserve(size_type new_cap);
+    void      reserve(size_type new_cap) {
+        // TODO
+    }
     size_type capacity() const { return end_cap_ - begin_; }
 
     // Modifiers
@@ -99,8 +100,9 @@ public:
     // TODO: push_back
     // TODO: pop_back
     // TODO: resize
-    // TODO: swap
-    void swap(vector& other) {}
+    void swap(vector& other) {
+        // TODO
+    }
 
 private:
     //
@@ -137,7 +139,7 @@ bool operator>=(const std::vector< T, Alloc >& lhs, const std::vector< T, Alloc 
 }
 template < class T, class Alloc >
 void swap(std::vector< T, Alloc >& lhs, std::vector< T, Alloc >& rhs) {
-  lhs.swap(rhs);
+    lhs.swap(rhs);
 }
 
 } // namespace ft
