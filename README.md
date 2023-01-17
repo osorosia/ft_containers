@@ -11,7 +11,7 @@
     - [ ] Capacity
     - [ ] Modifiers
   - [ ] Non-member functions
-    - [ ] operator
+    - [x] operator
     - [ ] std::swap
 
 - [ ] map
