@@ -2,6 +2,15 @@
 
 void enable_if_test() {
     TEST_NAME("enable_if");
-    TODO();
+
+    {
+        // ok
+        ft::enable_if< true, int >::type a;
+    }
+    {
+        // ng
+        // ft::enable_if< false, int >::type a;
+    }
+
     OK();
 }
