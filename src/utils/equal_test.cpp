@@ -59,7 +59,9 @@ void equal_template1_test() {
 void equal_test() {
     TEST_NAME("equal");
 
+    // bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2);
     equal_template0_test();
+    // bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2, BinaryPredicate p);
     equal_template1_test();
 
     OK();
