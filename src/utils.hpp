@@ -6,6 +6,7 @@
 #include "utils/is_integral.hpp"
 #include "utils/iterator_traits.hpp"
 #include "utils/lexicographical_compare.hpp"
+#include "utils/pair.hpp"
 #include "utils/reverse_iterator.hpp"
 
 #endif /* UTILS_HPP */

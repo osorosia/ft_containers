@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++98 # -Wall -Wextra -Werror
 DEPFLAGS = -MMD -MP
 
 TEST_NAME = test.out
-TEST_SRCS = $(wildcard src/*.cpp)
+TEST_SRCS = $(wildcard src/*.cpp src/*/*.cpp)
 TEST_OBJS = $(TEST_SRCS:src/%.cpp=obj/%.o)
 DEPS = $(TEST_SRCS:src/%.cpp=obj/%.d)
 

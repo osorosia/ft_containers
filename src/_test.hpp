@@ -1,7 +1,7 @@
 #ifndef TEST_HPP
 #define TEST_HPP
 
-#include "pair.hpp"
+#include "utils.hpp"
 #include "vector.hpp"
 
 #include <cstdlib>
@@ -34,7 +34,14 @@
 #define OK()                                                                                       \
     { std::cout << GREEN << "OK" << END << std::endl; }
 
-void pair_test();
 void vector_test();
+// utils
+void enable_if_test();
+void equal_test();
+void is_integral_test();
+void iterator_traits_test();
+void lexicographical_compare_test();
+void pair_test();
+void reverse_iterator_test();
 
 #endif /* TEST_HPP */
