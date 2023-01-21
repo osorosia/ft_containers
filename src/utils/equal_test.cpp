@@ -28,7 +28,7 @@ void equal_template0_test() {
 }
 
 // template < class T >
-bool binary_pred(int x, int y) { return x <= y; }
+bool binary_pred(int x, int y) { return x == y; }
 
 // bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2, BinaryPredicate p);
 void equal_template1_test() {
@@ -52,7 +52,7 @@ void equal_template1_test() {
     // vec0 = {0, 1, 2, 10}
     // vec1 = {0, 1, 2, 11}
     vec1.push_back(11);
-    assert(ft::equal(vec0.begin(), vec0.end(), vec1.begin(), binary_pred));
+    assert(!ft::equal(vec0.begin(), vec0.end(), vec1.begin(), binary_pred));
     assert(!ft::equal(vec1.begin(), vec1.end(), vec0.begin(), binary_pred));
 }
 
