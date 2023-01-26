@@ -28,9 +28,10 @@ protected:
     // TODO: std -> ft
     typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
 
-    pointer        begin_;
-    pointer        end_;
-    pointer        end_cap_;
+    pointer begin_;
+    pointer end_;
+    pointer end_cap_;
+    // https://en.cppreference.com/w/cpp/memory/allocator
     allocator_type alloc_;
 
 public:
@@ -87,8 +88,26 @@ public:
     bool      empty() const { return begin_ == end_; }
     size_type size() const { return end_ - begin_; }
     size_type max_size() const { return alloc_.max_size(); }
+    // https://cpp.rainy.me/034-vector-memory-allocation.html#reserve%E3%81%AE%E5%AE%9F%E8%A3%85
     void      reserve(size_type new_cap) {
-        // TODO
+        if (new_cap <= capacity())
+            return;
+
+        pointer ptr       = alloc_.allocate(new_cap);
+        pointer old_begin = begin_;
+        pointer old_end   = end_;
+        pointer old_cap   = capacity();
+
+        begin_   = ptr;
+        end_     = begin_;
+        end_cap_ = begin_ + new_cap;
+
+        for (pointer old_iter = old_begin; old_iter != old_end; old_iter++, end_++) {
+            alloc_.construct(end_, old_iter*);
+            alloc_.destroy(old_iter);
+        }
+
+        alloc_.deallocate(old_begin, old_cap);
     }
     size_type capacity() const { return end_cap_ - begin_; }
 
