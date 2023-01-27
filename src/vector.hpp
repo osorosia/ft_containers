@@ -89,7 +89,7 @@ public:
     size_type size() const { return end_ - begin_; }
     size_type max_size() const { return alloc_.max_size(); }
     // https://cpp.rainy.me/034-vector-memory-allocation.html#reserve%E3%81%AE%E5%AE%9F%E8%A3%85
-    void      reserve(size_type new_cap) {
+    void reserve(size_type new_cap) {
         if (new_cap <= capacity())
             return;
 
@@ -126,6 +126,12 @@ private:
     //
     // Private
     //
+    void destroy_until(reverse_iterator rend) {
+        for (reverse_iterator riter = rbegin(); riter != rend; riter++, end_--) {
+            // &*riter: reverse_iterator -> pointer
+            alloc_.destroy(&*riter);
+        }
+    }
 };
 
 //
