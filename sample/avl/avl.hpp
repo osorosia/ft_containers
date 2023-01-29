@@ -15,15 +15,19 @@ struct Node {
         if (val_ == num)
             return;
         else if (num < val_) {
-            if (left_ == NULL)
-                left_ = new Node(num);
-            else
+            if (left_ == NULL) {
+                left_          = new Node(num);
+                left_->parent_ = this;
+            } else {
                 left_->insertNode(num);
+            }
         } else {
-            if (right_ == NULL)
-                right_ = new Node(num);
-            else
+            if (right_ == NULL) {
+                right_          = new Node(num);
+                right_->parent_ = this;
+            } else {
                 right_->insertNode(num);
+            }
         }
     }
 
