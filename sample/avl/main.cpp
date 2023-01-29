@@ -5,7 +5,7 @@ using namespace std;
 void print(AVLTree& tree);
 bool checkAVL(AVLTree& tree);
 
-void OK(bool b) { cout << (b ? "OK" : "NG!!!!!") << endl; }
+void OK(bool b) { cout << "# " << (b ? "OK" : "NG!!!!!") << endl; }
 
 void printAndCheck(AVLTree& tree) {
     OK(checkAVL(tree));
