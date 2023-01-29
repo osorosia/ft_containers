@@ -3,15 +3,15 @@
 using namespace std;
 
 void print_node(Node* node, string name) {
-    if (node->left) {
+    if (node->left_) {
         cout << name << "-->" << name + "A"
-             << "((" << node->left->val << "))" << endl;
-        print_node(node->left, name + "A");
+             << "((" << node->left_->val_ << "))" << endl;
+        print_node(node->left_, name + "A");
     }
-    if (node->right) {
+    if (node->right_) {
         cout << name << "-->" << name + "B"
-             << "((" << node->right->val << "))" << endl;
-        print_node(node->right, name + "B");
+             << "((" << node->right_->val_ << "))" << endl;
+        print_node(node->right_, name + "B");
     }
 }
 
@@ -19,8 +19,10 @@ void print(AVLTree& tree) {
     cout << "```mermaid" << endl;
     cout << "graph TB" << endl;
 
-    cout << "O((" << tree.head->val << "))" << endl;
-    print_node(tree.head, "O");
+    if (tree.root_) {
+        cout << "O((" << tree.root_->val_ << "))" << endl;
+        print_node(tree.root_, "O");
+    }
 
     cout << "```" << endl;
 }

@@ -6,8 +6,8 @@ using namespace std;
 long calcDepth(Node* node) {
     if (node == NULL)
         return 0;
-    long left  = calcDepth(node->left);
-    long right = calcDepth(node->right);
+    long left  = calcDepth(node->left_);
+    long right = calcDepth(node->right_);
     if (left < 0 || right < 0)
         return -1;
 
@@ -17,4 +17,4 @@ long calcDepth(Node* node) {
     return max(left, right) + 1;
 }
 
-bool checkAVL(AVLTree& tree) { return calcDepth(tree.head) >= 0; }
+bool checkAVL(AVLTree& tree) { return calcDepth(tree.root_) >= 0; }
