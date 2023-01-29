@@ -3,6 +3,9 @@
 using namespace std;
 
 void print_node(Node* node, string name) {
+    assert(!node->left_ || node == node->left_->parent_);
+    assert(!node->right_ || node == node->right_->parent_);
+
     if (node->left_) {
         cout << name << "-->" << name + "A"
              << "((" << node->left_->val_ << "))" << endl;
