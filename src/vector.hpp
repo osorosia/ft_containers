@@ -103,7 +103,7 @@ public:
         end_cap_ = begin_ + new_cap;
 
         for (pointer old_iter = old_begin; old_iter != old_end; old_iter++, end_++) {
-            alloc_.construct(end_, old_iter*);
+            alloc_.construct(end_, *old_iter);
             alloc_.destroy(old_iter);
         }
 
