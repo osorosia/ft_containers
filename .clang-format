@@ -18,7 +18,7 @@ AlignOperands: true
 AlignTrailingComments: true
 
 # 短い関数を単一行にしない
-; AllowShortFunctionsOnASingleLine: None
+# AllowShortFunctionsOnASingleLine: None
 
 # { } の位置
 # "BreakBeforeBraces: Custom" の場合に有効となる
