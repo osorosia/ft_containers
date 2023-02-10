@@ -138,31 +138,31 @@ private:
 // Non member functions
 //
 template < class T, class Alloc >
-bool operator==(const std::vector< T, Alloc >& lhs, const std::vector< T, Alloc >& rhs) {
+bool operator==(const ft::vector< T, Alloc >& lhs, const ft::vector< T, Alloc >& rhs) {
     return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 template < class T, class Alloc >
-bool operator!=(const std::vector< T, Alloc >& lhs, const std::vector< T, Alloc >& rhs) {
+bool operator!=(const ft::vector< T, Alloc >& lhs, const ft::vector< T, Alloc >& rhs) {
     return !(lhs == rhs);
 }
 template < class T, class Alloc >
-bool operator<(const std::vector< T, Alloc >& lhs, const std::vector< T, Alloc >& rhs) {
+bool operator<(const ft::vector< T, Alloc >& lhs, const ft::vector< T, Alloc >& rhs) {
     return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 template < class T, class Alloc >
-bool operator<=(const std::vector< T, Alloc >& lhs, const std::vector< T, Alloc >& rhs) {
+bool operator<=(const ft::vector< T, Alloc >& lhs, const ft::vector< T, Alloc >& rhs) {
     return !(rhs < lhs);
 }
 template < class T, class Alloc >
-bool operator>(const std::vector< T, Alloc >& lhs, const std::vector< T, Alloc >& rhs) {
+bool operator>(const ft::vector< T, Alloc >& lhs, const ft::vector< T, Alloc >& rhs) {
     return rhs < lhs;
 }
 template < class T, class Alloc >
-bool operator>=(const std::vector< T, Alloc >& lhs, const std::vector< T, Alloc >& rhs) {
+bool operator>=(const ft::vector< T, Alloc >& lhs, const ft::vector< T, Alloc >& rhs) {
     return !(lhs < rhs);
 }
 template < class T, class Alloc >
-void swap(std::vector< T, Alloc >& lhs, std::vector< T, Alloc >& rhs) {
+void swap(ft::vector< T, Alloc >& lhs, ft::vector< T, Alloc >& rhs) {
     lhs.swap(rhs);
 }
 
