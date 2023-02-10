@@ -4,6 +4,7 @@
 #include "utils.hpp"
 #include "vector.hpp"
 
+#include <cassert>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
