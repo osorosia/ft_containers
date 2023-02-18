@@ -134,7 +134,16 @@ public:
     // TODO: erase
     // TODO: push_back
     // TODO: pop_back
-    // TODO: resize
+    void resize(size_type count, T value = T()) {
+        if (count < size()) {
+            for (iterator it = first_ + count; it != end_; it++) {
+                alloc_.destroy(it);
+            }
+            end_ = first_ + count;
+        } else (count > size()) {
+            // TODO:
+        }
+    }
     void swap(vector& other) {
         // TODO
     }
