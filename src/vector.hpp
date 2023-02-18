@@ -118,7 +118,19 @@ public:
             alloc_.destroy(--end_);
         }
     }
-    // TODO: insert
+    iterator insert(const_iterator pos, const T& value) {
+        // TODO:
+        return NULL;
+    }
+    iterator insert(const_iterator pos, size_type count, const T& value) {
+        // TODO:
+        return NULL;
+    }
+    template < class InputIt >
+    iterator insert(const_iterator pos, InputIt first, InputIt last) {
+        // TODO:
+        return NULL;
+    }
     // TODO: erase
     // TODO: push_back
     // TODO: pop_back
