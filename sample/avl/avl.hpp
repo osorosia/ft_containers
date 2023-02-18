@@ -1,6 +1,7 @@
 #ifndef AVL_HPP
 #define AVL_HPP
 
+#include <cassert>
 #include <cstddef>
 
 struct Node {
