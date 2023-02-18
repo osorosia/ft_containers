@@ -140,7 +140,11 @@ public:
         return NULL;
     };
     void push_back(const T& value) {
-        // TODO:
+        if (size() + 1 > capacity()) {
+            // TODO: fix performance
+            reserve(size() + 1);
+        }
+        alloc_.construct(end_++, value); 
     }
     void pop_back() {
         // undefined behavior: Calling pop_back on an empty container
