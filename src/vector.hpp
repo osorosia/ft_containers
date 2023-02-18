@@ -141,7 +141,11 @@ public:
             }
             end_ = first_ + count;
         } else (count > size()) {
-            // TODO:
+            // TODO: fix performance
+            reserve(count);
+            for (; size() < count; end_++) {
+                alloc_.construct(end_, value);
+            }
         }
     }
     void swap(vector& other) {
