@@ -6,3 +6,4 @@ obj
 tmp*
 *tmp
 .vscode
+go
