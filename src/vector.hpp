@@ -52,12 +52,10 @@ public:
         : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(alloc) {
         assign(first, last);
     }
-    vector(const vector& other) {
-        assign(other.begin(), other.end());
-    }
-    
+    vector(const vector& other) { assign(other.begin(), other.end()); }
+
     // TODO: (destructor)
-    
+
     vector& operator=(const vector& other) {
         if (*this == other)
             return *this;
@@ -99,7 +97,7 @@ public:
             pop_back();
         }
     }
-    
+
     allocator_type get_allocator() const { return alloc_; }
 
     // Element access
@@ -113,39 +111,39 @@ public:
             throw std::out_of_range("vector");
         return *this[pos];
     }
-    
-    reference       operator[](size_type pos) { return begin_ + pos; }
-    reference       operator[](size_type pos) const { return begin_ + pos; }
-    
+
+    reference operator[](size_type pos) { return begin_ + pos; }
+    reference operator[](size_type pos) const { return begin_ + pos; }
+
     reference       front() { return *begin_; }
     const_reference front() const { return *begin_; }
-    
+
     reference       back() { return *(end_ - 1); }
     const_reference back() const { return *(end_ - 1); };
-    
-    T*              data() { return begin_; }
-    const T*        data() const { return begin_; };
+
+    T*       data() { return begin_; }
+    const T* data() const { return begin_; };
 
     // Iterators
-    iterator               begin() { return begin_; }
-    const_iterator         begin() const { return begin_; }
-    
-    iterator               end() { return end_; }
-    const_iterator         end() const { return end_; }
-    
+    iterator       begin() { return begin_; }
+    const_iterator begin() const { return begin_; }
+
+    iterator       end() { return end_; }
+    const_iterator end() const { return end_; }
+
     reverse_iterator       rbegin() { return reverse_iterator(end_); }
     const_reverse_iterator rbegin() const { return reverse_iterator(end_); }
-    
+
     reverse_iterator       rend() { return reverse_iterator(begin_); }
     const_reverse_iterator rend() const { return reverse_iterator(begin_); }
 
     // Capacity
-    bool      empty() const { return begin_ == end_; }
-    
+    bool empty() const { return begin_ == end_; }
+
     size_type size() const { return end_ - begin_; }
-    
+
     size_type max_size() const { return alloc_.max_size(); }
-    
+
     // https://cpp.rainy.me/034-vector-memory-allocation.html#reserve%E3%81%AE%E5%AE%9F%E8%A3%85
     void reserve(size_type new_cap) {
         if (new_cap <= capacity())
@@ -167,7 +165,7 @@ public:
 
         alloc_.deallocate(old_begin, old_cap);
     }
-    
+
     size_type capacity() const { return end_cap_ - begin_; }
 
     // Modifiers
@@ -177,7 +175,7 @@ public:
             alloc_.destroy(--end_);
         }
     }
-    
+
     iterator insert(const_iterator pos, const T& value) {
         // TODO:
         return NULL;
@@ -191,7 +189,7 @@ public:
         // TODO:
         return NULL;
     }
-    
+
     iterator erase(iterator pos) {
         // TODO:
         return NULL;
@@ -200,7 +198,7 @@ public:
         // TODO:
         return NULL;
     };
-    
+
     void push_back(const T& value) {
         if (size() + 1 > capacity()) {
             // TODO: fix performance
@@ -208,12 +206,12 @@ public:
         }
         alloc_.construct(end_++, value);
     }
-    
+
     void pop_back() {
         // undefined behavior: Calling pop_back on an empty container
         alloc_.destroy(--end_);
     }
-    
+
     void resize(size_type count, T value = T()) {
         if (count < size()) {
             for (iterator it = begin_ + count; it != end_; it++) {
@@ -228,7 +226,7 @@ public:
             }
         }
     }
-    
+
     void swap(vector& other) {
         // TODO:
     }
