@@ -152,11 +152,11 @@ public:
     }
     void resize(size_type count, T value = T()) {
         if (count < size()) {
-            for (iterator it = first_ + count; it != end_; it++) {
+            for (iterator it = begin_ + count; it != end_; it++) {
                 alloc_.destroy(it);
             }
-            end_ = first_ + count;
-        } else (count > size()) {
+            end_ = begin_ + count;
+        } else if (count > size()) {
             // TODO: fix performance
             reserve(count);
             for (; size() < count; end_++) {
@@ -165,7 +165,7 @@ public:
         }
     }
     void swap(vector& other) {
-        // TODO
+        // TODO:
     }
 
 private:
