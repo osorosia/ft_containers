@@ -139,8 +139,13 @@ public:
         // TODO:
         return NULL;
     };
-    // TODO: push_back
-    // TODO: pop_back
+    void push_back(const T& value) {
+        // TODO:
+    }
+    void pop_back() {
+        // undefined behavior: Calling pop_back on an empty container
+        alloc_.destroy(--end_);
+    }
     void resize(size_type count, T value = T()) {
         if (count < size()) {
             for (iterator it = first_ + count; it != end_; it++) {
