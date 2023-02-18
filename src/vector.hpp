@@ -112,7 +112,11 @@ public:
     size_type capacity() const { return end_cap_ - begin_; }
 
     // Modifiers
-    // TODO: clear
+    void clear() {
+        for (size_type i = 0; i < size(); i++) {
+            alloc_.destroy(--end_);
+        }
+    }
     // TODO: insert
     // TODO: erase
     // TODO: push_back
