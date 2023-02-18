@@ -40,17 +40,23 @@ public:
     //
 
     // (Non title)
-    // TODO: (constructor)
     vector() : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(Allocator()) {}
     explicit vector(const Allocator& alloc)
         : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(alloc) {}
-    // explicit vector(size_type count, const T& value = T(), const Allocator& alloc = Allocator())
-    //     : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(alloc) {}
-    // template < class InputIt >
-    // vector(InputIt first, InputIt last, const Allocator& alloc = Allocator());
-    // vector( const vector& other );
+    explicit vector(size_type count, const T& value = T(), const Allocator& alloc = Allocator())
+        : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(alloc) {
+        resize(count, value);
+    }
+    template < class InputIt >
+    vector(InputIt first, InputIt last, const Allocator& alloc = Allocator())
+        : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(alloc) {
+        assign(first, last);
+    }
+    vector(const vector& other) {
+        assign(other.begin(), other.end());
+    }
     // TODO: (destructor)
-    vector &operator=(const vector& other) {
+    vector& operator=(const vector& other) {
         if (*this == other)
             return *this;
         assign(other.begin(), other.end());
