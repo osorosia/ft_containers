@@ -110,8 +110,8 @@ public:
         return begin_[pos];
     }
 
-    reference operator[](size_type pos) { return begin_ + pos; }
-    reference operator[](size_type pos) const { return begin_ + pos; }
+    reference operator[](size_type pos) { return *(begin_ + pos); }
+    reference operator[](size_type pos) const { return *(begin_ + pos); }
 
     reference       front() { return *begin_; }
     const_reference front() const { return *begin_; }
