@@ -51,7 +51,40 @@ public:
     // vector( const vector& other );
     // TODO: (destructor)
     // TODO: operator=
-    // TODO: assign
+    void assign(size_type count, const T& value) {
+        if (count > capacity()) {
+            // TODO: fix perf
+            reserve(count);
+        }
+        for (iterator it = begin_; it < begin_ + count; it++) {
+            if (it >= end_) {
+                alloc_.construct(it, value);
+            } else {
+                *it = value;
+            }
+        }
+        while (size() > count) {
+            pop_back();
+        }
+    }
+    template < class InputIt >
+    void assign(InputIt first, InputIt last) {
+        size_type count = last - first;
+        if (count > capacity()) {
+            // TODO: fix perf
+            reserve(count);
+        }
+        for (iterator it = begin_; it < begin + count; it++, first++) {
+            if (it >= end_) {
+                alloc_.(it, *first);
+            } else {
+                *it = *first;
+            }
+        }
+        while (size() > count) {
+            pop_back();
+        }
+    }
     allocator_type get_allocator() const { return alloc_; }
 
     // Element access
@@ -144,7 +177,7 @@ public:
             // TODO: fix performance
             reserve(size() + 1);
         }
-        alloc_.construct(end_++, value); 
+        alloc_.construct(end_++, value);
     }
     void pop_back() {
         // undefined behavior: Calling pop_back on an empty container
