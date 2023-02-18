@@ -38,8 +38,6 @@ public:
     //
     // Member functions
     //
-
-    // (Non title)
     vector() : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(Allocator()) {}
     explicit vector(const Allocator& alloc)
         : begin_(NULL), end_(NULL), end_cap_(NULL), alloc_(alloc) {}
