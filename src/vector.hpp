@@ -102,12 +102,12 @@ public:
     reference at(size_type pos) {
         if (pos >= size())
             throw std::out_of_range("vector");
-        return *this[pos];
+        return begin_[pos];
     }
     const_reference at(size_type pos) const {
         if (pos >= size())
             throw std::out_of_range("vector");
-        return *this[pos];
+        return begin_[pos];
     }
 
     reference operator[](size_type pos) { return begin_ + pos; }
