@@ -149,10 +149,10 @@ public:
         if (new_cap <= capacity())
             return;
 
-        pointer ptr       = alloc_.allocate(new_cap);
-        pointer old_begin = begin_;
-        pointer old_end   = end_;
-        pointer old_cap   = capacity();
+        pointer   ptr       = alloc_.allocate(new_cap);
+        pointer   old_begin = begin_;
+        pointer   old_end   = end_;
+        size_type old_cap   = capacity();
 
         begin_   = ptr;
         end_     = begin_;
