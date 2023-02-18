@@ -113,7 +113,8 @@ public:
 
     // Modifiers
     void clear() {
-        for (size_type i = 0; i < size(); i++) {
+        size_type sz = size();
+        for (size_type i = 0; i < sz; i++) {
             alloc_.destroy(--end_);
         }
     }
