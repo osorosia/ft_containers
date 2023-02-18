@@ -50,7 +50,12 @@ public:
     // vector(InputIt first, InputIt last, const Allocator& alloc = Allocator());
     // vector( const vector& other );
     // TODO: (destructor)
-    // TODO: operator=
+    vector &operator=(const vector& other) {
+        if (*this == other)
+            return *this;
+        assign(other.begin(), other.end());
+        return *this;
+    }
     void assign(size_type count, const T& value) {
         if (count > capacity()) {
             // TODO: fix perf
@@ -76,7 +81,7 @@ public:
         }
         for (iterator it = begin_; it < begin + count; it++, first++) {
             if (it >= end_) {
-                alloc_.(it, *first);
+                alloc_.construct(it, *first);
             } else {
                 *it = *first;
             }
