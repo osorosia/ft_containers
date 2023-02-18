@@ -131,7 +131,14 @@ public:
         // TODO:
         return NULL;
     }
-    // TODO: erase
+    iterator erase(iterator pos) {
+        // TODO:
+        return NULL;
+    };
+    iterator erase(iterator first, iterator last) {
+        // TODO:
+        return NULL;
+    };
     // TODO: push_back
     // TODO: pop_back
     void resize(size_type count, T value = T()) {
