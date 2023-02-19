@@ -11,7 +11,7 @@ struct Node {
     long  val_;
 
     Node() : left_(NULL), right_(NULL), parent_(NULL), val_(0) {}
-    Node(long value) : left_(NULL), right_(NULL), parent_(NULL), val_(value) {}
+    Node(long val) : left_(NULL), right_(NULL), parent_(NULL), val_(val) {}
 };
 
 struct AVLTree {
@@ -19,27 +19,27 @@ struct AVLTree {
 
     AVLTree() : root_(NULL) {}
 
-    void insert(long value) {
+    void insert(long val) {
         if (root_ == NULL) {
-            root_ = new Node(value);
+            root_ = new Node(val);
         } else {
-            insertNode(root_, value);
+            insertNode(root_, val);
         }
     }
 
-    void insertNode(Node* node, long value) {
-        if (node->val_ > value) {
+    void insertNode(Node* node, long val) {
+        if (node->val_ > val) {
             if (node->left_) {
-                insertNode(node->left_, value);
+                insertNode(node->left_, val);
             } else {
-                node->left_          = new Node(value);
+                node->left_          = new Node(val);
                 node->left_->parent_ = node;
             }
-        } else if (node->val_ < value) {
+        } else if (node->val_ < val) {
             if (node->right_) {
-                insertNode(node->right_, value);
+                insertNode(node->right_, val);
             } else {
-                node->right_          = new Node(value);
+                node->right_          = new Node(val);
                 node->right_->parent_ = node;
             }
         }
