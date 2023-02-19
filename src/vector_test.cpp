@@ -7,8 +7,8 @@ void vector_assign_test() { TODO(); }
 void vector_get_allocator_test() { TODO(); }
 
 void vector_at_test() {
-    ft::vector< int > ft_vec;
-    std::vector<int > std_vec;
+    ft::vector< int >  ft_vec;
+    std::vector< int > std_vec;
     for (int i = 0; i < 3; i++) {
         ft_vec.push_back(i + 1);
         std_vec.push_back(i + 1);
@@ -16,7 +16,7 @@ void vector_at_test() {
     assert(ft_vec.at(0) == std_vec.at(0));
     assert(ft_vec.at(1) == std_vec.at(1));
     assert(ft_vec.at(2) == std_vec.at(2));
-    
+
     try {
         ft_vec.at(3);
         assert(false);
@@ -46,8 +46,8 @@ void vector_at_test() {
 }
 
 void vector_op_at_test() {
-    ft::vector< int > ft_vec;
-    std::vector<int > std_vec;
+    ft::vector< int >  ft_vec;
+    std::vector< int > std_vec;
     for (int i = 0; i < 3; i++) {
         ft_vec.push_back(i + 1);
         std_vec.push_back(i + 1);
@@ -59,13 +59,12 @@ void vector_op_at_test() {
     // TODO: const
 }
 void vector_front_test() {
-    ft::vector<int> ft_vec;
-    ft::vector<int> std_vec;
+    ft::vector< int > ft_vec;
+    ft::vector< int > std_vec;
     for (int i = 0; i < 3; i++) {
         ft_vec.push_back(i + 1);
         std_vec.push_back(i + 1);
     }
-    
 
     // TODO: const
 }
@@ -78,8 +77,17 @@ void vector_rbegin_test() { TODO(); }
 void vector_rend_test() { TODO(); }
 
 void vector_empty_test() {
-    TODO();
     ft::vector< int > vec;
+    assert(vec.empty());
+
+    vec.push_back(1);
+    assert(!vec.empty());
+    vec.push_back(1);
+    assert(!vec.empty());
+
+    vec.pop_back();
+    assert(!vec.empty());
+    vec.pop_back();
     assert(vec.empty());
 }
 

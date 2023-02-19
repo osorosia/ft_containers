@@ -1,6 +1,7 @@
 #ifndef TEST_HPP
 #define TEST_HPP
 
+#include "map.hpp"
 #include "utils.hpp"
 #include "vector.hpp"
 
@@ -36,6 +37,7 @@
     { std::cout << GREEN << "OK" << END << std::endl; }
 
 void vector_test();
+void map_test();
 // utils
 void enable_if_test();
 void equal_test();

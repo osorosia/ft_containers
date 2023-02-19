@@ -1,8 +1,9 @@
 #include "_test.hpp"
 
 int main() {
-    pair_test();
     vector_test();
+    map_test();
+    pair_test();
 
     // utils
     enable_if_test();
