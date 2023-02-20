@@ -7,7 +7,9 @@
 namespace ft {
 
 // https://en.cppreference.com/w/cpp/container/map
-template < class Key, class T, class Compare = std::less< Key >,
+template < class Key,
+           class T,
+           class Compare   = std::less< Key >,
            class Allocator = std::allocator< std::pair< const Key, T > > >
 class map {
 protected:
@@ -29,8 +31,6 @@ protected:
     // const_iterator
     // typedef std::reverse_iterator< iterator >       reverse_iterator;
     // typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
-
-    
 };
 
 } // namespace ft

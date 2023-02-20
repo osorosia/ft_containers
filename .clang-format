@@ -67,3 +67,9 @@ AlwaysBreakTemplateDeclarations: true
 
 # アクセス修飾子のインデント位置
 AccessModifierOffset: -4
+
+# パラメータを改行で並べる
+BinPackParameters: false
+
+# コンストラクタの初期化のカンマの位置
+BreakConstructorInitializersBeforeComma: true
