@@ -25,12 +25,27 @@ void test() {
 int main() {
     // test();
     AVLTree tree;
-    long    data[] = {10, 1, 2, 0, 15, 12, 11, 13, 20, 18};
-    for (int i = 0; i < sizeof(data) / sizeof(data[0]); i++) {
-        tree.insert(data[i]);
-    }
+    struct {
+        string op;
+        long   val;
+    } cases[] = {
+        {"insert", 10}, {"insert", 1},  {"insert", 2},  {"insert", 0},
+        {"insert", 15}, {"insert", 12}, {"insert", 11}, {"insert", 13},
+        {"insert", 20}, {"insert", 18}, {"erase", 15},
+    };
+    for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+        if (cases[i].op == "insert")
+            tree.insert(cases[i].val);
+        else if (cases[i].op == "erase")
+            tree.erase(cases[i].val);
 
-    printAndCheck(tree);
+        cout << "# " << cases[i].op << ": " << cases[i].val << endl;
+        print(tree);
+    }
+    // cout << "# " << "finish" << endl;
+    // print(tree);
+
+    // printAndCheck(tree);
 
     // tree.erase(15);
     // printAndCheck(tree);
