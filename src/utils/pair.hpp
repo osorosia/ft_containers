@@ -11,10 +11,16 @@ struct pair {
     T1 first;
     T2 second;
 
-    pair() : first(), second() {}
-    pair(const T1& t1, const T2& t2) : first(t1), second(t2) {}
+    pair()
+        : first()
+        , second() {}
+    pair(const T1& t1, const T2& t2)
+        : first(t1)
+        , second(t2) {}
     template < class U1, class U2 >
-    pair(const pair< U1, U2 >& p) : first(p.first), second(p.second) {}
+    pair(const pair< U1, U2 >& p)
+        : first(p.first)
+        , second(p.second) {}
 
     pair& operator=(const pair& other) {
         this->first  = other.first;

@@ -8,7 +8,7 @@ namespace ft {
 // https://en.cppreference.com/w/cpp/iterator/reverse_iterator
 template < class Iter >
 class reverse_iterator {
-  public:
+public:
     typedef Iter                                                    iterator_type;
     typedef typename ft::iterator_traits< Iter >::iterator_category iterator_category;
     typedef typename ft::iterator_traits< Iter >::value_type        value_type;
@@ -16,17 +16,14 @@ class reverse_iterator {
     typedef typename ft::iterator_traits< Iter >::pointer           pointer;
     typedef typename ft::iterator_traits< Iter >::reference         reference;
 
-    reverse_iterator() : it_() {
-    }
+    reverse_iterator()
+        : it_() {}
 
-    ~reverse_iterator() {
-    }
+    ~reverse_iterator() {}
 
-    reverse_iterator& operator=(const reverse_iterator< Iter >& other) {
-        return *this;
-    }
+    reverse_iterator& operator=(const reverse_iterator< Iter >& other) { return *this; }
 
-  protected:
+protected:
     iterator_type it_;
 };
 
