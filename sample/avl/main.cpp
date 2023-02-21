@@ -12,27 +12,31 @@ void printAndCheck(AVLTree& tree) {
     print(tree);
 }
 
-void test() {
-    {
-        AVLTree tree;
-        long    data[] = {0, 1, 2};
-        for (int i = 0; i < sizeof(data) / sizeof(data[0]); i++) {
-            tree.insert(data[i]);
-        }
-    }
-}
-
 int main() {
-    // test();
     AVLTree tree;
+
     struct {
         string op;
         long   val;
     } cases[] = {
-        {"insert", 10}, {"insert", 1},  {"insert", 2},  {"insert", 0},
-        {"insert", 15}, {"insert", 12}, {"insert", 11}, {"insert", 13},
-        {"insert", 20}, {"insert", 18}, {"erase", 15},
+        {"insert", 10},
+        {"insert", 1},
+        {"insert", 2},
+        {"insert", 0},
+        {"insert", 15},
+        {"insert", 12},
+        {"insert", 11},
+        {"insert", 13},
+        {"insert", 20},
+        {"insert", 18},
+        {"erase", 15},
+        {"erase", 13},
+        {"erase", 12},
+        {"erase", 10},
+        // {"erase", 11},
+        // {"erase", 1},
     };
+
     for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
         if (cases[i].op == "insert")
             tree.insert(cases[i].val);
