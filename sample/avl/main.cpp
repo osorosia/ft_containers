@@ -42,6 +42,8 @@ int main() {
         cout << "# " << cases[i].op << ": " << cases[i].val << endl;
         print(tree);
     }
+    tree.clear();
+
     // cout << "# " << "finish" << endl;
     // print(tree);
 
