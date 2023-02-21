@@ -92,6 +92,7 @@ struct AVLTree {
                 }
                 delete node;
             } else if (node->left_ == NULL) {
+                assert(node->right_ != NULL);
                 // a right child
                 if (node->parent_) {
                     if (node->parent_->left_ == node) {
@@ -105,6 +106,7 @@ struct AVLTree {
                 }
                 delete node;
             } else if (node->right_ == NULL) {
+                assert(node->left_ != NULL);
                 // a left child
                 if (node->parent_) {
                     if (node->parent_->left_ == node) {
