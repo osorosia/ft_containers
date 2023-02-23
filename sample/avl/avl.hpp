@@ -33,6 +33,31 @@ struct Node {
             return this;
         return right_->findMax();
     }
+    void debug(string name) {
+        cout << name << ": " << val_ << "  " << endl;
+
+        cout << name << "->left: ";
+        if (left_)
+            cout << left_->val_;
+        else
+            cout << "NULL";
+        cout << "  " << endl;
+
+        cout << name << "->right: ";
+        if (right_)
+            cout << right_->val_;
+        else
+            cout << "NULL";
+        cout << "  " << endl;
+
+        cout << name << "->parent: ";
+        if (parent_)
+            cout << parent_->val_;
+        else
+            cout << "NULL";
+        cout << "  " << endl;
+        cout << "  " << endl;
+    }
 };
 
 struct AVLTree {
