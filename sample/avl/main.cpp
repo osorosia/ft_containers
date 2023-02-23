@@ -33,7 +33,7 @@ int main() {
         {"erase", 13},
         {"erase", 12},
         {"erase", 10},
-        // {"erase", 11},
+        {"erase", 11},
         // {"erase", 1},
     };
 
@@ -48,8 +48,7 @@ int main() {
     }
     tree.clear();
 
-    // cout << "# " << "finish" << endl;
-    // print(tree);
+    cout << "# " << "finish" << endl;
 
     // printAndCheck(tree);
 
@@ -57,5 +56,4 @@ int main() {
     // printAndCheck(tree);
 
     // OK(checkAVL(tree));
-    // tree.erase(1);
 }

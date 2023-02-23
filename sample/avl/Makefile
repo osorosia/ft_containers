@@ -1,7 +1,7 @@
 run: a.out
 	./a.out > tmp.md
 
-deb: a.out
+debug deb: a.out
 	valgrind ./a.out > tmp.md
 
 a.out: *.cpp *.hpp
