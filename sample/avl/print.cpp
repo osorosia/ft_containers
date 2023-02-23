@@ -2,19 +2,35 @@
 #include <iostream>
 using namespace std;
 
-void print_node(Node* node, string name) {
-    assert(!node->left_ || node == node->left_->parent_);
-    assert(!node->right_ || node == node->right_->parent_);
+void print_node(AVLTree& tree, Node* node, string name) {
+    // node check
+    assert(node->left_ == NULL || node == node->left_->parent_);
+    assert(node->right_ == NULL || node == node->right_->parent_);
+    if (node != tree.root_) {
+        assert(node->parent_);
+        assert(node->parent_->left_ == node || node->parent_->right_ == node);
+    } else {
+        assert(node->parent_ == NULL);
+    }
 
+    // left
+    if (!node->left_ && node->right_)
+        cout << name << "-->" << name + "A"
+             << "((.))" << endl;
     if (node->left_) {
         cout << name << "-->" << name + "A"
              << "((" << node->left_->val_ << "))" << endl;
-        print_node(node->left_, name + "A");
+        print_node(tree, node->left_, name + "A");
     }
+
+    // right
+    if (node->left_ && !node->right_)
+        cout << name << "-->" << name + "B"
+             << "((.))" << endl;
     if (node->right_) {
         cout << name << "-->" << name + "B"
              << "((" << node->right_->val_ << "))" << endl;
-        print_node(node->right_, name + "B");
+        print_node(tree, node->right_, name + "B");
     }
 }
 
@@ -24,7 +40,7 @@ void print(AVLTree& tree) {
 
     if (tree.root_) {
         cout << "O((" << tree.root_->val_ << "))" << endl;
-        print_node(tree.root_, "O");
+        print_node(tree, tree.root_, "O");
     }
 
     cout << "```" << endl;
