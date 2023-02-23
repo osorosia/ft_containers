@@ -34,7 +34,7 @@ int main() {
         {"erase", 12},
         {"erase", 10},
         {"erase", 11},
-        // {"erase", 1},
+        {"erase", 1},
     };
 
     for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
@@ -48,7 +48,7 @@ int main() {
     }
     tree.clear();
 
-    cout << "# " << "finish" << endl;
+    cout << "# finish" << endl;
 
     // printAndCheck(tree);
 

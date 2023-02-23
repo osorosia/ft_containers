@@ -158,8 +158,10 @@ struct AVLTree {
                 tmp->right_  = node->right_;
                 tmp->parent_ = node->parent_;
 
-                tmp->left_->parent_  = tmp;
-                tmp->right_->parent_ = tmp;
+                if (tmp->left_)
+                    tmp->left_->parent_ = tmp;
+                if (tmp->right_)
+                    tmp->right_->parent_ = tmp;
                 if (node->parent_) {
                     if (node->parent_->left_ == node) {
                         node->parent_->left_ = tmp;
