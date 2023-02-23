@@ -141,7 +141,7 @@ struct AVLTree {
                     }
                     node->left_->parent_ = node->parent_;
                 } else {
-                    root_ = node->left_;
+                    root_                = node->left_;
                     node->left_->parent_ = NULL;
                 }
                 delete node;
@@ -149,9 +149,9 @@ struct AVLTree {
                 // both children
                 Node* tmp = node->right_->findMin();
                 if (tmp->parent_->left_ == tmp) {
-                    tmp->parent_->left_ = NULL;
+                    tmp->parent_->left_ = tmp->right_;
                 } else {
-                    tmp->parent_->right_ = NULL;
+                    tmp->parent_->right_ = tmp->right_;
                 }
 
                 tmp->left_   = node->left_;
@@ -173,11 +173,9 @@ struct AVLTree {
             }
         }
     }
-    
-    void clear() {
-        clearNode(root_);
-    }
-    void clearNode(Node *node) {
+
+    void clear() { clearNode(root_); }
+    void clearNode(Node* node) {
         if (node == NULL)
             return;
         if (node->left_)
