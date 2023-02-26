@@ -204,10 +204,10 @@ struct AVLTree {
     }
 
     void calcHeight(Node* node) {
-        node->height_ = max(node->left_ ? node->left_->height_ : 0L,
-                            node->right_ ? node->right_->height_ : 0L)
-                        + 1;
+        node->height_ = max(getHeight(node->left_), getHeight(node->right_)) + 1;
     }
+
+    long getHeight(Node* node) { return node ? node->height_ : 0; }
 
     void rebalance(Node* node) {
         if (node == NULL)
@@ -248,7 +248,7 @@ struct AVLTree {
         putNodeToRight(x, y->left_);
         replaceNode(x, y);
         putNodeToLeft(y, x);
-    
+
         calcHeightToRoot(x);
     }
     void rotateRight(Node* node) {
@@ -258,7 +258,7 @@ struct AVLTree {
         putNodeToLeft(y, x->right_);
         replaceNode(y, x);
         putNodeToRight(x, y);
-    
+
         calcHeightToRoot(y);
     }
 

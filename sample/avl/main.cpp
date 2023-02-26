@@ -1,10 +1,12 @@
 #include "avl.hpp"
 #include "config.hpp"
 #include <iostream>
+#include <random>
+
 using namespace std;
 
 void print(AVLTree& tree);
-bool checkAVL(AVLTree& tree);
+void check(AVLTree& tree);
 
 void NG(bool b) {
     if (b)
@@ -16,6 +18,24 @@ void NG(bool b) {
     cout << "██  ██ ██ ██    ██" << endl;
     cout << "██   ████  ██████ " << endl;
     cout << "```" << endl;
+}
+
+void test() {
+    mt19937 mt((int)time(0));
+    AVLTree tree;
+
+    for (int i = 0; i < 10; i++) {
+        // insert
+        for (int j = 0; j < 20; j++) {
+            tree.insert(mt() % 20 + 1);
+            check(tree);
+        }
+        // erase
+        for (int j = 0; j < 10; j++) {
+            tree.erase(mt() % 20 + 1);
+            check(tree);
+        }
+    }
 }
 
 int main() {
@@ -40,13 +60,11 @@ int main() {
 
         cout << "# " << cases[i].op << ": " << cases[i].val << endl;
         tree.print();
-
-        NG(checkAVL(tree));
-        if (CHECK_AVL) {
-            assert(checkAVL(tree));
-        }
+        check(tree);
     }
     tree.clear();
 
     cout << "# finish" << endl;
+
+    test();
 }
