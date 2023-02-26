@@ -121,47 +121,31 @@ struct AVLTree {
             if (node->left_ == NULL && node->right_ == NULL) {
                 // none
                 replaceNode(node, NULL);
+
                 calcHeightToRoot(node->parent_);
                 delete node;
             } else if (node->left_ == NULL) {
                 // a right child
                 assert(node->right_ != NULL);
+
                 replaceNode(node, node->right_);
                 calcHeightToRoot(node->parent_);
                 delete node;
             } else if (node->right_ == NULL) {
                 // a left child
                 assert(node->left_ != NULL);
+
                 replaceNode(node, node->left_);
                 calcHeightToRoot(node->parent_);
                 delete node;
             } else {
                 // both children
                 Node* tmp = node->right_->findMin();
-                if (tmp->parent_->left_ == tmp) {
-                    tmp->parent_->left_ = tmp->right_;
-                } else {
-                    tmp->parent_->right_ = tmp->right_;
-                }
+                replaceNode(tmp, tmp->right_);
+                calcHeightToRoot(tmp->parent_);
 
-                tmp->left_   = node->left_;
-                tmp->right_  = node->right_;
-                tmp->parent_ = node->parent_;
-
-                if (tmp->left_)
-                    tmp->left_->parent_ = tmp;
-                if (tmp->right_)
-                    tmp->right_->parent_ = tmp;
-                if (node->parent_) {
-                    if (node->parent_->left_ == node) {
-                        node->parent_->left_ = tmp;
-                    } else {
-                        node->parent_->right_ = tmp;
-                    }
-                } else {
-                    root_ = tmp;
-                }
-                delete node;
+                swapVal(node, tmp);
+                delete tmp;
             }
         }
     }
@@ -178,6 +162,8 @@ struct AVLTree {
     }
 
     void replaceNode(Node* node, Node* next) {
+        assert(node->left_ == NULL || node->right_ == NULL);
+
         if (node->parent_ == NULL) {
             assert(node == root_);
             root_ = next;

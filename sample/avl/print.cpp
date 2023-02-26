@@ -46,17 +46,15 @@ void print_tree(AVLTree& tree, Node* node, string name) {
 
     // check height
     if (CHECK_HEIGHT) {
-        if (node->parent_) {
-            assert(node->height_ == node->parent_->height_ - 1);
-        }
-        if (node->left_) {
-            assert(node->height_ == node->left_->height_ + 1);
-        }
-        if (node->right_) {
-            assert(node->height_ == node->right_->height_ + 1);
-        }
         if (node->left_ == NULL && node->right_ == NULL) {
             assert(node->height_ == 1);
+        } else if (node->left_ == NULL) {
+            assert(node->height_ == node->right_->height_ + 1);
+        } else if (node->right_ == NULL) {
+            assert(node->height_ == node->left_->height_ + 1);
+        } else {
+            long childMaxHeight = max(node->left_->height_, node->right_->height_);
+            assert(node->height_ == childMaxHeight + 1);
         }
     }
 

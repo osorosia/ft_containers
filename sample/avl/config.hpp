@@ -1,7 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#define PRINT_HEIGHT true
-#define CHECK_HEIGHT false
+#define PRINT_HEIGHT false
+#define CHECK_HEIGHT true
 
 #endif /* CONFIG_HPP */
