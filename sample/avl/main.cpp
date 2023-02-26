@@ -5,11 +5,16 @@ using namespace std;
 void print(AVLTree& tree);
 bool checkAVL(AVLTree& tree);
 
-void OK(bool b) { cout << "# " << (b ? "OK" : "NG!!!!!") << endl; }
-
-void printAndCheck(AVLTree& tree) {
-    OK(checkAVL(tree));
-    print(tree);
+void NG(bool b) {
+    if (b)
+        return;
+    cout << "```" << endl;
+    cout << "███    ██  ██████ " << endl;
+    cout << "████   ██ ██      " << endl;
+    cout << "██ ██  ██ ██   ███" << endl;
+    cout << "██  ██ ██ ██    ██" << endl;
+    cout << "██   ████  ██████ " << endl;
+    cout << "```" << endl;
 }
 
 int main() {
@@ -19,26 +24,10 @@ int main() {
         string op;
         long   val;
     } cases[] = {
-        {"insert", 10},
-        {"insert", 1},
-        {"insert", 2},
-        {"insert", 0},
-        {"insert", 15},
-        {"insert", 12},
-        {"insert", 11},
-        {"insert", 13},
-        {"insert", 20},
-        {"insert", 18},
-        {"erase", 15},
-        {"erase", 13},
-        {"erase", 12},
-        {"erase", 10},
-        {"erase", 11},
-        {"erase", 1},
-        {"erase", 21},
-        {"erase", 20},
-        {"erase", 18},
-        {"erase", 0},
+        {"insert", 10}, {"insert", 1},  {"insert", 2},  {"insert", 0},  {"insert", 15},
+        {"insert", 12}, {"insert", 11}, {"insert", 13}, {"insert", 20}, {"insert", 18},
+        {"erase", 15},  {"erase", 13},  {"erase", 12},  {"erase", 10},  {"erase", 11},
+        {"erase", 1},   {"erase", 21},  {"erase", 20},  {"erase", 18},  {"erase", 0},
         {"erase", 2},
     };
 
@@ -50,15 +39,11 @@ int main() {
 
         cout << "# " << cases[i].op << ": " << cases[i].val << endl;
         print(tree);
+        NG(checkAVL(tree));
+        if (CHECK_AVL) {
+        }
     }
     tree.clear();
 
     cout << "# finish" << endl;
-
-    // printAndCheck(tree);
-
-    // tree.erase(15);
-    // printAndCheck(tree);
-
-    // OK(checkAVL(tree));
 }
