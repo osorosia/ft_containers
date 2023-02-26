@@ -178,7 +178,8 @@ struct AVLTree {
         if (node->parent_ == NULL) {
             assert(node == root_);
             root_ = next;
-            next->parent_ = NULL;
+            if (next)
+                next->parent_ = NULL;
             return;
         }
 

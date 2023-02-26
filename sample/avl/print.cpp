@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-#define PRINT_HEIGHT true
+#define PRINT_HEIGHT false
 #define CHECK_HEIGHT false
 
 void print_node_null(string prev_name, string name) {
@@ -79,11 +79,9 @@ void print(AVLTree& tree) {
     cout << "```mermaid" << endl;
     cout << "graph TB" << endl;
 
-    if (tree.root_) {
-        string name = "O";
-        print_node_init(tree.root_, name);
-        print_tree(tree, tree.root_, name);
-    }
+    string name = "O";
+    print_node_init(tree.root_, name);
+    print_tree(tree, tree.root_, name);
 
     cout << "```" << endl;
 }
