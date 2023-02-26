@@ -1,4 +1,5 @@
 #include "avl.hpp"
+#include "config.hpp"
 #include <iostream>
 using namespace std;
 
