@@ -1,16 +1,17 @@
 #include "avl.hpp"
+#include "config.hpp"
 #include <algorithm>
 #include <cmath>
 using namespace std;
 
-long calcDepth(Node* node) {
+long calcAndCheckHeight(Node* node) {
     if (node == NULL)
         return 0;
     assert(!node->left_ || node == node->left_->parent_);
     assert(!node->right_ || node == node->right_->parent_);
 
-    long left  = calcDepth(node->left_);
-    long right = calcDepth(node->right_);
+    long left  = calcAndCheckHeight(node->left_);
+    long right = calcAndCheckHeight(node->right_);
     if (left < 0 || right < 0)
         return -1;
 
@@ -20,4 +21,4 @@ long calcDepth(Node* node) {
     return max(left, right) + 1;
 }
 
-bool checkAVL(AVLTree& tree) { return calcDepth(tree.root_) >= 0; }
+bool checkAVL(AVLTree& tree) { return calcAndCheckHeight(tree.root_) >= 0; }

@@ -1,6 +1,7 @@
 #ifndef AVL_HPP
 #define AVL_HPP
 
+#include "config.hpp"
 #include <cassert>
 #include <cstddef>
 #include <iostream>
@@ -43,9 +44,7 @@ struct Node {
         return this == parent_->right_;
     }
 
-    bool hasParent() {
-        return parent_ != NULL;
-    }
+    bool hasParent() { return parent_ != NULL; }
 
     void debug(string name) {
         cout << name << ": " << val_ << "  " << endl;
@@ -82,7 +81,7 @@ struct AVLTree {
 
     void insert(long val) {
         if (root_ == NULL) {
-            root_ = new Node(val);
+            root_ = new Node(val, 1);
         } else {
             insertNode(root_, val);
         }
@@ -93,17 +92,18 @@ struct AVLTree {
             if (node->left_) {
                 insertNode(node->left_, val);
             } else {
-                node->left_          = new Node(val);
+                node->left_          = new Node(val, 1);
                 node->left_->parent_ = node;
             }
         } else if (node->val_ < val) {
             if (node->right_) {
                 insertNode(node->right_, val);
             } else {
-                node->right_          = new Node(val);
+                node->right_          = new Node(val, 1);
                 node->right_->parent_ = node;
             }
         }
+        calcHeight(node);
     }
 
     void erase(long val) { eraseNode(root_, val); }
@@ -121,16 +121,19 @@ struct AVLTree {
             if (node->left_ == NULL && node->right_ == NULL) {
                 // none
                 replaceNode(node, NULL);
+                calcHeightToRoot(node->parent_);
                 delete node;
             } else if (node->left_ == NULL) {
                 // a right child
                 assert(node->right_ != NULL);
                 replaceNode(node, node->right_);
+                calcHeightToRoot(node->parent_);
                 delete node;
             } else if (node->right_ == NULL) {
                 // a left child
                 assert(node->left_ != NULL);
                 replaceNode(node, node->left_);
+                calcHeightToRoot(node->parent_);
                 delete node;
             } else {
                 // both children
@@ -193,13 +196,32 @@ struct AVLTree {
         }
     }
 
-    void swapVal(Node *n0, Node *n1) {
+    void swapVal(Node* n0, Node* n1) {
         assert(n0 != NULL);
         assert(n1 != NULL);
 
         long tmp = n0->val_;
         n0->val_ = n1->val_;
         n1->val_ = tmp;
+    }
+
+    void calcHeightToRoot(Node* node) {
+        if (node == NULL)
+            return;
+        calcHeight(node);
+        calcHeightToRoot(node->parent_);
+    }
+
+    void calcHeight(Node* node) {
+        if (node->left_ == NULL && node->right_ == NULL) {
+            node->height_ = 1;
+        } else if (node->left_ == NULL) {
+            node->height_ = node->right_->height_ + 1;
+        } else if (node->right_ == NULL) {
+            node->height_ = node->left_->height_ + 1;
+        } else {
+            node->height_ = max(node->left_->height_, node->right_->height_) + 1;
+        }
     }
 };
 

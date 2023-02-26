@@ -1,9 +1,7 @@
 #include "avl.hpp"
+#include "config.hpp"
 #include <iostream>
 using namespace std;
-
-#define PRINT_HEIGHT false
-#define CHECK_HEIGHT false
 
 void print_node_null(string prev_name, string name) {
     cout << prev_name << "-->" << name << "((.))" << endl;
