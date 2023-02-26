@@ -38,9 +38,11 @@ int main() {
             tree.erase(cases[i].val);
 
         cout << "# " << cases[i].op << ": " << cases[i].val << endl;
-        print(tree);
+        tree.print();
+
         NG(checkAVL(tree));
         if (CHECK_AVL) {
+            assert(checkAVL(tree));
         }
     }
     tree.clear();
