@@ -199,8 +199,8 @@ struct AVLTree {
 
     void calcHeight(Node* node) {
         node->height_ = max(node->left_ ? node->left_->height_ : 0L,
-                            node->right_ ? node->right_->height_ : 0L) +
-                        1;
+                            node->right_ ? node->right_->height_ : 0L)
+                        + 1;
     }
 };
 

@@ -73,3 +73,6 @@ BinPackParameters: false
 
 # コンストラクタの初期化のカンマの位置
 BreakConstructorInitializersBeforeComma: true
+
+# 算術演算子の前に改行
+BreakBeforeBinaryOperators: true
