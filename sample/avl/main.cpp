@@ -35,6 +35,11 @@ int main() {
         {"erase", 10},
         {"erase", 11},
         {"erase", 1},
+        {"erase", 21},
+        {"erase", 20},
+        {"erase", 18},
+        {"erase", 0},
+        // {"erase", 2},
     };
 
     for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {

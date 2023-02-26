@@ -10,17 +10,14 @@ struct Node {
     Node* left_;
     Node* right_;
     Node* parent_;
+    long  height_;
     long  val_;
 
-    Node()
+    Node(long val = 0, long height = 0)
         : left_(NULL)
         , right_(NULL)
         , parent_(NULL)
-        , val_(0) {}
-    Node(long val)
-        : left_(NULL)
-        , right_(NULL)
-        , parent_(NULL)
+        , height_(height)
         , val_(val) {}
 
     Node* findMin() {
@@ -33,6 +30,23 @@ struct Node {
             return this;
         return right_->findMax();
     }
+
+    bool isLeft() {
+        if (parent_ == NULL)
+            return false;
+        return this == parent_->left_;
+    }
+
+    bool isRight() {
+        if (parent_ == NULL)
+            return false;
+        return this == parent_->right_;
+    }
+
+    bool hasParent() {
+        return parent_ != NULL;
+    }
+
     void debug(string name) {
         cout << name << ": " << val_ << "  " << endl;
 
@@ -106,44 +120,17 @@ struct AVLTree {
         } else if (node->val_ == val) {
             if (node->left_ == NULL && node->right_ == NULL) {
                 // none
-                if (node->parent_) {
-                    if (node->parent_->left_ == node) {
-                        node->parent_->left_ = NULL;
-                    } else {
-                        node->parent_->right_ = NULL;
-                    }
-                } else {
-                    root_ = NULL;
-                }
+                replaceNode(node, NULL);
                 delete node;
             } else if (node->left_ == NULL) {
                 // a right child
                 assert(node->right_ != NULL);
-                if (node->parent_) {
-                    if (node->parent_->left_ == node) {
-                        node->parent_->left_ = node->right_;
-                    } else {
-                        node->parent_->right_ = node->right_;
-                    }
-                    node->right_->parent_ = node->parent_;
-                } else {
-                    root_ = node->right_;
-                }
+                replaceNode(node, node->right_);
                 delete node;
             } else if (node->right_ == NULL) {
                 // a left child
                 assert(node->left_ != NULL);
-                if (node->parent_) {
-                    if (node->parent_->left_ == node) {
-                        node->parent_->left_ = node->left_;
-                    } else {
-                        node->parent_->right_ = node->left_;
-                    }
-                    node->left_->parent_ = node->parent_;
-                } else {
-                    root_                = node->left_;
-                    node->left_->parent_ = NULL;
-                }
+                replaceNode(node, node->left_);
                 delete node;
             } else {
                 // both children
@@ -185,6 +172,33 @@ struct AVLTree {
         if (node->right_)
             clearNode(node->right_);
         delete node;
+    }
+
+    void replaceNode(Node* node, Node* next) {
+        if (node->parent_ == NULL) {
+            assert(node == root_);
+            root_ = next;
+            next->parent_ = NULL;
+            return;
+        }
+
+        if (node->parent_->left_ == node) {
+            node->parent_->left_ = next;
+        } else {
+            node->parent_->right_ = next;
+        }
+        if (next) {
+            next->parent_ = node->parent_;
+        }
+    }
+
+    void swapVal(Node *n0, Node *n1) {
+        assert(n0 != NULL);
+        assert(n1 != NULL);
+
+        long tmp = n0->val_;
+        n0->val_ = n1->val_;
+        n1->val_ = tmp;
     }
 };
 
