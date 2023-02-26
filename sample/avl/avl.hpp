@@ -121,7 +121,6 @@ struct AVLTree {
             if (node->left_ == NULL && node->right_ == NULL) {
                 // none
                 replaceNode(node, NULL);
-
                 calcHeightToRoot(node->parent_);
                 delete node;
             } else if (node->left_ == NULL) {
@@ -199,15 +198,9 @@ struct AVLTree {
     }
 
     void calcHeight(Node* node) {
-        if (node->left_ == NULL && node->right_ == NULL) {
-            node->height_ = 1;
-        } else if (node->left_ == NULL) {
-            node->height_ = node->right_->height_ + 1;
-        } else if (node->right_ == NULL) {
-            node->height_ = node->left_->height_ + 1;
-        } else {
-            node->height_ = max(node->left_->height_, node->right_->height_) + 1;
-        }
+        node->height_ = max(node->left_ ? node->left_->height_ : 0L,
+                            node->right_ ? node->right_->height_ : 0L) +
+                        1;
     }
 };
 
