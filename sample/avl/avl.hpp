@@ -3,6 +3,7 @@
 
 #include "config.hpp"
 #include <cassert>
+#include <cmath>
 #include <cstddef>
 #include <iostream>
 using namespace std;
@@ -94,6 +95,8 @@ struct AVLTree {
             } else {
                 node->left_          = new Node(val, 1);
                 node->left_->parent_ = node;
+                calcHeightToRoot(node);
+                rebalance(node);
             }
         } else if (node->val_ < val) {
             if (node->right_) {
@@ -101,9 +104,10 @@ struct AVLTree {
             } else {
                 node->right_          = new Node(val, 1);
                 node->right_->parent_ = node;
+                calcHeightToRoot(node);
+                rebalance(node);
             }
         }
-        calcHeight(node);
     }
 
     void erase(long val) { eraseNode(root_, val); }
@@ -122,6 +126,7 @@ struct AVLTree {
                 // none
                 replaceNode(node, NULL);
                 calcHeightToRoot(node->parent_);
+                rebalance(node->parent_);
                 delete node;
             } else if (node->left_ == NULL) {
                 // a right child
@@ -129,6 +134,7 @@ struct AVLTree {
 
                 replaceNode(node, node->right_);
                 calcHeightToRoot(node->parent_);
+                rebalance(node->parent_);
                 delete node;
             } else if (node->right_ == NULL) {
                 // a left child
@@ -136,12 +142,14 @@ struct AVLTree {
 
                 replaceNode(node, node->left_);
                 calcHeightToRoot(node->parent_);
+                rebalance(node->parent_);
                 delete node;
             } else {
                 // both children
                 Node* tmp = node->right_->findMin();
                 replaceNode(tmp, tmp->right_);
                 calcHeightToRoot(tmp->parent_);
+                rebalance(tmp->parent_);
 
                 swapVal(node, tmp);
                 delete tmp;
@@ -161,8 +169,6 @@ struct AVLTree {
     }
 
     void replaceNode(Node* node, Node* next) {
-        assert(node->left_ == NULL || node->right_ == NULL);
-
         if (node->parent_ == NULL) {
             assert(node == root_);
             root_ = next;
@@ -201,6 +207,73 @@ struct AVLTree {
         node->height_ = max(node->left_ ? node->left_->height_ : 0L,
                             node->right_ ? node->right_->height_ : 0L)
                         + 1;
+    }
+
+    void rebalance(Node* node) {
+        if (node == NULL)
+            return;
+
+        rotate(node);
+        rebalance(node->parent_);
+    }
+
+    long get_balance(Node* node) {
+        return (node->left_ ? node->left_->height_ : 0)
+               - (node->right_ ? node->right_->height_ : 0);
+    }
+
+    void rotate(Node* node) {
+        assert(node != NULL);
+        long balance = get_balance(node);
+
+        if (-1 <= balance && balance <= 1)
+            return;
+
+        if (balance > 1) {
+            if (get_balance(node->left_) < 0) {
+                rotateLeft(node->left_);
+            }
+            rotateRight(node);
+        } else {
+            if (get_balance(node->right_) > 0) {
+                rotateRight(node->right_);
+            }
+            rotateLeft(node);
+        }
+    }
+    void rotateLeft(Node* node) {
+        assert(get_balance(node) < 0);
+        Node* x = node;
+        Node* y = node->right_;
+        putNodeToRight(x, y->left_);
+        replaceNode(x, y);
+        putNodeToLeft(y, x);
+    
+        calcHeightToRoot(x);
+    }
+    void rotateRight(Node* node) {
+        assert(get_balance(node) > 0);
+        Node* x = node->left_;
+        Node* y = node;
+        putNodeToLeft(y, x->right_);
+        replaceNode(y, x);
+        putNodeToRight(x, y);
+    
+        calcHeightToRoot(y);
+    }
+
+    void putNodeToLeft(Node* node, Node* child) {
+        assert(node);
+        node->left_ = child;
+        if (child)
+            child->parent_ = node;
+    }
+
+    void putNodeToRight(Node* node, Node* child) {
+        assert(node);
+        node->right_ = child;
+        if (child)
+            child->parent_ = node;
     }
 
     void print() {
