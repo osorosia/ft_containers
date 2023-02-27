@@ -31,13 +31,13 @@
 #define BOLD_UNDERLINE "\033[1;4m"
 
 #define TEST_NAME(name)                                                                            \
-    { std::cout << YELLOW << "[" << name << "] " << END; }
+    { std::cerr << YELLOW << "[" << name << "] " << END; }
 
 #define TODO()                                                                                     \
-    { std::cout << CYAN << "TODO " << END; }
+    { std::cerr << CYAN << "TODO " << END; }
 
 #define OK()                                                                                       \
-    { std::cout << GREEN << "OK" << END << std::endl; }
+    { std::cerr << GREEN << "OK" << END << std::endl; }
 
 void vector_test();
 void map_test();

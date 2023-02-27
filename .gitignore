@@ -7,3 +7,5 @@ tmp*
 *tmp
 .vscode
 go
+*.log
+log.*

@@ -9,10 +9,12 @@
 
 #include "../utils/pair.hpp"
 
+// check
 #define CHECK        true
-#define CHECK_HEIGHT true
-#define CHECK_AVL    true
-#define PRINT_HEIGHT true
+#define CHECK_HEIGHT false
+#define CHECK_AVL    false
+// print
+#define PRINT_HEIGHT false
 
 namespace ft {
 
@@ -86,6 +88,8 @@ public:
 
     tree_iterator(node_type* node)
         : node_(node) {}
+
+    value_type& operator*() const { return node_->value_; }
 };
 
 template < class Key,
@@ -151,7 +155,7 @@ public:
 
         if (node->value_ == value) {
             return std::pair< iterator, bool >(iterator(node), false);
-        } else if (node->value_ < value) {
+        } else if (value < node->value_) {
             if (node->left_) {
                 return insert_node(node->left_, value);
             } else {
@@ -192,7 +196,6 @@ public:
     void check() {
         if (!CHECK)
             return;
-
         if (CHECK_HEIGHT)
             check_height(root_);
         if (CHECK_AVL)
@@ -254,7 +257,9 @@ public:
         check_avl(node->right_);
     }
 
-    void print() {
+    void print(std::string title = "") {
+        if (title != "")
+            std::cout << "# " << title << std::endl;
         std::cout << "```mermaid" << std::endl;
         std::cout << "graph TB" << std::endl;
 
@@ -283,7 +288,7 @@ public:
     void print_node(node_type* node, std::string prev_name, std::string name) {
         if (node == NULL)
             return;
-        std::cout << prev_name << "-->" << name << "((" << node->val_;
+        std::cout << prev_name << "-->" << name << "((" << node->value_.first;
         if (PRINT_HEIGHT)
             std::cout << ", " << node->height_;
         std::cout << "))" << std::endl;
@@ -292,7 +297,7 @@ public:
         std::cout << name << "((";
 
         if (node) {
-            std::cout << node->val_;
+            std::cout << node->value_.first;
             if (PRINT_HEIGHT)
                 std::cout << ", " << node->height_;
         } else {
