@@ -125,22 +125,21 @@ struct AVLTree {
             if (node->left_ == NULL && node->right_ == NULL) {
                 // none
                 replaceNode(node, NULL);
+
                 calcHeightToRoot(node->parent_);
                 rebalance(node->parent_);
                 delete node;
             } else if (node->left_ == NULL) {
                 // a right child
-                assert(node->right_ != NULL);
-
                 replaceNode(node, node->right_);
+
                 calcHeightToRoot(node->parent_);
                 rebalance(node->parent_);
                 delete node;
             } else if (node->right_ == NULL) {
                 // a left child
-                assert(node->left_ != NULL);
-
                 replaceNode(node, node->left_);
+
                 calcHeightToRoot(node->parent_);
                 rebalance(node->parent_);
                 delete node;
@@ -148,10 +147,10 @@ struct AVLTree {
                 // both children
                 Node* tmp = node->right_->findMin();
                 replaceNode(tmp, tmp->right_);
+                swapVal(node, tmp);
+
                 calcHeightToRoot(tmp->parent_);
                 rebalance(tmp->parent_);
-
-                swapVal(node, tmp);
                 delete tmp;
             }
         }
