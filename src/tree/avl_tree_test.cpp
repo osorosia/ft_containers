@@ -21,7 +21,7 @@ void avl_normal_test() {
             value_type val = value_type(cases[i].val, i);
             tree.insert(val);
         } else if (cases[i].op == "erase") {
-            continue;
+            tree.erase(cases[i].val);
         }
         std::cout << "# " << cases[i].op << " " << cases[i].val << std::endl;
         tree.print();

@@ -54,27 +54,10 @@ struct Node {
         if (left_)
             return left_->find_max();
     }
-    node_type* find_min() {
-        if (left_)
-            return left_->find_min();
-        return this;
-    }
-    node_type* find_max() {
-        if (right_)
-            return right_->find_max();
-        return this;
-    }
-
-    bool is_left() {
-        if (parent_ == NULL)
-            return false;
-        return this == parent_->left_;
-    }
-    bool is_right() {
-        if (parent_ == NULL)
-            return false;
-        return this == parent_->right_;
-    }
+    node_type* find_min() { return left_ ? left_->find_min() : this; }
+    node_type* find_max() { return right_ ? right_->find_max() : this; }
+    bool       is_left() { return this == parent_->left_; }
+    bool       is_right() { return this == parent_->right_; }
 };
 
 template < class T >
@@ -120,6 +103,11 @@ public:
         , end_(NULL)
         , node_alloc_(node_allocator_type()) {}
 
+    ~AVLTree() {
+        deallocate_tree(root_);
+        deallocate_node(end_);
+    }
+
     iterator begin() {
         node_type* node = find_min_node();
         if (node)
@@ -130,6 +118,21 @@ public:
         node_type* node = node_alloc_.allocate(1);
         node_alloc_.construct(node, value);
         return node;
+    }
+
+    void deallocate_node(node_type* node) {
+        if (node == NULL)
+            return;
+        node_alloc_.destroy(node);
+        node_alloc_.deallocate(node, 1);
+    }
+
+    void deallocate_tree(node_type* node) {
+        if (node == NULL)
+            return;
+        deallocate_tree(node->left_);
+        deallocate_tree(node->right_);
+        deallocate_node(node);
     }
 
     std::pair< iterator, bool > insert(const value_type& value) {
@@ -172,6 +175,91 @@ public:
             }
         }
     }
+
+    iterator erase(iterator pos) {
+        // TODO:
+    }
+    iterator erase(iterator first, iterator last) {
+        // TODO:
+    }
+    size_type erase(const Key& key) { return erase_node(root_, key); }
+
+    size_type erase_node(node_type* node, const Key& key) {
+        if (node == NULL)
+            return 0;
+
+        if (get_key(node) > key) {
+            return erase_node(node->left_, key);
+        } else if (get_key(node) < key) {
+            return erase_node(node->right_, key);
+        } else {
+            if (node->left_ == NULL && node->right_ == NULL) {
+                // none
+                replace_parent(node, NULL);
+            } else if (node->left_ == NULL) {
+                // a right child
+                replace_parent(node, node->right_);
+            } else if (node->right_ == NULL) {
+                // a left child
+                replace_parent(node, node->left_);
+            } else {
+                // both children
+                node_type* tmp = node->right_->find_min();
+                replace_parent(tmp, tmp->right_);
+                replace_node(node, tmp);
+            }
+            deallocate_node(node);
+            return 1;
+        }
+    }
+
+    void replace_node(node_type* node, node_type* next) {
+        // parent
+        next->parent_ = node->parent_;
+        if (root_ == node) {
+            root_         = next;
+            next->parent_ = end_;
+        } else {
+            if (node->is_left()) {
+                next->parent_->left_ = next;
+            } else {
+                next->parent_->right_ = next;
+            }
+        }
+        // left
+        next->left_ = node->left_;
+        if (next->left_) {
+            next->left_->parent_ = next;
+        }
+        // right
+        next->right_ = node->right_;
+        if (next->right_) {
+            next->right_->parent_ = next;
+        }
+        // height
+        next->height_ = node->height_;
+    }
+
+    void replace_parent(node_type* node, node_type* next) {
+        if (node == root_) {
+            root_ = next;
+            // TODO:
+            if (next)
+                next->parent_ = end_;
+            return;
+        }
+
+        if (node->is_left()) {
+            node->parent_->left_ = next;
+        } else {
+            node->parent_->right_ = next;
+        }
+        if (next) {
+            next->parent_ = node->parent_;
+        }
+    }
+
+    key_type get_key(node_type* node) { return node->value_.first; }
 
     iterator find(const Key& key) { node_type* node = find_node(key); }
 
