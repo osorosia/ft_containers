@@ -12,4 +12,7 @@ int main() {
     iterator_traits_test();
     lexicographical_compare_test();
     reverse_iterator_test();
+
+    // tree
+    avl_tree_test();
 }

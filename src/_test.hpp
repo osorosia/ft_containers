@@ -5,6 +5,9 @@
 #include "utils.hpp"
 #include "vector.hpp"
 
+// tree
+#include "tree/avl_tree.h"
+
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -46,5 +49,7 @@ void iterator_traits_test();
 void lexicographical_compare_test();
 void pair_test();
 void reverse_iterator_test();
+// tree
+void avl_tree_test();
 
 #endif /* TEST_HPP */

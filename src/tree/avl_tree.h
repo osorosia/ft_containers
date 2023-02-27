@@ -2,11 +2,17 @@
 #define AVL_TREE_H
 
 #include <cassert>
+#include <cmath>
 #include <functional>
 #include <iostream>
 #include <memory>
 
 #include "../utils/pair.hpp"
+
+#define CHECK        true
+#define CHECK_HEIGHT true
+#define CHECK_AVL    true
+#define PRINT_HEIGHT true
 
 namespace ft {
 
@@ -14,45 +20,44 @@ template < class T >
 struct Node {
     typedef T                  value_type;
     typedef Node< value_type > node_type;
-    typedef node_type*         node_pointer;
 
-    node_pointer left_;
-    node_pointer right_;
-    node_pointer parent_;
-    value_type   value_;
-    int          height_;
+    node_type* left_;
+    node_type* right_;
+    node_type* parent_;
+    value_type value_;
+    int        height_;
 
     Node()
         : left_(NULL)
         , right_(NULL)
         , parent_(NULL)
-        , height_(1);
-    , value_(value_type()) {}
+        , height_(1)
+        , value_(value_type()) {}
 
     Node(value_type value)
         : left_(NULL)
         , right_(NULL)
         , parent_(NULL)
-        , height_(1);
-    , value_(value) {}
+        , height_(1)
+        , value_(value) {}
 
-    node_pointer next() {
+    node_type* next() {
         if (right_)
             return right_->find_min();
-        node_pointer node = this;
+        node_type* node = this;
         if (node->parent_)
             return node;
     }
-    node_pointer prev() {
+    node_type* prev() {
         if (left_)
             return left_->find_max();
     }
-    node_pointer find_min() {
+    node_type* find_min() {
         if (left_)
             return left_->find_min();
         return this;
     }
-    node_pointer find_max() {
+    node_type* find_max() {
         if (right_)
             return right_->find_max();
         return this;
@@ -75,10 +80,9 @@ class tree_iterator {
 public:
     typedef T                           value_type;
     typedef Node< value_type >          node_type;
-    typedef node_type*                  node_pointer;
     typedef tree_iterator< value_type > tree_iterator_type;
 
-    node_pointer node;
+    node_type* node;
 };
 
 template < class Key,
@@ -96,14 +100,12 @@ public:
     typedef Allocator                         allocator_type;
     typedef tree_iterator< value_type >       iterator;
     typedef std::reverse_iterator< iterator > reverse_iterator;
-    typedef Allocator                         allocator_type;
 
     typedef Node< value_type >                                      node_type;
-    typedef node_type*                                              node_pointer;
     typedef typename Allocator::template rebind< node_type >::other node_allocator_type;
 
-    node_pointer        root_;
-    node_pointer        end_;
+    node_type*          root_;
+    node_type*          end_;
     node_allocator_type node_alloc_;
 
     AVLTree()
@@ -112,48 +114,128 @@ public:
         , node_alloc_(node_allocator_type()) {}
 
     iterator begin() {
-        node_pointer node = find_min_node();
+        node_type* node = find_min_node();
         if (node)
             return iterator();
     }
 
-    std::pair< iterator, bool > insert(const value_type& value) {}
+    node_type* node_allocate(const value_type& value) {
+        node_type *node = node_alloc_.allocate(1);
+        node_alloc_.construct(node, value);
+        return node;
+    }
 
-    iterator insert(iterator pos, const value_type& value) {}
-
+    std::pair< iterator, bool > insert(const value_type& value) {
+        node_type* node = insert_node(root_, value);
+    }
+    iterator insert(iterator pos, const value_type& value) {
+        (void)pos;
+        return (*insert(value)).first;
+    }
     template < class InputIt >
-    void insert(InputIt first, InputIt last);
+    void insert(InputIt first, InputIt last) {}
 
-    iterator find(const Key& key) { Node* node = find_node(key); }
+    node_type* insert_node(node_type* node, const value_type& value) {
+        if (root_ == NULL) {
+            root_ = node_allocate(value);
+            return root_;
+        }
+    }
 
-    node_pointer find_node(node_pointer node, const Key& key) { if () }
+
+    iterator find(const Key& key) { node_type* node = find_node(key); }
+
+    node_type* find_node(node_type* node, const Key& key) { return NULL; }
 
     // ----------------
-    node_pointer find_min_node(node_pointer node) {
+    bool is_root(node_type* node) { return node == root_; }
+
+    node_type* find_min_node(node_type* node) {
         if (node->left_)
             return find_min_node(node->left_);
         return node;
     }
 
-    node_pointer find_max_node(node_pointer node) {
+    node_type* find_max_node(node_type* node) {
         if (node->right_)
             return find_max_node(node->right_);
         return node;
     }
 
-    void check() {}
+    void check() {
+        if (!CHECK)
+            return;
+
+        if (CHECK_HEIGHT)
+            check_height(root_);
+        if (CHECK_AVL)
+            check_avl(root_);
+        check_tree(root_);
+        check_begin_end();
+    }
+
+    void check_begin_end() {
+        // TODO:
+    }
+
+    void check_tree(node_type* node) {
+        if (node == NULL)
+            return;
+
+        if (node->left_) {
+            assert(node == node->left_->parent_);
+        }
+        if (node->right_) {
+            assert(node == node->right_->parent_);
+        }
+
+        check_tree(node->left_);
+        check_tree(node->right_);
+    }
+
+    void check_height(node_type* node) {
+        if (node == NULL)
+            return;
+
+        if (node->left_ == NULL && node->right_ == NULL) {
+            assert(node->height_ == 1);
+        } else if (node->left_ == NULL) {
+            assert(node->height_ == node->right_->height_ + 1);
+        } else if (node->right_ == NULL) {
+            assert(node->height_ == node->left_->height_ + 1);
+        } else {
+            int left  = node->left_->height_;
+            int right = node->right_->height_;
+            assert(node->height_ == std::max(left, right) + 1);
+        }
+
+        check_height(node->left_);
+        check_height(node->right_);
+    }
+
+    void check_avl(node_type* node) {
+        if (node == NULL)
+            return;
+
+        int left  = node->left_ ? node->left_->height_ : 0;
+        int right = node->right_ ? node->right_->height_ : 0;
+        assert(std::abs(left - right) <= 1);
+
+        check_avl(node->left_);
+        check_avl(node->right_);
+    }
 
     void print() {
-        cout << "```mermaid" << endl;
-        cout << "graph TB" << endl;
+        std::cout << "```mermaid" << std::endl;
+        std::cout << "graph TB" << std::endl;
 
-        string name = "O";
+        std::string name = "O";
         print_node_init(root_, name);
         print_tree(root_, name);
 
-        cout << "```" << endl;
+        std::cout << "```" << std::endl;
     }
-    void print_tree(Node* node, string name) {
+    void print_tree(node_type* node, std::string name) {
         if (node == NULL)
             return;
 
@@ -169,29 +251,29 @@ public:
         print_node(node->right_, name, name + "B");
         print_tree(node->right_, name + "B");
     }
-    void print_node(Node* node, string prev_name, string name) {
+    void print_node(node_type* node, std::string prev_name, std::string name) {
         if (node == NULL)
             return;
-        cout << prev_name << "-->" << name << "((" << node->val_;
+        std::cout << prev_name << "-->" << name << "((" << node->val_;
         if (PRINT_HEIGHT)
-            cout << ", " << node->height_;
-        cout << "))" << endl;
+            std::cout << ", " << node->height_;
+        std::cout << "))" << std::endl;
     }
-    void print_node_init(Node* node, string name) {
-        cout << name << "((";
+    void print_node_init(node_type* node, std::string name) {
+        std::cout << name << "((";
 
         if (node) {
-            cout << node->val_;
+            std::cout << node->val_;
             if (PRINT_HEIGHT)
-                cout << ", " << node->height_;
+                std::cout << ", " << node->height_;
         } else {
-            cout << ".";
+            std::cout << ".";
         }
 
-        cout << "))" << endl;
+        std::cout << "))" << std::endl;
     }
-    void print_node_null(string prev_name, string name) {
-        cout << prev_name << "-->" << name << "((.))" << endl;
+    void print_node_null(std::string prev_name, std::string name) {
+        std::cout << prev_name << "-->" << name << "((.))" << std::endl;
     }
 };
 
