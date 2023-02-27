@@ -82,7 +82,10 @@ public:
     typedef Node< value_type >          node_type;
     typedef tree_iterator< value_type > tree_iterator_type;
 
-    node_type* node;
+    node_type* node_;
+
+    tree_iterator(node_type* node)
+        : node_(node) {}
 };
 
 template < class Key,
@@ -119,29 +122,53 @@ public:
             return iterator();
     }
 
-    node_type* node_allocate(const value_type& value) {
-        node_type *node = node_alloc_.allocate(1);
+    node_type* allocate_node(const value_type& value) {
+        node_type* node = node_alloc_.allocate(1);
         node_alloc_.construct(node, value);
         return node;
     }
 
     std::pair< iterator, bool > insert(const value_type& value) {
-        node_type* node = insert_node(root_, value);
+        return insert_node(root_, value);
     }
     iterator insert(iterator pos, const value_type& value) {
+        // TODO: implement
         (void)pos;
         return (*insert(value)).first;
     }
     template < class InputIt >
-    void insert(InputIt first, InputIt last) {}
-
-    node_type* insert_node(node_type* node, const value_type& value) {
-        if (root_ == NULL) {
-            root_ = node_allocate(value);
-            return root_;
+    void insert(InputIt first, InputIt last) {
+        for (InputIt it = first; it != last; it++) {
+            insert(root_, *it);
         }
     }
 
+    std::pair< iterator, bool > insert_node(node_type* node, const value_type& value) {
+        if (root_ == NULL) {
+            root_ = allocate_node(value);
+            return std::pair< iterator, bool >(iterator(root_), true);
+        }
+
+        if (node->value_ == value) {
+            return std::pair< iterator, bool >(iterator(node), false);
+        } else if (node->value_ < value) {
+            if (node->left_) {
+                return insert_node(node->left_, value);
+            } else {
+                node->left_          = allocate_node(value);
+                node->left_->parent_ = node;
+                return std::pair< iterator, bool >(iterator(node->left_), true);
+            }
+        } else {
+            if (node->right_) {
+                return insert_node(node->right_, value);
+            } else {
+                node->right_          = allocate_node(value);
+                node->right_->parent_ = node;
+                return std::pair< iterator, bool >(iterator(node->right_), true);
+            }
+        }
+    }
 
     iterator find(const Key& key) { node_type* node = find_node(key); }
 
@@ -184,9 +211,11 @@ public:
 
         if (node->left_) {
             assert(node == node->left_->parent_);
+            assert(node->value_ > node->left_->value_);
         }
         if (node->right_) {
             assert(node == node->right_->parent_);
+            assert(node->value_ < node->right_->value_);
         }
 
         check_tree(node->left_);
