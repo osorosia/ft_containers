@@ -136,7 +136,6 @@ public:
         return insert_node(root_, value);
     }
     iterator insert(iterator pos, const value_type& value) {
-        // TODO: implement
         (void)pos;
         return (*insert(value)).first;
     }
