@@ -114,6 +114,8 @@ public:
             return iterator();
     }
 
+    iterator end() { return iterator(end_); }
+
     node_type* allocate_node(const value_type& value) {
         node_type* node = node_alloc_.allocate(1);
         node_alloc_.construct(node, value);
@@ -220,6 +222,58 @@ public:
         }
     }
 
+    iterator lower_bound(const Key& key) {
+        node_type* node = lower_bound_node(root_, key);
+        if (node == NULL)
+            return end();
+        return iterator(node);
+    }
+
+    node_type* lower_bound_node(node_type* node, const Key& key) {
+        if (node == NULL)
+            return NULL;
+
+        if (get_key(node) == key) {
+            return node;
+        } else if (get_key(node) < key) {
+            return has_right(node) ? lower_bound_node(node->right_, key) : NULL;
+        } else {
+            node_type* child = node->left_;
+            if (child == NULL)
+                return node;
+
+            node_type* bottom = lower_bound_node(child, key);
+            return bottom ? bottom : node;
+        }
+    }
+
+    iterator upper_bound(const Key& key) {
+        node_type* node = upper_bound_node(root_, key);
+        if (node == NULL)
+            return end();
+        return iterator(node);
+    }
+
+    node_type* upper_bound_node(node_type* node, const Key& key) {
+        if (node == NULL)
+            return NULL;
+
+        if (get_key(node) <= key) {
+            return has_right(node) ? upper_bound_node(node->right_, key) : NULL;
+        } else {
+            node_type* child = node->left_;
+            if (child == NULL)
+                return node;
+
+            node_type* bottom = upper_bound_node(child, key);
+            return bottom ? bottom : node;
+        }
+    }
+
+    std::pair< iterator, iterator > equal_range(const Key& key) {
+        return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
+    }
+
     void replace_node(node_type* node, node_type* next) {
         // parent
         next->parent_ = node->parent_;
@@ -265,6 +319,9 @@ public:
 
     int      get_height(node_type* node) { return node ? node->height_ : 0; }
     key_type get_key(node_type* node) { return node->value_.first; }
+    bool     has_left(node_type* node) { return node->left_ != NULL; }
+    bool     has_right(node_type* node) { return node->right_ != NULL; }
+    bool     is_empty() { return root_ == NULL; }
     bool     is_left(node_type* node) { return node && node == node->parent_->left_; }
     bool     is_right(node_type* node) { return node && node == node->parent_->right_; }
     bool     is_root(node_type* node) { return node == root_; }
