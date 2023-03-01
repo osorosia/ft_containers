@@ -36,6 +36,9 @@ re: fclean all
 test: $(TEST_NAME)
 	./$(TEST_NAME) > log.md
 
+debug deb:
+	valgrind ./$(TEST_NAME) > log.md
+
 t:
 	${CXX} -o tmp tmp.cpp
 	./tmp
