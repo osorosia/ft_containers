@@ -266,21 +266,6 @@ public:
         }
     }
 
-    void update_height_to_root(node_type* node) {
-        if (node == NULL)
-            return;
-        update_height(node);
-        if (is_root(node))
-            return;
-        update_height_to_root(node->parent_);
-    }
-
-    void update_height(node_type* node) {
-        if (node == NULL)
-            return;
-        node->height_ = std::max(get_height(node->left_), get_height(node->right_)) + 1;
-    }
-
     int      get_height(node_type* node) { return node ? node->height_ : 0; }
     key_type get_key(node_type* node) { return node->value_.first; }
     bool     is_left(node_type* node) { return node && node == node->parent_->left_; }
@@ -299,6 +284,19 @@ public:
     void update_root(node_type* node) {
         root_ = node;
         // TODO: end_
+    }
+    void update_height_to_root(node_type* node) {
+        if (node == NULL)
+            return;
+        update_height(node);
+        if (is_root(node))
+            return;
+        update_height_to_root(node->parent_);
+    }
+    void update_height(node_type* node) {
+        if (node == NULL)
+            return;
+        node->height_ = std::max(get_height(node->left_), get_height(node->right_)) + 1;
     }
 
     iterator find(const Key& key) { node_type* node = find_node(key); }
