@@ -249,10 +249,7 @@ public:
 
     void replace_parent(node_type* node, node_type* next) {
         if (is_root(node)) {
-            root_ = next;
-            // TODO:
-            if (next)
-                next->parent_ = end_;
+            update_root(next);
             return;
         }
 
@@ -283,7 +280,9 @@ public:
     }
     void update_root(node_type* node) {
         root_ = node;
-        // TODO: end_
+        // TODO: end_で問題ない？
+        if (node)
+            node->parent_ = end_;
     }
     void update_height_to_root(node_type* node) {
         if (node == NULL)
