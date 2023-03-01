@@ -11,7 +11,7 @@
 
 // check
 #define CHECK        true
-#define CHECK_HEIGHT false
+#define CHECK_HEIGHT true
 #define CHECK_AVL    false
 // print
 #define PRINT_HEIGHT false
@@ -163,6 +163,7 @@ public:
             } else {
                 node->left_          = allocate_node(value);
                 node->left_->parent_ = node;
+                update_height_to_root(node);
                 return std::pair< iterator, bool >(iterator(node->left_), true);
             }
         } else {
@@ -171,6 +172,7 @@ public:
             } else {
                 node->right_          = allocate_node(value);
                 node->right_->parent_ = node;
+                update_height_to_root(node);
                 return std::pair< iterator, bool >(iterator(node->right_), true);
             }
         }
@@ -196,17 +198,22 @@ public:
             if (node->left_ == NULL && node->right_ == NULL) {
                 // none
                 replace_parent(node, NULL);
+                update_height_to_root(node->parent_);
             } else if (node->left_ == NULL) {
                 // a right child
                 replace_parent(node, node->right_);
+                update_height_to_root(node->parent_);
             } else if (node->right_ == NULL) {
                 // a left child
                 replace_parent(node, node->left_);
+                update_height_to_root(node->parent_);
             } else {
                 // both children
-                node_type* tmp = node->right_->find_min();
-                replace_parent(tmp, tmp->right_);
-                replace_node(node, tmp);
+                node_type* min        = node->right_->find_min();
+                node_type* min_parent = min->parent_;
+                replace_parent(min, min->right_);
+                replace_node(node, min);
+                update_height_to_root(min_parent);
             }
             deallocate_node(node);
             return 1;
@@ -216,7 +223,7 @@ public:
     void replace_node(node_type* node, node_type* next) {
         // parent
         next->parent_ = node->parent_;
-        if (root_ == node) {
+        if (is_root(node)) {
             root_         = next;
             next->parent_ = end_;
         } else {
@@ -241,7 +248,7 @@ public:
     }
 
     void replace_parent(node_type* node, node_type* next) {
-        if (node == root_) {
+        if (is_root(node)) {
             root_ = next;
             // TODO:
             if (next)
@@ -259,15 +266,46 @@ public:
         }
     }
 
+    void update_height_to_root(node_type* node) {
+        if (node == NULL)
+            return;
+        update_height(node);
+        if (is_root(node))
+            return;
+        update_height_to_root(node->parent_);
+    }
+
+    void update_height(node_type* node) {
+        if (node == NULL)
+            return;
+        node->height_ = std::max(get_height(node->left_), get_height(node->right_)) + 1;
+    }
+
+    int      get_height(node_type* node) { return node ? node->height_ : 0; }
     key_type get_key(node_type* node) { return node->value_.first; }
+    bool     is_left(node_type* node) { return node && node == node->parent_->left_; }
+    bool     is_right(node_type* node) { return node && node == node->parent_->right_; }
+    bool     is_root(node_type* node) { return node == root_; }
+    void     update_left(node_type* node, node_type* child) {
+        node->left_ = child;
+        if (child)
+            child->parent_ = node;
+    }
+    void update_right(node_type* node, node_type* child) {
+        node->right_ = child;
+        if (child)
+            child->parent_ = node;
+    }
+    void update_root(node_type* node) {
+        root_ = node;
+        // TODO: end_
+    }
 
     iterator find(const Key& key) { node_type* node = find_node(key); }
 
     node_type* find_node(node_type* node, const Key& key) { return NULL; }
 
     // ----------------
-    bool is_root(node_type* node) { return node == root_; }
-
     node_type* find_min_node(node_type* node) {
         if (node->left_)
             return find_min_node(node->left_);
