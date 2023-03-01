@@ -36,7 +36,7 @@ re: fclean all
 test: $(TEST_NAME)
 	./$(TEST_NAME) > log.md
 
-debug deb:
+debug deb: $(TEST_NAME)
 	valgrind ./$(TEST_NAME) > log.md
 
 t:
