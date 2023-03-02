@@ -97,11 +97,32 @@ public:
     node_type*          root_;
     node_type*          end_;
     node_allocator_type node_alloc_;
+    key_compare         comp_;
 
     AVLTree()
         : root_(NULL)
         , end_(NULL)
-        , node_alloc_(node_allocator_type()) {}
+        , node_alloc_(node_allocator_type())
+        , comp_(key_compare()) {}
+
+    explicit AVLTree(const Compare& comp, const Allocator& alloc = Allocator())
+        : root_(NULL)
+        , end_(NULL)
+        , node_alloc_(alloc)
+        , comp_(comp) {}
+
+    template < class InputIt >
+    AVLTree(InputIt          first,
+            InputIt          last,
+            const Compare&   comp  = Compare(),
+            const Allocator& alloc = Allocator())
+        : root_(NULL)
+        , end_(NULL)
+        , node_alloc_(alloc)
+        , comp_(comp) {
+        // TODO:
+    }
+    // map(const AVLTree& other);
 
     ~AVLTree() {
         deallocate_tree(root_);
@@ -224,9 +245,7 @@ public:
 
     iterator lower_bound(const Key& key) {
         node_type* node = lower_bound_node(root_, key);
-        if (node == NULL)
-            return end();
-        return iterator(node);
+        return node ? iterator(node) : end();
     }
 
     node_type* lower_bound_node(node_type* node, const Key& key) {
@@ -249,9 +268,7 @@ public:
 
     iterator upper_bound(const Key& key) {
         node_type* node = upper_bound_node(root_, key);
-        if (node == NULL)
-            return end();
-        return iterator(node);
+        return node ? iterator(node) : end();
     }
 
     node_type* upper_bound_node(node_type* node, const Key& key) {
@@ -355,7 +372,10 @@ public:
         node->height_ = std::max(get_height(node->left_), get_height(node->right_)) + 1;
     }
 
-    iterator find(const Key& key) { node_type* node = find_node(key); }
+    iterator find(const Key& key) {
+        node_type* node = find_node(key);
+        return node ? iterator(node) : end();
+    }
 
     node_type* find_node(node_type* node, const Key& key) { return NULL; }
 
