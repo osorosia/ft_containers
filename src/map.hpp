@@ -75,13 +75,17 @@ public:
     }
 
     // Iterators
-    // begin
-    // end
+    iterator       begin() { return tree_->begin(); }
+    // const_iterator begin() const; // TODO:
+
+    iterator       end() { return tree_->end(); }
+    // const_iterator end() const; // TODO:
+
     // rbegin
     // rend
 
     // Capacity
-    // empty
+    bool empty() { return begin() == end(); }
     // size
     // max_size
 

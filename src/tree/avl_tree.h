@@ -13,6 +13,7 @@
 #define CHECK        true
 #define CHECK_HEIGHT true
 #define CHECK_AVL    false
+#define CHECK_SIZE   true
 // print
 #define PRINT_HEIGHT false
 
@@ -96,18 +97,21 @@ public:
 
     node_type*          root_;
     node_type*          end_;
+    size_type           size_;
     node_allocator_type node_alloc_;
     key_compare         comp_;
 
     AVLTree()
         : root_(NULL)
-        , end_(NULL)
+        , end_(NULL) // TODO:
+        , size_(0)
         , node_alloc_(node_allocator_type())
         , comp_(key_compare()) {}
 
     explicit AVLTree(const Compare& comp, const Allocator& alloc = Allocator())
         : root_(NULL)
-        , end_(NULL)
+        , end_(NULL) // TODO:
+        , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {}
 
@@ -117,7 +121,8 @@ public:
             const Compare&   comp  = Compare(),
             const Allocator& alloc = Allocator())
         : root_(NULL)
-        , end_(NULL)
+        , end_(NULL) // TODO:
+        , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {
         // TODO:
@@ -175,6 +180,7 @@ public:
     std::pair< iterator, bool > insert_node(node_type* node, const value_type& value) {
         if (root_ == NULL) {
             root_ = allocate_node(value);
+            size_++;
             return std::pair< iterator, bool >(iterator(root_), true);
         }
 
@@ -187,6 +193,7 @@ public:
                 node->left_          = allocate_node(value);
                 node->left_->parent_ = node;
                 update_height_to_root(node);
+                size_++;
                 return std::pair< iterator, bool >(iterator(node->left_), true);
             }
         } else {
@@ -196,6 +203,7 @@ public:
                 node->right_          = allocate_node(value);
                 node->right_->parent_ = node;
                 update_height_to_root(node);
+                size_++;
                 return std::pair< iterator, bool >(iterator(node->right_), true);
             }
         }
@@ -239,6 +247,7 @@ public:
                 update_height_to_root(min_parent);
             }
             deallocate_node(node);
+            size_--;
             return 1;
         }
     }
@@ -395,12 +404,25 @@ public:
     void check() {
         if (!CHECK)
             return;
+
         if (CHECK_HEIGHT)
             check_height(root_);
         if (CHECK_AVL)
             check_avl(root_);
+        if (CHECK_SIZE)
+            check_size();
         check_tree(root_);
         check_begin_end();
+    }
+
+    void check_size() { assert(size_ == calc_size(root_)); }
+
+    size_type calc_size(node_type* node) {
+        if (node == NULL)
+            return 0;
+        size_type left  = calc_size(node->left_);
+        size_type right = calc_size(node->right_);
+        return left + right + 1;
     }
 
     void check_begin_end() {
