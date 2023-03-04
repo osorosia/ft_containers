@@ -1,14 +1,14 @@
 #ifndef AVL_TREE_H
 #define AVL_TREE_H
 
+#include "../utils/pair.hpp"
 #include <cassert>
 #include <cmath>
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <memory>
-
-#include "../utils/pair.hpp"
 
 // check
 #define CHECK        true
@@ -266,6 +266,17 @@ public:
 
     reverse_iterator       rend() { return reverse_iterator(begin()); }
     const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+
+    //
+    // Capacity
+    //
+    bool empty() const { return begin() == end(); }
+
+    size_type size() const { return size_; }
+
+    size_type max_size() const {
+        return std::min(node_alloc_.max_size(), std::numeric_limits< difference_type >::max());
+    }
 
     //
     // Modifiers
