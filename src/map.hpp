@@ -17,21 +17,23 @@ protected:
     //
     // Member types
     //
-    typedef Key                                                          key_type;
-    typedef T                                                            mapped_type;
-    typedef std::pair< const Key, T >                                    value_type;
-    typedef std::size_t                                                  size_type;
-    typedef std::ptrdiff_t                                               difference_type;
-    typedef Compare                                                      key_compare;
-    typedef Allocator                                                    allocator_type;
-    typedef value_type&                                                  reference;
-    typedef const value_type&                                            const_reference;
-    typedef typename Allocator::pointer                                  pointer;
-    typedef typename Allocator::const_pointer                            const_pointer;
-    typedef typename ft::AVLTree< Key, T, Compare, Allocator >::iterator iterator;
-    typedef std::reverse_iterator< iterator >                            reverse_iterator;
-    // const_iterator
-    // typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
+    typedef Key                               key_type;
+    typedef T                                 mapped_type;
+    typedef std::pair< const Key, T >         value_type;
+    typedef std::size_t                       size_type;
+    typedef std::ptrdiff_t                    difference_type;
+    typedef Compare                           key_compare;
+    typedef Allocator                         allocator_type;
+    typedef value_type&                       reference;
+    typedef const value_type&                 const_reference;
+    typedef typename Allocator::pointer       pointer;
+    typedef typename Allocator::const_pointer const_pointer;
+
+    typedef typename ft::AVLTree< Key, T, Compare, Allocator >::iterator       iterator;
+    typedef typename ft::AVLTree< Key, T, Compare, Allocator >::const_iterator const_iterator;
+
+    typedef std::reverse_iterator< iterator >       reverse_iterator;
+    typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
 
 private:
     typedef ft::AVLTree< Key, T, Compare, Allocator > tree_type;
@@ -49,7 +51,7 @@ public:
     // (constructor)
     map()
         : tree_(tree_type()) {}
-    explicit map(const Compare& comp, const Allocator& alloc = Allocator());
+    explicit map(const Compare& comp, const Allocator& alloc = Allocator()); // TODO:
     // (destructor)
     // operator=
     // get_allocator
@@ -62,7 +64,10 @@ public:
         return (*it).second;
     }
     const T& at(const Key& key) const {
-        // TODO:
+        iterator it = tree_->find(key);
+        if (it == tree_->end())
+            throw std::out_of_range("map::at");
+        return (*it).second;
     }
 
     T& operator[](const Key& key) {
@@ -75,10 +80,10 @@ public:
     }
 
     // Iterators
-    iterator       begin() { return tree_->begin(); }
+    iterator begin() { return tree_->begin(); }
     // const_iterator begin() const; // TODO:
 
-    iterator       end() { return tree_->end(); }
+    iterator end() { return tree_->end(); }
     // const_iterator end() const; // TODO:
 
     // rbegin
