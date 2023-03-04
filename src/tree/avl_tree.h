@@ -104,6 +104,25 @@ public:
         : node_(node) {}
 
     value_type& operator*() const { return node_->value_; }
+    value_type* operator->() const { return &(node_->value_); }
+    self_type&  operator++() {
+        node_ = node_->next();
+        return *this;
+    }
+    self_type operator++(int) {
+        self_type tmp = *this;
+        node_         = node_->next();
+        return tmp;
+    }
+    self_type& operator--() {
+        node_ = node_->prev();
+        return *this;
+    }
+    self_type operator--(int) {
+        self_type tmp = *this;
+        node_         = node_->prev();
+        return tmp;
+    }
 };
 
 template < class T >
@@ -119,6 +138,25 @@ public:
         : node_(node) {}
 
     const value_type& operator*() const { return node_->value_; }
+    const value_type* operator->() const { return &(node_->value_); }
+    self_type&        operator++() {
+        node_ = node_->next();
+        return *this;
+    }
+    self_type operator++(int) {
+        self_type tmp = *this;
+        node_         = node_->next();
+        return tmp;
+    }
+    self_type& operator--() {
+        node_ = node_->prev();
+        return *this;
+    }
+    self_type operator--(int) {
+        self_type tmp = *this;
+        node_         = node_->prev();
+        return tmp;
+    }
 };
 
 template < class Key,
@@ -153,7 +191,7 @@ public:
         , size_(0)
         , node_alloc_(node_allocator_type())
         , comp_(key_compare()) {
-        end_ = allocate_end();
+        end_ = allocate_end_node();
     }
 
     explicit AVLTree(const Compare& comp, const Allocator& alloc = Allocator())
@@ -161,7 +199,7 @@ public:
         , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {
-        end_ = allocate_end();
+        end_ = allocate_end_node();
     }
 
     template < class InputIt >
@@ -173,15 +211,36 @@ public:
         , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {
-        end_ = allocate_end();
-        // TODO:
+        end_ = allocate_end_node();
+        insert(first, last);
     }
-    // AVLTree(const AVLTree& other);
+
+    AVLTree(const AVLTree& other)
+        : root_(NULL)
+        , size_(0)
+        , node_alloc_(node_allocator_type())
+        , comp_(key_compare()) {
+        end_  = allocate_end_node();
+        *this = other;
+    }
 
     ~AVLTree() {
         deallocate_tree(root_);
         deallocate_node(end_);
     }
+
+    AVLTree& operator=(const AVLTree& other) {
+        if (this == other) {
+            return *this;
+        }
+        deallocate_tree();
+        size_ = 0;
+        root_ = NULL;
+        insert(other.begin(), other.end());
+        return *this;
+    }
+
+    allocator_type get_allocator() const { return allocator_type(node_alloc_); }
 
     //
     // Iterators
@@ -218,7 +277,7 @@ public:
     }
     iterator insert(iterator pos, const value_type& value) {
         (void)pos;
-        return (*insert(value)).first;
+        return insert(value)->first;
     }
     template < class InputIt >
     void insert(InputIt first, InputIt last) {
@@ -230,8 +289,7 @@ public:
     iterator erase(iterator pos) {
         iterator next = pos;
         next++;
-        // TODO: posの位置からeraseを開始させる
-        erase((*pos).first);
+        erase(pos->first);
         return next;
     }
     iterator erase(iterator first, iterator last) {
@@ -298,7 +356,7 @@ public:
         return node;
     }
 
-    node_type* allocate_end() {
+    node_type* allocate_end_node() {
         node_type* node = node_alloc_.allocate(1);
         node_alloc_.construct(node, value_type());
         return node;
