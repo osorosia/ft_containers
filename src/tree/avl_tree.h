@@ -137,14 +137,14 @@ public:
 
     AVLTree()
         : root_(NULL)
-        , end_(NULL) // TODO:
         , size_(0)
         , node_alloc_(node_allocator_type())
-        , comp_(key_compare()) {}
+        , comp_(key_compare()) {
+        end_ = allocate_end();
+    }
 
     explicit AVLTree(const Compare& comp, const Allocator& alloc = Allocator())
         : root_(NULL)
-        , end_(NULL) // TODO:
         , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {
@@ -157,13 +157,13 @@ public:
             const Compare&   comp  = Compare(),
             const Allocator& alloc = Allocator())
         : root_(NULL)
-        , end_(NULL) // TODO:
         , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {
+        end_ = allocate_end();
         // TODO:
     }
-    // map(const AVLTree& other);
+    // AVLTree(const AVLTree& other);
 
     ~AVLTree() {
         deallocate_tree(root_);
@@ -184,11 +184,9 @@ public:
         }
     }
 
-    iterator  erase(iterator pos);
-    iterator  erase(iterator first, iterator last);
-    size_type erase(const Key& key) { return erase_node(root_, key); }
-
+    //
     // Iterators
+    //
     iterator begin() {
         if (size_ == 0)
             return end();
@@ -211,13 +209,33 @@ public:
     reverse_iterator       rend() { return reverse_iterator(begin()); }
     const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
+    //
     // Modifiers
+    //
     // clear
     // insert
-    // erase
-    // swap
 
+    iterator erase(iterator pos) {
+        iterator next = pos;
+        next++;
+        erase((*pos).first);
+        return next;
+    }
+    iterator erase(iterator first, iterator last) {
+        iterator it = first;
+        while (it != last) {
+            it = erase(it);
+        }
+        return last;
+    }
+    size_type erase(const Key& key) { return erase_node(root_, key); }
+
+    // TODO:
+    void swap(AVLTree& other);
+
+    //
     // Lookup
+    //
     size_type count(const Key& key) const { return find(key) != end(); }
 
     iterator find(const Key& key) {
@@ -243,11 +261,13 @@ public:
         return node ? iterator(node) : end();
     }
 
+    //
     // Observers
+    //
     // key_comp
     // value_comp
 
-    // private:
+    // private:--------------------------------------------
     node_type* allocate_node(const value_type& value) {
         node_type* node = node_alloc_.allocate(1);
         node_alloc_.construct(node, value);
