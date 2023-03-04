@@ -22,30 +22,30 @@ struct Node {
         , height_(height)
         , val_(val) {}
 
-    Node* findMin() {
+    Node* find_min() {
         if (left_ == NULL)
             return this;
-        return left_->findMin();
+        return left_->find_min();
     }
-    Node* findMax() {
+    Node* find_max() {
         if (right_ == NULL)
             return this;
-        return right_->findMax();
+        return right_->find_max();
     }
 
-    bool isLeft() {
+    bool is_left() {
         if (parent_ == NULL)
             return false;
         return this == parent_->left_;
     }
 
-    bool isRight() {
+    bool is_right() {
         if (parent_ == NULL)
             return false;
         return this == parent_->right_;
     }
 
-    bool hasParent() { return parent_ != NULL; }
+    bool has_parent() { return parent_ != NULL; }
 
     void debug(string name) {
         cout << name << ": " << val_ << "  " << endl;
@@ -84,90 +84,90 @@ struct AVLTree {
         if (root_ == NULL) {
             root_ = new Node(val, 1);
         } else {
-            insertNode(root_, val);
+            insert_node(root_, val);
         }
     }
 
-    void insertNode(Node* node, long val) {
+    void insert_node(Node* node, long val) {
         if (node->val_ > val) {
             if (node->left_) {
-                insertNode(node->left_, val);
+                insert_node(node->left_, val);
             } else {
                 node->left_          = new Node(val, 1);
                 node->left_->parent_ = node;
-                calcHeightToRoot(node);
+                update_height_to_root(node);
                 rebalance(node);
             }
         } else if (node->val_ < val) {
             if (node->right_) {
-                insertNode(node->right_, val);
+                insert_node(node->right_, val);
             } else {
                 node->right_          = new Node(val, 1);
                 node->right_->parent_ = node;
-                calcHeightToRoot(node);
+                update_height_to_root(node);
                 rebalance(node);
             }
         }
     }
 
-    void erase(long val) { eraseNode(root_, val); }
+    void erase(long val) { erase_node(root_, val); }
 
-    void eraseNode(Node* node, long val) {
+    void erase_node(Node* node, long val) {
         if (node == NULL) {
             return;
         }
 
         if (node->val_ > val) {
-            eraseNode(node->left_, val);
+            erase_node(node->left_, val);
         } else if (node->val_ < val) {
-            eraseNode(node->right_, val);
+            erase_node(node->right_, val);
         } else if (node->val_ == val) {
             if (node->left_ == NULL && node->right_ == NULL) {
                 // none
-                replaceNode(node, NULL);
+                replace_parent(node, NULL);
 
-                calcHeightToRoot(node->parent_);
+                update_height_to_root(node->parent_);
                 rebalance(node->parent_);
                 delete node;
             } else if (node->left_ == NULL) {
                 // a right child
-                replaceNode(node, node->right_);
+                replace_parent(node, node->right_);
 
-                calcHeightToRoot(node->parent_);
+                update_height_to_root(node->parent_);
                 rebalance(node->parent_);
                 delete node;
             } else if (node->right_ == NULL) {
                 // a left child
-                replaceNode(node, node->left_);
+                replace_parent(node, node->left_);
 
-                calcHeightToRoot(node->parent_);
+                update_height_to_root(node->parent_);
                 rebalance(node->parent_);
                 delete node;
             } else {
                 // both children
-                Node* tmp = node->right_->findMin();
-                replaceNode(tmp, tmp->right_);
-                swapVal(node, tmp);
+                Node* tmp = node->right_->find_min();
+                replace_parent(tmp, tmp->right_);
+                swap_val(node, tmp);
 
-                calcHeightToRoot(tmp->parent_);
+                update_height_to_root(tmp->parent_);
                 rebalance(tmp->parent_);
                 delete tmp;
             }
         }
     }
 
-    void clear() { clearNode(root_); }
-    void clearNode(Node* node) {
+    void clear() { clear_node(root_); }
+    void clear_node(Node* node) {
         if (node == NULL)
             return;
         if (node->left_)
-            clearNode(node->left_);
+            clear_node(node->left_);
         if (node->right_)
-            clearNode(node->right_);
+            clear_node(node->right_);
         delete node;
     }
 
-    void replaceNode(Node* node, Node* next) {
+    void replace_parent(Node* node, Node* next) {
         if (node->parent_ == NULL) {
             assert(node == root_);
             root_ = next;
@@ -186,7 +186,7 @@ struct AVLTree {
         }
     }
 
-    void swapVal(Node* n0, Node* n1) {
+    void swap_val(Node* n0, Node* n1) {
         assert(n0 != NULL);
         assert(n1 != NULL);
 
@@ -195,14 +195,14 @@ struct AVLTree {
         n1->val_ = tmp;
     }
 
-    void calcHeightToRoot(Node* node) {
+    void update_height_to_root(Node* node) {
         if (node == NULL)
             return;
-        calcHeight(node);
-        calcHeightToRoot(node->parent_);
+        update_height(node);
+        update_height_to_root(node->parent_);
     }
 
-    void calcHeight(Node* node) {
+    void update_height(Node* node) {
         node->height_ = max(getHeight(node->left_), getHeight(node->right_)) + 1;
     }
 
@@ -230,45 +230,45 @@ struct AVLTree {
 
         if (balance > 1) {
             if (get_balance(node->left_) < 0) {
-                rotateLeft(node->left_);
+                rotate_left(node->left_);
             }
-            rotateRight(node);
+            rotate_right(node);
         } else {
             if (get_balance(node->right_) > 0) {
-                rotateRight(node->right_);
+                rotate_right(node->right_);
             }
-            rotateLeft(node);
+            rotate_left(node);
         }
     }
-    void rotateLeft(Node* node) {
+    void rotate_left(Node* node) {
         assert(get_balance(node) < 0);
         Node* x = node;
         Node* y = node->right_;
-        putNodeToRight(x, y->left_);
-        replaceNode(x, y);
-        putNodeToLeft(y, x);
+        put_node_to_right(x, y->left_);
+        replace_parent(x, y);
+        put_node_to_left(y, x);
 
-        calcHeightToRoot(x);
+        update_height_to_root(x);
     }
-    void rotateRight(Node* node) {
+    void rotate_right(Node* node) {
         assert(get_balance(node) > 0);
         Node* x = node->left_;
         Node* y = node;
-        putNodeToLeft(y, x->right_);
-        replaceNode(y, x);
-        putNodeToRight(x, y);
+        put_node_to_left(y, x->right_);
+        replace_parent(y, x);
+        put_node_to_right(x, y);
 
-        calcHeightToRoot(y);
+        update_height_to_root(y);
     }
 
-    void putNodeToLeft(Node* node, Node* child) {
+    void put_node_to_left(Node* node, Node* child) {
         assert(node);
         node->left_ = child;
         if (child)
             child->parent_ = node;
     }
 
-    void putNodeToRight(Node* node, Node* child) {
+    void put_node_to_right(Node* node, Node* child) {
         assert(node);
         node->right_ = child;
         if (child)
