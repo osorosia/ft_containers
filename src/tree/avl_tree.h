@@ -65,12 +65,25 @@ struct Node {
         if (right_)
             return right_->find_min();
         node_type* node = this;
-        if (node->parent_)
-            return node;
+        while (node->parent_) {
+            if (node->is_left()) {
+                return node->parent;
+            }
+            node = node->parent_;
+        }
+        return node;
     }
     node_type* prev() {
         if (left_)
             return left_->find_max();
+        node_type* node = this;
+        while (node->parent_) {
+            if (node->is_right) {
+                return node->parent_;
+            }
+            node = node->parent_;
+        }
+        return node;
     }
     node_type* find_min() { return left_ ? left_->find_min() : this; }
     node_type* find_max() { return right_ ? right_->find_max() : this; }
@@ -250,14 +263,15 @@ public:
     std::pair< iterator, iterator > equal_range(const Key& key) {
         return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
     }
-    // TODO:
-    std::pair< const_iterator, const_iterator > equal_range(const Key& key) const;
+    std::pair< const_iterator, const_iterator > equal_range(const Key& key) const {
+        return std::pair< const_iterator, const_iterator >(lower_bound(key), upper_bound(key));
+    }
 
     iterator lower_bound(const Key& key) {
         node_type* node = lower_bound_node(root_, key);
         return node ? iterator(node) : end();
     }
-    const_iterator lower_bound(const Key& key) {
+    const_iterator lower_bound(const Key& key) const {
         node_type* node = lower_bound_node(root_, key);
         return node ? const_iterator(node) : end();
     }
@@ -266,7 +280,7 @@ public:
         node_type* node = upper_bound_node(root_, key);
         return node ? iterator(node) : end();
     }
-    const_iterator upper_bound(const Key& key) {
+    const_iterator upper_bound(const Key& key) const {
         node_type* node = upper_bound_node(root_, key);
         return node ? const_iterator(node) : end();
     }
