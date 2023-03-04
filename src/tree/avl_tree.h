@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cmath>
 #include <functional>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 
@@ -16,6 +17,22 @@
 #define CHECK_SIZE   true
 // print
 #define PRINT_HEIGHT false
+
+#define DEBUG_NODE(node)                                                                           \
+    {                                                                                              \
+        std::cout << std::setw(16) << __func__ << ": " << std::setw(2) << node->value_.first;      \
+        std::cout << " ";                                                                          \
+        if (node->left_)                                                                           \
+            std::cout << std::setw(2) << node->left_->value_.first;                                \
+        else                                                                                       \
+            std::cout << "__";                                                                     \
+        std::cout << " ";                                                                          \
+        if (node->right_)                                                                          \
+            std::cout << std::setw(2) << node->right_->value_.first;                               \
+        else                                                                                       \
+            std::cout << "__";                                                                     \
+        std::cout << std::endl;                                                                    \
+    }
 
 namespace ft {
 
@@ -179,7 +196,7 @@ public:
 
     std::pair< iterator, bool > insert_node(node_type* node, const value_type& value) {
         if (root_ == NULL) {
-            root_ = allocate_node(value);
+            update_root(allocate_node(value));
             size_++;
             return std::pair< iterator, bool >(iterator(root_), true);
         }
@@ -194,6 +211,7 @@ public:
                 node->left_->parent_ = node;
                 update_height_to_root(node);
                 size_++;
+                rebalance(node);
                 return std::pair< iterator, bool >(iterator(node->left_), true);
             }
         } else {
@@ -204,6 +222,7 @@ public:
                 node->right_->parent_ = node;
                 update_height_to_root(node);
                 size_++;
+                rebalance(node);
                 return std::pair< iterator, bool >(iterator(node->right_), true);
             }
         }
@@ -230,26 +249,101 @@ public:
                 // none
                 replace_parent(node, NULL);
                 update_height_to_root(node->parent_);
+                size_--;
+                rebalance(node->parent_);
             } else if (node->left_ == NULL) {
                 // a right child
                 replace_parent(node, node->right_);
                 update_height_to_root(node->parent_);
+                size_--;
+                rebalance(node->parent_);
             } else if (node->right_ == NULL) {
                 // a left child
                 replace_parent(node, node->left_);
                 update_height_to_root(node->parent_);
+                size_--;
+                rebalance(node->parent_);
             } else {
                 // both children
                 node_type* min        = node->right_->find_min();
-                node_type* min_parent = min->parent_;
+                node_type* min_parent = min != node->right_ ? min->parent_ : min;
                 replace_parent(min, min->right_);
                 replace_node(node, min);
                 update_height_to_root(min_parent);
+                size_--;
+                rebalance(min_parent);
             }
             deallocate_node(node);
-            size_--;
             return 1;
         }
+    }
+
+    void rebalance(node_type* node) {
+        if (node == NULL)
+            return;
+        // DEBUG_NODE(node);
+        rotate(node);
+        if (!is_root(node))
+            rebalance(node->parent_);
+    }
+
+    long get_balance(node_type* node) {
+        return (node->left_ ? node->left_->height_ : 0)
+               - (node->right_ ? node->right_->height_ : 0);
+    }
+
+    void rotate(node_type* node) {
+        int balance = get_balance(node);
+
+        if (std::abs(balance) <= 1)
+            return;
+        DEBUG_NODE(node);
+
+        if (balance > 1) {
+            if (get_balance(node->left_) < 0)
+                rotate_left(node->left_);
+            rotate_right(node);
+        } else {
+            if (get_balance(node->right_) > 0)
+                rotate_right(node->right_);
+            rotate_left(node);
+        }
+    }
+
+    void rotate_left(node_type* node) {
+        DEBUG_NODE(node);
+
+        node_type* x = node;
+        node_type* y = node->right_;
+        put_node_to_right(x, y->left_);
+        replace_parent(x, y);
+        put_node_to_left(y, x);
+
+        update_height_to_root(x);
+    }
+
+    void rotate_right(node_type* node) {
+        DEBUG_NODE(node);
+
+        node_type* x = node->left_;
+        node_type* y = node;
+        put_node_to_left(y, x->right_);
+        replace_parent(y, x);
+        put_node_to_right(x, y);
+
+        update_height_to_root(y);
+    }
+
+    void put_node_to_left(node_type* node, node_type* child) {
+        node->left_ = child;
+        if (child)
+            child->parent_ = node;
+    }
+
+    void put_node_to_right(node_type* node, node_type* child) {
+        node->right_ = child;
+        if (child)
+            child->parent_ = node;
     }
 
     iterator lower_bound(const Key& key) {
@@ -304,10 +398,9 @@ public:
         // parent
         next->parent_ = node->parent_;
         if (is_root(node)) {
-            root_         = next;
-            next->parent_ = end_;
+            root_ = next;
         } else {
-            if (node->is_left()) {
+            if (is_left(node)) {
                 next->parent_->left_ = next;
             } else {
                 next->parent_->right_ = next;
@@ -333,7 +426,7 @@ public:
             return;
         }
 
-        if (node->is_left()) {
+        if (is_left(node)) {
             node->parent_->left_ = next;
         } else {
             node->parent_->right_ = next;
@@ -371,9 +464,8 @@ public:
         if (node == NULL)
             return;
         update_height(node);
-        if (is_root(node))
-            return;
-        update_height_to_root(node->parent_);
+        if (!is_root(node))
+            update_height_to_root(node->parent_);
     }
     void update_height(node_type* node) {
         if (node == NULL)
@@ -405,13 +497,13 @@ public:
         if (!CHECK)
             return;
 
+        check_tree(root_);
         if (CHECK_HEIGHT)
             check_height(root_);
         if (CHECK_AVL)
             check_avl(root_);
         if (CHECK_SIZE)
             check_size();
-        check_tree(root_);
         check_begin_end();
     }
 
