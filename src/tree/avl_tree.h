@@ -83,7 +83,7 @@ class tree_iterator {
 public:
     typedef T                           value_type;
     typedef Node< value_type >          node_type;
-    typedef tree_iterator< value_type > tree_iterator_type;
+    typedef tree_iterator< value_type > self_type;
 
     node_type* node_;
 
@@ -93,21 +93,38 @@ public:
     value_type& operator*() const { return node_->value_; }
 };
 
+template < class T >
+class const_tree_iterator {
+public:
+    typedef T                                 value_type;
+    typedef Node< value_type >                node_type;
+    typedef const_tree_iterator< value_type > self_type;
+
+    node_type* node_;
+
+    const_tree_iterator(node_type* node)
+        : node_(node) {}
+
+    const value_type& operator*() const { return node_->value_; }
+};
+
 template < class Key,
            class T,
            class Compare   = std::less< Key >,
            class Allocator = std::allocator< std::pair< const Key, T > > >
 class AVLTree {
 public:
-    typedef Key                               key_type;
-    typedef T                                 mapped_type;
-    typedef std::pair< const Key, T >         value_type;
-    typedef std::size_t                       size_type;
-    typedef std::ptrdiff_t                    difference_type;
-    typedef Compare                           key_compare;
-    typedef Allocator                         allocator_type;
-    typedef tree_iterator< value_type >       iterator;
-    typedef std::reverse_iterator< iterator > reverse_iterator;
+    typedef Key                                     key_type;
+    typedef T                                       mapped_type;
+    typedef std::pair< const Key, T >               value_type;
+    typedef std::size_t                             size_type;
+    typedef std::ptrdiff_t                          difference_type;
+    typedef Compare                                 key_compare;
+    typedef Allocator                               allocator_type;
+    typedef tree_iterator< value_type >             iterator;
+    typedef const_tree_iterator< value_type >       const_iterator;
+    typedef std::reverse_iterator< iterator >       reverse_iterator;
+    typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
 
     typedef Node< value_type >                                      node_type;
     typedef typename Allocator::template rebind< node_type >::other node_allocator_type;
@@ -130,7 +147,9 @@ public:
         , end_(NULL) // TODO:
         , size_(0)
         , node_alloc_(alloc)
-        , comp_(comp) {}
+        , comp_(comp) {
+        end_ = allocate_end();
+    }
 
     template < class InputIt >
     AVLTree(InputIt          first,
@@ -151,17 +170,93 @@ public:
         deallocate_node(end_);
     }
 
-    iterator begin() {
-        node_type* node = find_min_node();
-        if (node)
-            return iterator();
+    std::pair< iterator, bool > insert(const value_type& value) {
+        return insert_node(root_, value);
+    }
+    iterator insert(iterator pos, const value_type& value) {
+        (void)pos;
+        return (*insert(value)).first;
+    }
+    template < class InputIt >
+    void insert(InputIt first, InputIt last) {
+        for (InputIt it = first; it != last; it++) {
+            insert(root_, *it);
+        }
     }
 
-    iterator end() { return iterator(end_); }
+    iterator  erase(iterator pos);
+    iterator  erase(iterator first, iterator last);
+    size_type erase(const Key& key) { return erase_node(root_, key); }
 
+    // Iterators
+    iterator begin() {
+        if (size_ == 0)
+            return end();
+        node_type* node = find_min_node(root_);
+        return iterator(node);
+    }
+    const_iterator begin() const {
+        if (size_ == 0)
+            return end();
+        node_type* node = find_min_node(root_);
+        return const_iterator(node);
+    }
+
+    iterator       end() { return iterator(end_); }
+    const_iterator end() const { return const_iterator(end_); }
+
+    reverse_iterator       rbegin() { return reverse_iterator(end()); }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+
+    reverse_iterator       rend() { return reverse_iterator(begin()); }
+    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+
+    // Modifiers
+    // clear
+    // insert
+    // erase
+    // swap
+
+    // Lookup
+    size_type count(const Key& key) const { return find(key) != end(); }
+
+    iterator find(const Key& key) {
+        node_type* node = find_node(key);
+        return node ? iterator(node) : end();
+    }
+    const_iterator find(const Key& key) const; // TODO:
+
+    std::pair< iterator, iterator > equal_range(const Key& key) {
+        return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
+    }
+    // TODO:
+    std::pair< const_iterator, const_iterator > equal_range(const Key& key) const;
+
+    // lower_bound
+    iterator lower_bound(const Key& key) {
+        node_type* node = lower_bound_node(root_, key);
+        return node ? iterator(node) : end();
+    }
+    // upper_bound
+    iterator upper_bound(const Key& key) {
+        node_type* node = upper_bound_node(root_, key);
+        return node ? iterator(node) : end();
+    }
+
+    // Observers
+    // key_comp
+    // value_comp
+
+    // private:
     node_type* allocate_node(const value_type& value) {
         node_type* node = node_alloc_.allocate(1);
         node_alloc_.construct(node, value);
+        return node;
+    }
+
+    node_type* allocate_end() {
+        node_type* node = node_alloc_.allocate(1);
+        node_alloc_.construct(node, value_type());
         return node;
     }
 
@@ -178,20 +273,6 @@ public:
         deallocate_tree(node->left_);
         deallocate_tree(node->right_);
         deallocate_node(node);
-    }
-
-    std::pair< iterator, bool > insert(const value_type& value) {
-        return insert_node(root_, value);
-    }
-    iterator insert(iterator pos, const value_type& value) {
-        (void)pos;
-        return (*insert(value)).first;
-    }
-    template < class InputIt >
-    void insert(InputIt first, InputIt last) {
-        for (InputIt it = first; it != last; it++) {
-            insert(root_, *it);
-        }
     }
 
     std::pair< iterator, bool > insert_node(node_type* node, const value_type& value) {
@@ -227,14 +308,6 @@ public:
             }
         }
     }
-
-    iterator erase(iterator pos) {
-        // TODO:
-    }
-    iterator erase(iterator first, iterator last) {
-        // TODO:
-    }
-    size_type erase(const Key& key) { return erase_node(root_, key); }
 
     size_type erase_node(node_type* node, const Key& key) {
         if (node == NULL)
@@ -346,11 +419,6 @@ public:
             child->parent_ = node;
     }
 
-    iterator lower_bound(const Key& key) {
-        node_type* node = lower_bound_node(root_, key);
-        return node ? iterator(node) : end();
-    }
-
     node_type* lower_bound_node(node_type* node, const Key& key) {
         if (node == NULL)
             return NULL;
@@ -369,11 +437,6 @@ public:
         }
     }
 
-    iterator upper_bound(const Key& key) {
-        node_type* node = upper_bound_node(root_, key);
-        return node ? iterator(node) : end();
-    }
-
     node_type* upper_bound_node(node_type* node, const Key& key) {
         if (node == NULL)
             return NULL;
@@ -388,10 +451,6 @@ public:
             node_type* bottom = upper_bound_node(child, key);
             return bottom ? bottom : node;
         }
-    }
-
-    std::pair< iterator, iterator > equal_range(const Key& key) {
-        return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
     }
 
     void replace_node(node_type* node, node_type* next) {
@@ -471,11 +530,6 @@ public:
         if (node == NULL)
             return;
         node->height_ = std::max(get_height(node->left_), get_height(node->right_)) + 1;
-    }
-
-    iterator find(const Key& key) {
-        node_type* node = find_node(key);
-        return node ? iterator(node) : end();
     }
 
     node_type* find_node(node_type* node, const Key& key) { return NULL; }
