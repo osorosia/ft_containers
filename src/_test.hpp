@@ -15,8 +15,6 @@
 #include <map>
 #include <vector>
 
-// using namespace std;
-
 #define END            "\033[0m"
 #define BOLD           "\033[1m"
 #define BLACK          "\033[30m"
