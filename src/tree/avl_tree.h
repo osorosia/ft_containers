@@ -628,7 +628,6 @@ public:
     }
     void update_root(node_type* node) {
         root_ = node;
-        // TODO: end_で問題ない？
         if (node)
             node->parent_ = end_;
     }
