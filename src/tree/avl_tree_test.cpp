@@ -17,13 +17,13 @@ void avl_normal_test() {
     };
 
     for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+        std::cout << "# " << cases[i].op << " " << cases[i].val << std::endl;
         if (cases[i].op == "insert") {
             value_type val = value_type(cases[i].val, i);
             tree.insert(val);
         } else if (cases[i].op == "erase") {
             tree.erase(cases[i].val);
         }
-        std::cout << "# " << cases[i].op << " " << cases[i].val << std::endl;
         tree.print();
         tree.check();
     }
