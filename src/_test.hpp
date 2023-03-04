@@ -10,6 +10,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -29,7 +30,7 @@
 #define BOLD_UNDERLINE "\033[1;4m"
 
 #define TEST_NAME(name)                                                                            \
-    { std::cerr << YELLOW << "[" << name << "] " << END; }
+    { std::cerr << YELLOW << std::setw(24) << name << ": " << END; }
 
 #define TODO()                                                                                     \
     { std::cerr << CYAN << "TODO " << END; }

@@ -163,7 +163,7 @@ template < class Key,
            class T,
            class Compare   = std::less< Key >,
            class Allocator = std::allocator< std::pair< const Key, T > > >
-class AVLTree {
+class AvlTree {
 public:
     typedef Key                                     key_type;
     typedef T                                       mapped_type;
@@ -186,7 +186,7 @@ public:
     node_allocator_type node_alloc_;
     key_compare         comp_;
 
-    AVLTree()
+    AvlTree()
         : root_(NULL)
         , size_(0)
         , node_alloc_(node_allocator_type())
@@ -194,7 +194,7 @@ public:
         end_ = allocate_end_node();
     }
 
-    explicit AVLTree(const Compare& comp, const Allocator& alloc = Allocator())
+    explicit AvlTree(const Compare& comp, const Allocator& alloc = Allocator())
         : root_(NULL)
         , size_(0)
         , node_alloc_(alloc)
@@ -203,7 +203,7 @@ public:
     }
 
     template < class InputIt >
-    AVLTree(InputIt          first,
+    AvlTree(InputIt          first,
             InputIt          last,
             const Compare&   comp  = Compare(),
             const Allocator& alloc = Allocator())
@@ -215,7 +215,7 @@ public:
         insert(first, last);
     }
 
-    AVLTree(const AVLTree& other)
+    AvlTree(const AvlTree& other)
         : root_(NULL)
         , size_(0)
         , node_alloc_(node_allocator_type())
@@ -224,12 +224,12 @@ public:
         *this = other;
     }
 
-    ~AVLTree() {
+    ~AvlTree() {
         deallocate_tree(root_);
         deallocate_node(end_);
     }
 
-    AVLTree& operator=(const AVLTree& other) {
+    AvlTree& operator=(const AvlTree& other) {
         if (this == other) {
             return *this;
         }
@@ -313,7 +313,7 @@ public:
     size_type erase(const Key& key) { return erase_node(root_, key); }
 
     // TODO:
-    void swap(AVLTree& other);
+    void swap(AvlTree& other);
 
     //
     // Lookup

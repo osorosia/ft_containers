@@ -2,7 +2,7 @@
 #include <string>
 
 void avl_normal_test() {
-    ft::AVLTree< int, int >       tree;
+    ft::AvlTree< int, int >       tree;
     typedef std::pair< int, int > value_type;
 
     struct {
