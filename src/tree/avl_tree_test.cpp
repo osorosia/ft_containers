@@ -34,6 +34,5 @@ void avl_tree_test() {
 
     avl_normal_test();
 
-    TODO();
     OK();
 }

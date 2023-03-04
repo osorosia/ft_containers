@@ -170,20 +170,6 @@ public:
         deallocate_node(end_);
     }
 
-    std::pair< iterator, bool > insert(const value_type& value) {
-        return insert_node(root_, value);
-    }
-    iterator insert(iterator pos, const value_type& value) {
-        (void)pos;
-        return (*insert(value)).first;
-    }
-    template < class InputIt >
-    void insert(InputIt first, InputIt last) {
-        for (InputIt it = first; it != last; it++) {
-            insert(root_, *it);
-        }
-    }
-
     //
     // Iterators
     //
@@ -212,12 +198,26 @@ public:
     //
     // Modifiers
     //
-    // clear
-    // insert
+    void clear() { erase(begin(), end()); }
+
+    std::pair< iterator, bool > insert(const value_type& value) {
+        return insert_node(root_, value);
+    }
+    iterator insert(iterator pos, const value_type& value) {
+        (void)pos;
+        return (*insert(value)).first;
+    }
+    template < class InputIt >
+    void insert(InputIt first, InputIt last) {
+        for (InputIt it = first; it != last; it++) {
+            insert(root_, *it);
+        }
+    }
 
     iterator erase(iterator pos) {
         iterator next = pos;
         next++;
+        // TODO: posの位置からeraseを開始させる
         erase((*pos).first);
         return next;
     }
@@ -242,7 +242,10 @@ public:
         node_type* node = find_node(key);
         return node ? iterator(node) : end();
     }
-    const_iterator find(const Key& key) const; // TODO:
+    const_iterator find(const Key& key) const {
+        node_type* node = find_node(key);
+        return node ? const_iterator(node) : end();
+    }
 
     std::pair< iterator, iterator > equal_range(const Key& key) {
         return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
@@ -250,15 +253,22 @@ public:
     // TODO:
     std::pair< const_iterator, const_iterator > equal_range(const Key& key) const;
 
-    // lower_bound
     iterator lower_bound(const Key& key) {
         node_type* node = lower_bound_node(root_, key);
         return node ? iterator(node) : end();
     }
-    // upper_bound
+    const_iterator lower_bound(const Key& key) {
+        node_type* node = lower_bound_node(root_, key);
+        return node ? const_iterator(node) : end();
+    }
+
     iterator upper_bound(const Key& key) {
         node_type* node = upper_bound_node(root_, key);
         return node ? iterator(node) : end();
+    }
+    const_iterator upper_bound(const Key& key) {
+        node_type* node = upper_bound_node(root_, key);
+        return node ? const_iterator(node) : end();
     }
 
     //
