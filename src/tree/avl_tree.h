@@ -1,6 +1,8 @@
 #ifndef AVL_TREE_H
 #define AVL_TREE_H
 
+#include "../utils/equal.hpp"
+#include "../utils/lexicographical_compare.hpp"
 #include "../utils/pair.hpp"
 #include <cassert>
 #include <cmath>
@@ -126,6 +128,15 @@ public:
 };
 
 template < class T >
+bool operator==(const tree_iterator< T >& lhs, const tree_iterator< T >& rhs) {
+    return lhs.node_ == rhs.node_;
+}
+template < class T >
+bool operator!=(const tree_iterator< T >& lhs, const tree_iterator< T >& rhs) {
+    return !(lhs == rhs);
+}
+
+template < class T >
 class const_tree_iterator {
 public:
     typedef T                                 value_type;
@@ -158,6 +169,15 @@ public:
         return tmp;
     }
 };
+
+template < class T >
+bool operator==(const const_tree_iterator< T >& lhs, const const_tree_iterator< T >& rhs) {
+    return lhs.node_ == rhs.node_;
+}
+template < class T >
+bool operator!=(const const_tree_iterator< T >& lhs, const const_tree_iterator< T >& rhs) {
+    return !(lhs == rhs);
+}
 
 template < class Key,
            class T,
@@ -789,6 +809,37 @@ public:
         std::cout << prev_name << "-->" << name << "((.))" << std::endl;
     }
 };
+
+template < class Key, class T, class Compare, class Alloc >
+bool operator==(const ft::AvlTree< Key, T, Compare, Alloc >& lhs,
+                const ft::AvlTree< Key, T, Compare, Alloc >& rhs) {
+    return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
+template < class Key, class T, class Compare, class Alloc >
+bool operator!=(const ft::AvlTree< Key, T, Compare, Alloc >& lhs,
+                const ft::AvlTree< Key, T, Compare, Alloc >& rhs) {
+    return !(lhs == rhs);
+}
+template < class Key, class T, class Compare, class Alloc >
+bool operator<(const ft::AvlTree< Key, T, Compare, Alloc >& lhs,
+               const ft::AvlTree< Key, T, Compare, Alloc >& rhs) {
+    return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+}
+template < class Key, class T, class Compare, class Alloc >
+bool operator<=(const ft::AvlTree< Key, T, Compare, Alloc >& lhs,
+                const ft::AvlTree< Key, T, Compare, Alloc >& rhs) {
+    return !(rhs < lhs);
+}
+template < class Key, class T, class Compare, class Alloc >
+bool operator>(const ft::AvlTree< Key, T, Compare, Alloc >& lhs,
+               const ft::AvlTree< Key, T, Compare, Alloc >& rhs) {
+    return rhs < lhs;
+}
+template < class Key, class T, class Compare, class Alloc >
+bool operator>=(const ft::AvlTree< Key, T, Compare, Alloc >& lhs,
+                const ft::AvlTree< Key, T, Compare, Alloc >& rhs) {
+    return !(lhs < rhs);
+}
 
 } // namespace ft
 
