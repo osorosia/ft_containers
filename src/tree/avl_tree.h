@@ -15,7 +15,7 @@
 // check
 #define CHECK        true
 #define CHECK_HEIGHT true
-#define CHECK_AVL    false
+#define CHECK_AVL    true
 #define CHECK_SIZE   true
 // print
 #define PRINT_HEIGHT false
@@ -69,7 +69,7 @@ struct Node {
         node_type* node = this;
         while (node->parent_) {
             if (node->is_left()) {
-                return node->parent;
+                return node->parent_;
             }
             node = node->parent_;
         }
