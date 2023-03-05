@@ -5,6 +5,14 @@ typedef std::vector< int > std_vector;
 
 typedef std::allocator< int > allocater_type;
 
+void vector_equal(ft_vector& ft_vec, std_vector& std_vec) {
+    assert(ft_vec.size() == std_vec.size());
+
+    for (int i = 0; i < ft_vec.size(); i++) {
+        assert(ft_vec[i] == std_vec[i]);
+    }
+}
+
 void vector_test() {
     TEST_NAME("vector");
 
@@ -161,6 +169,36 @@ void vector_test() {
     // resize
     // --------------------------------------------------------
     // swap
+    {
+        ft_vector  ft_vec0;
+        ft_vector  ft_vec1;
+        std_vector std_vec0;
+        std_vector std_vec1;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec0.push_back(i);
+            ft_vec1.push_back(i + 10);
+            std_vec0.push_back(i);
+            std_vec1.push_back(i + 10);
+        }
+
+        vector_equal(ft_vec0, std_vec0);
+        vector_equal(ft_vec1, std_vec1);
+
+        ft_vec0.swap(ft_vec1);
+        std_vec0.swap(std_vec1);
+        vector_equal(ft_vec0, std_vec0);
+        vector_equal(ft_vec1, std_vec1);
+
+        swap(ft_vec0, ft_vec1);
+        swap(std_vec0, std_vec1);
+        vector_equal(ft_vec0, std_vec0);
+        vector_equal(ft_vec1, std_vec1);
+
+        swap(ft_vec0, ft_vec0);
+        swap(std_vec0, std_vec0);
+        vector_equal(ft_vec0, std_vec0);
+    }
     // --------------------------------------------------------
     // operator==, !=, <, <=, >, >=
 
