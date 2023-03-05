@@ -462,7 +462,52 @@ void map_test() {
 
     // --------------------------------------------------------
     // operator==, !=, <, <=, >, >=
-    // TODO:
+    {
+        ft_map  ft_mp0;
+        ft_map  ft_mp1;
+        std_map std_mp0;
+        std_map std_mp1;
+
+        for (int i = 0; i < 10; i++) {
+            map_insert_helper(ft_mp1, std_mp1, i, i);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            map_insert_helper(ft_mp0, std_mp0, i, i);
+
+            assert((ft_mp0 == ft_mp1) == (std_mp0 == std_mp1));
+            assert((ft_mp0 != ft_mp1) == (std_mp0 != std_mp1));
+
+            assert((ft_mp0 < ft_mp1) == (std_mp0 < std_mp1));
+            assert((ft_mp1 < ft_mp0) == (std_mp1 < std_mp0));
+            assert((ft_mp0 <= ft_mp1) == (std_mp0 <= std_mp1));
+            assert((ft_mp1 <= ft_mp0) == (std_mp1 <= std_mp0));
+            assert((ft_mp0 > ft_mp1) == (std_mp0 > std_mp1));
+            assert((ft_mp1 > ft_mp0) == (std_mp1 > std_mp0));
+            assert((ft_mp0 >= ft_mp1) == (std_mp0 >= std_mp1));
+            assert((ft_mp1 >= ft_mp0) == (std_mp1 >= std_mp0));
+        }
+
+        for (int i = 0; i < 10; i++) {
+            map_erase_helper(ft_mp1, std_mp1, i);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            map_erase_helper(ft_mp0, std_mp0, i);
+
+            assert((ft_mp0 == ft_mp1) == (std_mp0 == std_mp1));
+            assert((ft_mp0 != ft_mp1) == (std_mp0 != std_mp1));
+
+            assert((ft_mp0 < ft_mp1) == (std_mp0 < std_mp1));
+            assert((ft_mp1 < ft_mp0) == (std_mp1 < std_mp0));
+            assert((ft_mp0 <= ft_mp1) == (std_mp0 <= std_mp1));
+            assert((ft_mp1 <= ft_mp0) == (std_mp1 <= std_mp0));
+            assert((ft_mp0 > ft_mp1) == (std_mp0 > std_mp1));
+            assert((ft_mp1 > ft_mp0) == (std_mp1 > std_mp0));
+            assert((ft_mp0 >= ft_mp1) == (std_mp0 >= std_mp1));
+            assert((ft_mp1 >= ft_mp0) == (std_mp1 >= std_mp0));
+        }
+    }
 
     OK();
 }
