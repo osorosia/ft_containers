@@ -26,10 +26,9 @@ protected:
     typedef ft::reverse_iterator< iterator >       reverse_iterator;
     typedef ft::reverse_iterator< const_iterator > const_reverse_iterator;
 
-    pointer begin_;
-    pointer end_;
-    pointer end_cap_;
-    // https://en.cppreference.com/w/cpp/memory/allocator
+    pointer        begin_;
+    pointer        end_;
+    pointer        end_cap_;
     allocator_type alloc_;
 
 public:
@@ -40,7 +39,7 @@ public:
         : begin_(NULL)
         , end_(NULL)
         , end_cap_(NULL)
-        , alloc_(Allocator()) {}
+        , alloc_(allocator_type()) {}
     explicit vector(const Allocator& alloc)
         : begin_(NULL)
         , end_(NULL)
@@ -109,7 +108,9 @@ public:
 
     allocator_type get_allocator() const { return alloc_; }
 
+    //
     // Element access
+    //
     reference at(size_type pos) {
         if (pos >= size())
             throw std::out_of_range("vector");
@@ -133,7 +134,9 @@ public:
     T*       data() { return begin_; }
     const T* data() const { return begin_; };
 
+    //
     // Iterators
+    //
     iterator       begin() { return begin_; }
     const_iterator begin() const { return begin_; }
 
@@ -146,7 +149,9 @@ public:
     reverse_iterator       rend() { return reverse_iterator(begin_); }
     const_reverse_iterator rend() const { return reverse_iterator(begin_); }
 
+    //
     // Capacity
+    //
     bool empty() const { return begin_ == end_; }
 
     size_type size() const { return end_ - begin_; }
@@ -168,20 +173,22 @@ public:
         end_cap_ = begin_ + new_cap;
 
         for (pointer old_iter = old_begin; old_iter != old_end; old_iter++, end_++) {
-            alloc_.construct(end_, *old_iter);
-            alloc_.destroy(old_iter);
+            alloc_construct(end_, *old_iter);
+            alloc_destroy(old_iter);
         }
 
-        alloc_.deallocate(old_begin, old_cap);
+        alloc_deallocate(old_begin, old_cap);
     }
 
     size_type capacity() const { return end_cap_ - begin_; }
 
+    //
     // Modifiers
+    //
     void clear() {
         size_type sz = size();
         for (size_type i = 0; i < sz; i++) {
-            alloc_.destroy(--end_);
+            alloc_destroy(--end_);
         }
     }
 
@@ -213,25 +220,25 @@ public:
             // TODO: fix performance
             reserve(size() + 1);
         }
-        alloc_.construct(end_++, value);
+        alloc_construct(end_++, value);
     }
 
     void pop_back() {
         // undefined behavior: Calling pop_back on an empty container
-        alloc_.destroy(--end_);
+        alloc_destroy(--end_);
     }
 
     void resize(size_type count, T value = T()) {
         if (count < size()) {
             for (iterator it = begin_ + count; it != end_; it++) {
-                alloc_.destroy(it);
+                alloc_destroy(it);
             }
             end_ = begin_ + count;
         } else if (count > size()) {
             // TODO: fix performance
             reserve(count);
             for (; size() < count; end_++) {
-                alloc_.construct(end_, value);
+                alloc_construct(end_, value);
             }
         }
     }
@@ -241,15 +248,16 @@ public:
     }
 
 private:
-    //
-    // Private
-    //
     void destroy_until(reverse_iterator rend) {
         for (reverse_iterator riter = rbegin(); riter != rend; riter++, end_--) {
             // &*riter: reverse_iterator -> pointer
-            alloc_.destroy(&*riter);
+            alloc_destroy(&*riter);
         }
     }
+    void    alloc_construct(pointer p, const_reference val) { alloc_.construct(p, val); }
+    void    alloc_destroy(pointer p) { alloc_.destroy(p); }
+    pointer alloc_allocate(size_type n) { alloc_.allocate(n); }
+    void    alloc_deallocate(pointer p, size_type n) { alloc_.deallocate(p, n); }
 };
 
 //
