@@ -146,9 +146,9 @@ public:
     const_iterator end() const { return end_; }
 
     reverse_iterator       rbegin() { return reverse_iterator(end_); }
-    const_reverse_iterator rbegin() const { return reverse_iterator(end_); }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(end_); }
 
-    reverse_iterator       rend() { return const_reverse_iterator(begin_); }
+    reverse_iterator       rend() { return reverse_iterator(begin_); }
     const_reverse_iterator rend() const { return const_reverse_iterator(begin_); }
 
     //
