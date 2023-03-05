@@ -80,7 +80,7 @@ struct Node {
             return left_->find_max();
         node_type* node = this;
         while (node->parent_) {
-            if (node->is_right) {
+            if (node->is_right()) {
                 return node->parent_;
             }
             node = node->parent_;
@@ -96,9 +96,13 @@ struct Node {
 template < class T >
 class tree_iterator {
 public:
-    typedef T                           value_type;
-    typedef Node< value_type >          node_type;
-    typedef tree_iterator< value_type > self_type;
+    typedef T                               value_type;
+    typedef T*                              pointer;
+    typedef T&                              reference;
+    typedef Node< value_type >              node_type;
+    typedef tree_iterator< value_type >     self_type;
+    typedef std::bidirectional_iterator_tag iterator_category;
+    typedef std::ptrdiff_t                  difference_type;
 
     node_type* node_;
 
@@ -140,8 +144,12 @@ template < class T >
 class const_tree_iterator {
 public:
     typedef T                                 value_type;
+    typedef const T*                          pointer;
+    typedef const T&                          reference;
     typedef Node< value_type >                node_type;
     typedef const_tree_iterator< value_type > self_type;
+    typedef std::bidirectional_iterator_tag   iterator_category;
+    typedef std::ptrdiff_t                    difference_type;
 
     node_type* node_;
 
@@ -662,8 +670,10 @@ public:
     }
     void update_root(node_type* node) {
         root_ = node;
-        if (node)
+        end_->left_ = node;
+        if (node) {
             node->parent_ = end_;
+        }
     }
     void update_height_to_root(node_type* node) {
         if (node == NULL)

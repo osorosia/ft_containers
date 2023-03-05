@@ -39,6 +39,42 @@ void map_test() {
     // at, operator[]
     // --------------------------------------------------------
     // begin, end, rbegin, rend
+    {
+        ft_map  ft_mp;
+        std_map std_mp;
+
+        assert((ft_mp.begin() == ft_mp.end()) == (std_mp.begin() == std_mp.end()));
+        assert((ft_mp.rbegin() == ft_mp.rend()) == (std_mp.rbegin() == std_mp.rend()));
+        for (int i = 0; i < 10; i++) {
+            map_insert_helper(ft_mp, std_mp, i, i);
+
+            assert(ft_mp.begin()->first == std_mp.begin()->first);
+            assert(ft_mp.rbegin()->first == std_mp.rbegin()->first);
+
+            ft_map::iterator          ft_end_it   = ft_mp.end();
+            std_map::iterator         std_end_it  = std_mp.end();
+            ft_map::reverse_iterator  ft_rend_it  = ft_mp.rend();
+            std_map::reverse_iterator std_rend_it = std_mp.rend();
+            ft_end_it--;
+            std_end_it--;
+            ft_rend_it--;
+            std_rend_it--;
+
+            assert(ft_end_it->first == std_end_it->first);
+            assert(ft_rend_it->first == std_rend_it->first);
+            assert((ft_mp.begin() == ft_mp.end()) == (std_mp.begin() == std_mp.end()));
+            assert((ft_mp.rbegin() == ft_mp.rend()) == (std_mp.rbegin() == std_mp.rend()));
+        }
+    }
+
+    {
+        ft_map  ft_mp;
+        std_map std_mp;
+
+        for (int i = 10; i > 0; i--) {
+        }
+    }
+
     // --------------------------------------------------------
     // empty, size
     {
