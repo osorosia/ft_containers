@@ -13,7 +13,7 @@ template < class Key,
            class Compare   = std::less< Key >,
            class Allocator = std::allocator< ft::pair< const Key, T > > >
 class map {
-protected:
+public:
     //
     // Member types
     //
