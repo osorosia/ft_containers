@@ -1,9 +1,16 @@
 #include "_test.hpp"
 
-typedef ft::map< int, int >   ft_map;
-typedef std::map< int, int >  std_map;
+typedef ft::map< int, int >  ft_map;
+typedef std::map< int, int > std_map;
+
 typedef ft::pair< int, int >  ft_value_type;
 typedef std::pair< int, int > std_value_type;
+
+typedef std::less< int >    comp_less;
+typedef std::greater< int > comp_greater;
+
+typedef std::allocator< ft_value_type >  ft_allocater_type;
+typedef std::allocator< std_value_type > std_allocater_type;
 
 static void map_insert_helper(ft_map& ft_mp, std_map& std_mp, int key, int val) {
     ft_mp.insert(ft_value_type(key, val));
@@ -30,6 +37,9 @@ static void map_equal(ft_map& ft_mp, std_map& std_mp) {
 
 void map_test() {
     TEST_NAME("map");
+    // --------------------------------------------------------
+    // (constructor)
+    // TODO:
 
     // --------------------------------------------------------
     // operator=
@@ -42,20 +52,27 @@ void map_test() {
         for (int i = 0; i < 10; i++) {
             map_insert_helper(ft_mp0, std_mp0, i, i);
         }
-        ft_mp1 = ft_mp0;
+        ft_mp1  = ft_mp0;
         std_mp1 = std_mp0;
 
         map_equal(ft_mp0, std_mp0);
         map_equal(ft_mp1, std_mp1);
 
-        ft_mp0 = ft_mp0;
+        ft_mp0  = ft_mp0;
         std_mp0 = std_mp0;
         map_equal(ft_mp0, std_mp0);
     }
     // --------------------------------------------------------
     // get_allocator
+    // TODO:
+    {
+        ft_allocater_type  ft_alloc  = ft_allocater_type();
+        std_allocater_type std_alloc = std_allocater_type();
+    }
+
     // --------------------------------------------------------
     // at, operator[]
+    // TODO:
     // --------------------------------------------------------
     // begin, end, rbegin, rend
     {
@@ -139,6 +156,10 @@ void map_test() {
     // --------------------------------------------------------
     // max_size
     // TODO:
+    {
+        ft_map ft_mp;
+        ft_mp.max_size();
+    }
 
     // --------------------------------------------------------
     // clear
@@ -331,8 +352,10 @@ void map_test() {
 
     // --------------------------------------------------------
     // key_comp, value_comp
+    // TODO:
     // --------------------------------------------------------
     // operator==, !=, <, <=, >, >=
+    // TODO:
 
     OK();
 }
