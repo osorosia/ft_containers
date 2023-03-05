@@ -33,6 +33,25 @@ void map_test() {
 
     // --------------------------------------------------------
     // operator=
+    {
+        ft_map  ft_mp0;
+        ft_map  ft_mp1;
+        std_map std_mp0;
+        std_map std_mp1;
+
+        for (int i = 0; i < 10; i++) {
+            map_insert_helper(ft_mp0, std_mp0, i, i);
+        }
+        ft_mp1 = ft_mp0;
+        std_mp1 = std_mp0;
+
+        map_equal(ft_mp0, std_mp0);
+        map_equal(ft_mp1, std_mp1);
+
+        ft_mp0 = ft_mp0;
+        std_mp0 = std_mp0;
+        map_equal(ft_mp0, std_mp0);
+    }
     // --------------------------------------------------------
     // get_allocator
     // --------------------------------------------------------
@@ -217,12 +236,15 @@ void map_test() {
         ft_map  ft_mp;
         std_map std_mp;
 
-        for (int i = 0; i < 10; i++) {
+        int left  = 0;
+        int right = 10;
+
+        for (int i = left; i < right; i++) {
             map_insert_helper(ft_mp, std_mp, i, i);
         }
 
         {
-            int key = -1;
+            int key = left - 1;
 
             ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
             ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);
@@ -243,7 +265,7 @@ void map_test() {
             assert(ft_up_it->first == std_up_it->first);
         }
         {
-            int key = 0;
+            int key = left;
 
             ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
             ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);
@@ -264,7 +286,7 @@ void map_test() {
             assert(ft_up_it->first == std_up_it->first);
         }
         {
-            int key = 9;
+            int key = right - 1;
 
             ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
             ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);
@@ -285,7 +307,7 @@ void map_test() {
             // assert(ft_up_it->first == std_up_it->first);
         }
         {
-            int key = 10;
+            int key = right;
 
             ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
             ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);

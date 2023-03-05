@@ -78,7 +78,7 @@ public:
     ~map() {}
 
     map& operator=(const map& other) {
-        if (this == other)
+        if (this == &other)
             return *this;
 
         tree_ = other.tree_;

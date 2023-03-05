@@ -258,10 +258,10 @@ public:
     }
 
     AvlTree& operator=(const AvlTree& other) {
-        if (this == other) {
+        if (this == &other) {
             return *this;
         }
-        deallocate_tree();
+        deallocate_tree(root_);
         size_ = 0;
         root_ = NULL;
         insert(other.begin(), other.end());
@@ -314,7 +314,7 @@ public:
     ft::pair< iterator, bool > insert(const value_type& value) { return insert_node(root_, value); }
     iterator                   insert(iterator pos, const value_type& value) {
         (void)pos;
-        return insert(value)->first;
+        return insert(value).first;
     }
     template < class InputIt >
     void insert(InputIt first, InputIt last) {
@@ -700,13 +700,13 @@ public:
         }
     }
 
-    node_type* find_min_node(node_type* node) {
+    node_type* find_min_node(node_type* node) const {
         if (node->left_)
             return find_min_node(node->left_);
         return node;
     }
 
-    node_type* find_max_node(node_type* node) {
+    node_type* find_max_node(node_type* node) const {
         if (node->right_)
             return find_max_node(node->right_);
         return node;
