@@ -210,8 +210,103 @@ void map_test() {
             assert(ft_mp.find(i)->first == std_mp.find(i)->first);
         }
     }
+
     // --------------------------------------------------------
     // equal_range, lower_bound, upper_bound
+    {
+        ft_map  ft_mp;
+        std_map std_mp;
+
+        for (int i = 0; i < 10; i++) {
+            map_insert_helper(ft_mp, std_mp, i, i);
+        }
+
+        {
+            int key = -1;
+
+            ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
+            ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);
+            ft_map::iterator ft_eq1_it = ft_mp.equal_range(key).first;
+            ft_map::iterator ft_eq2_it = ft_mp.equal_range(key).second;
+
+            std_map::iterator std_low_it = std_mp.lower_bound(key);
+            std_map::iterator std_up_it  = std_mp.upper_bound(key);
+            std_map::iterator std_eq1_it = std_mp.equal_range(key).first;
+            std_map::iterator std_eq2_it = std_mp.equal_range(key).second;
+
+            assert((ft_low_it == ft_mp.end()) == (std_low_it == std_mp.end()));
+            assert((ft_up_it == ft_mp.end()) == (std_up_it == std_mp.end()));
+            assert((ft_low_it == ft_eq1_it) == (std_low_it == std_eq1_it));
+            assert((ft_up_it == ft_eq2_it) == (std_up_it == std_eq2_it));
+
+            assert(ft_low_it->first == std_low_it->first);
+            assert(ft_up_it->first == std_up_it->first);
+        }
+        {
+            int key = 0;
+
+            ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
+            ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);
+            ft_map::iterator ft_eq1_it = ft_mp.equal_range(key).first;
+            ft_map::iterator ft_eq2_it = ft_mp.equal_range(key).second;
+
+            std_map::iterator std_low_it = std_mp.lower_bound(key);
+            std_map::iterator std_up_it  = std_mp.upper_bound(key);
+            std_map::iterator std_eq1_it = std_mp.equal_range(key).first;
+            std_map::iterator std_eq2_it = std_mp.equal_range(key).second;
+
+            assert((ft_low_it == ft_mp.end()) == (std_low_it == std_mp.end()));
+            assert((ft_up_it == ft_mp.end()) == (std_up_it == std_mp.end()));
+            assert((ft_low_it == ft_eq1_it) == (std_low_it == std_eq1_it));
+            assert((ft_up_it == ft_eq2_it) == (std_up_it == std_eq2_it));
+
+            assert(ft_low_it->first == std_low_it->first);
+            assert(ft_up_it->first == std_up_it->first);
+        }
+        {
+            int key = 9;
+
+            ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
+            ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);
+            ft_map::iterator ft_eq1_it = ft_mp.equal_range(key).first;
+            ft_map::iterator ft_eq2_it = ft_mp.equal_range(key).second;
+
+            std_map::iterator std_low_it = std_mp.lower_bound(key);
+            std_map::iterator std_up_it  = std_mp.upper_bound(key);
+            std_map::iterator std_eq1_it = std_mp.equal_range(key).first;
+            std_map::iterator std_eq2_it = std_mp.equal_range(key).second;
+
+            assert((ft_low_it == ft_mp.end()) == (std_low_it == std_mp.end()));
+            assert((ft_up_it == ft_mp.end()) == (std_up_it == std_mp.end()));
+            assert((ft_low_it == ft_eq1_it) == (std_low_it == std_eq1_it));
+            assert((ft_up_it == ft_eq2_it) == (std_up_it == std_eq2_it));
+
+            assert(ft_low_it->first == std_low_it->first);
+            // assert(ft_up_it->first == std_up_it->first);
+        }
+        {
+            int key = 10;
+
+            ft_map::iterator ft_low_it = ft_mp.lower_bound(key);
+            ft_map::iterator ft_up_it  = ft_mp.upper_bound(key);
+            ft_map::iterator ft_eq1_it = ft_mp.equal_range(key).first;
+            ft_map::iterator ft_eq2_it = ft_mp.equal_range(key).second;
+
+            std_map::iterator std_low_it = std_mp.lower_bound(key);
+            std_map::iterator std_up_it  = std_mp.upper_bound(key);
+            std_map::iterator std_eq1_it = std_mp.equal_range(key).first;
+            std_map::iterator std_eq2_it = std_mp.equal_range(key).second;
+
+            assert((ft_low_it == ft_mp.end()) == (std_low_it == std_mp.end()));
+            assert((ft_up_it == ft_mp.end()) == (std_up_it == std_mp.end()));
+            assert((ft_low_it == ft_eq1_it) == (std_low_it == std_eq1_it));
+            assert((ft_up_it == ft_eq2_it) == (std_up_it == std_eq2_it));
+
+            // assert(ft_low_it->first == std_low_it->first);
+            // assert(ft_up_it->first == std_up_it->first);
+        }
+    }
+
     // --------------------------------------------------------
     // key_comp, value_comp
     // --------------------------------------------------------
