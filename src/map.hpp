@@ -63,7 +63,6 @@ public:
     //
     // Member functions
     //
-    // (constructor)
     map()
         : tree_() {}
     explicit map(const Compare& comp, const Allocator& alloc = Allocator())
@@ -77,8 +76,16 @@ public:
     map(const map& other) { *this = other; }
 
     ~map() {}
-    // operator=
-    // get_allocator
+
+    map& operator=(const map& other) {
+        if (this == other)
+            return *this;
+
+        tree_ = other.tree_;
+        return *this;
+    }
+
+    allocator_type get_allocator() const { return tree_->get_allocator(); }
 
     //
     // Element access
@@ -167,7 +174,7 @@ public:
     //
     // Observers
     //
-    key_compare   key_comp() const { return tree_->comp_; }
+    key_compare   key_comp() const { return tree_->key_comp(); }
     value_compare value_comp() const { return value_compare(key_comp()); }
 };
 

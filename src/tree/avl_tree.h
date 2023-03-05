@@ -395,8 +395,6 @@ public:
     // Observers
     //
     key_compare key_comp() const { return comp_; }
-    // TODO:
-    // value_comp
 
     // private:--------------------------------------------
     node_type* allocate_node(const value_type& value) {
