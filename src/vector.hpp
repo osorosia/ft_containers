@@ -63,6 +63,7 @@ public:
     vector(const vector& other) { assign(other.begin(), other.end()); }
 
     // TODO: (destructor)
+    ~vector() {}
 
     vector& operator=(const vector& other) {
         if (*this == other)
@@ -146,8 +147,8 @@ public:
     reverse_iterator       rbegin() { return reverse_iterator(end_); }
     const_reverse_iterator rbegin() const { return reverse_iterator(end_); }
 
-    reverse_iterator       rend() { return reverse_iterator(begin_); }
-    const_reverse_iterator rend() const { return reverse_iterator(begin_); }
+    reverse_iterator       rend() { return const_reverse_iterator(begin_); }
+    const_reverse_iterator rend() const { return const_reverse_iterator(begin_); }
 
     //
     // Capacity
@@ -244,7 +245,20 @@ public:
     }
 
     void swap(vector& other) {
-        // TODO:
+        pointer        begin_tmp   = other.begin_;
+        pointer        end_tmp     = other.end_;
+        pointer        end_cap_tmp = other.end_cap_;
+        allocater_type alloc_tmp   = other.alloc_;
+
+        other.begin_   = begin_;
+        other.end_     = end_;
+        other.end_cap_ = end_cap_;
+        other.alloc_   = alloc_;
+
+        begin_   = begin_tmp;
+        end_     = end_tmp;
+        end_cap_ = end_cap_tmp;
+        alloc_   = alloc_tmp;
     }
 
 private:
