@@ -32,8 +32,8 @@ public:
     typedef typename ft::AvlTree< Key, T, Compare, Allocator >::iterator       iterator;
     typedef typename ft::AvlTree< Key, T, Compare, Allocator >::const_iterator const_iterator;
 
-    typedef std::reverse_iterator< iterator >       reverse_iterator;
-    typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
+    typedef ft::reverse_iterator< iterator >       reverse_iterator;
+    typedef ft::reverse_iterator< const_iterator > const_reverse_iterator;
 
 private:
     typedef ft::AvlTree< Key, T, Compare, Allocator > tree_type;
