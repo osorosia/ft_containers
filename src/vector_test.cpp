@@ -102,6 +102,21 @@ void vector_test() {
     }
     // --------------------------------------------------------
     // empty, size
+    {
+        ft_vector  ft_vec;
+        std_vector std_vec;
+
+        assert(ft_vec.empty() == std_vec.empty());
+        assert(ft_vec.size() == std_vec.size());
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec.push_back(i);
+            std_vec.push_back(i);
+
+            assert(ft_vec.empty() == std_vec.empty());
+            assert(ft_vec.size() == std_vec.size());
+        }
+    }
     // --------------------------------------------------------
     // max_size
     {
@@ -109,16 +124,39 @@ void vector_test() {
         ft_vec.max_size();
     }
     // --------------------------------------------------------
-    // reserve
-    // --------------------------------------------------------
-    // capacity
+    // reserve, capacity
+    {
+        ft_vector ft_vec;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec.push_back(i);
+            assert(ft_vec.capacity() >= i + 1);
+        }
+
+        ft_vector::size_type new_cap = ft_vec.capacity() * 2;
+        ft_vec.reserve(new_cap);
+
+        assert(ft_vec.capacity() >= new_cap);
+    }
     // --------------------------------------------------------
     // clear
+    {
+        ft_vector ft_vec;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec.push_back(i);
+        }
+
+        ft_vector::size_type cap = ft_vec.capacity();
+
+        ft_vec.clear();
+        assert(ft_vec.size() == 0);
+        assert(ft_vec.capacity() == cap);
+    }
     // --------------------------------------------------------
     // insert, erase
     // --------------------------------------------------------
     // push_back, pop_back
-    {}
     // --------------------------------------------------------
     // resize
     // --------------------------------------------------------
