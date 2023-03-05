@@ -9,7 +9,7 @@ namespace ft {
 // https://en.cppreference.com/w/cpp/container/vector
 template < class T, class Allocator = std::allocator< T > >
 class vector {
-protected:
+public:
     //
     // Member types
     //
@@ -31,7 +31,6 @@ protected:
     pointer        end_cap_;
     allocator_type alloc_;
 
-public:
     //
     // Member functions
     //
@@ -62,8 +61,10 @@ public:
     }
     vector(const vector& other) { assign(other.begin(), other.end()); }
 
-    // TODO: (destructor)
-    ~vector() {}
+    ~vector() {
+        clear();
+        alloc_deallocate();
+    }
 
     vector& operator=(const vector& other) {
         if (*this == other)
@@ -248,7 +249,7 @@ public:
         pointer        begin_tmp   = other.begin_;
         pointer        end_tmp     = other.end_;
         pointer        end_cap_tmp = other.end_cap_;
-        allocater_type alloc_tmp   = other.alloc_;
+        allocator_type alloc_tmp   = other.alloc_;
 
         other.begin_   = begin_;
         other.end_     = end_;
@@ -271,6 +272,7 @@ private:
     void    alloc_construct(pointer p, const_reference val) { alloc_.construct(p, val); }
     void    alloc_destroy(pointer p) { alloc_.destroy(p); }
     pointer alloc_allocate(size_type n) { alloc_.allocate(n); }
+    void    alloc_deallocate() { alloc_.deallocate(begin_, capacity()); }
     void    alloc_deallocate(pointer p, size_type n) { alloc_.deallocate(p, n); }
 };
 
