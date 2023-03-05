@@ -94,22 +94,22 @@ public:
         iterator it = tree_.find(key);
         if (it == tree_.end())
             throw std::out_of_range("map::at");
-        return (*it).second;
+        return it->second;
     }
     const T& at(const Key& key) const {
         iterator it = tree_.find(key);
         if (it == tree_.end())
             throw std::out_of_range("map::at");
-        return (*it).second;
+        return it->second;
     }
 
     T& operator[](const Key& key) {
         iterator it = tree_.find(key);
         if (it == tree_.end()) {
             iterator ret = tree_.insert(ft::pair< Key, T >(key, T())).first;
-            return (*ret).second();
+            return ret->second;
         }
-        return (*it).second;
+        return it->second;
     }
 
     //
