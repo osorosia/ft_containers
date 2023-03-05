@@ -43,16 +43,40 @@ public:
     //
     // Member classes
     //
-    // value_compare
+    class value_compare : public std::binary_function< value_type, value_type, bool > {
+        friend class map;
+
+    public:
+        typedef bool       result_type;
+        typedef value_type first_argument_type;
+        typedef value_type second_argument_type;
+        bool               operator()(const value_type& lhs, const value_type& rhs) {
+            return comp(lhs.first, rhs.first);
+        }
+
+    protected:
+        Compare comp;
+        value_compare(Compare c)
+            : comp(c) {}
+    };
 
     //
     // Member functions
     //
     // (constructor)
     map()
-        : tree_(tree_type()) {}
-    explicit map(const Compare& comp, const Allocator& alloc = Allocator()); // TODO:
-    // (destructor)
+        : tree_() {}
+    explicit map(const Compare& comp, const Allocator& alloc = Allocator())
+        : tree_(comp, alloc) {}
+    template < class InputIt >
+    map(InputIt          first,
+        InputIt          last,
+        const Compare&   comp  = Compare(),
+        const Allocator& alloc = Allocator())
+        : tree_(first, last, comp, alloc) {}
+    map(const map& other) { *this = other; }
+
+    ~map() {}
     // operator=
     // get_allocator
 
@@ -119,8 +143,7 @@ public:
     iterator  erase(iterator first, iterator last) { return tree_->erase(first, last); }
     size_type erase(const Key& key) { return tree_->erase(key); }
 
-    // TODO:
-    void swap(map& other);
+    void swap(map& other) { tree_->swap(other); }
 
     //
     // Lookup
@@ -144,8 +167,8 @@ public:
     //
     // Observers
     //
-    // key_comp
-    // value_comp
+    key_compare   key_comp() const { return tree_->comp_; }
+    value_compare value_comp() const { return value_compare(key_comp()); }
 };
 
 //
@@ -181,8 +204,10 @@ bool operator>=(const ft::map< Key, T, Compare, Alloc >& lhs,
                 const ft::map< Key, T, Compare, Alloc >& rhs) {
     return !(lhs < rhs);
 }
-// TODO:
-// swap
+template < class Key, class T, class Compare, class Alloc >
+void swap(ft::map< Key, T, Compare, Alloc >& lhs, ft::map< Key, T, Compare, Alloc >& rhs) {
+    lhs.swap(rhs);
+}
 
 } // namespace ft
 

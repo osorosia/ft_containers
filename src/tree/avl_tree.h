@@ -332,8 +332,25 @@ public:
     }
     size_type erase(const Key& key) { return erase_node(root_, key); }
 
-    // TODO:
-    void swap(AvlTree& other);
+    void swap(AvlTree& other) {
+        node_type*          root_tmp       = root_;
+        node_type*          end_tmp        = end_;
+        size_type           size_tmp       = size_;
+        node_allocator_type node_alloc_tmp = node_alloc_;
+        key_compare         comp_tmp       = comp_;
+
+        root_       = other.root_;
+        end_        = other.end_;
+        size_       = other.size_;
+        node_alloc_ = other.node_alloc_;
+        comp_       = other.comp_;
+
+        other.root_       = root_tmp;
+        other.end_        = end_tmp;
+        other.size_       = size_tmp;
+        other.node_alloc_ = node_alloc_tmp;
+        other.comp_       = comp_tmp;
+    }
 
     //
     // Lookup
@@ -377,7 +394,8 @@ public:
     //
     // Observers
     //
-    // key_comp
+    key_compare key_comp() const { return comp_; }
+    // TODO:
     // value_comp
 
     // private:--------------------------------------------
@@ -415,9 +433,7 @@ public:
             return std::pair< iterator, bool >(iterator(root_), true);
         }
 
-        if (node->value_ == value) {
-            return std::pair< iterator, bool >(iterator(node), false);
-        } else if (value < node->value_) {
+        if (comp_(value.first, get_key(node))) {
             if (node->left_) {
                 return insert_node(node->left_, value);
             } else {
@@ -428,7 +444,7 @@ public:
                 rebalance(node);
                 return std::pair< iterator, bool >(iterator(node->left_), true);
             }
-        } else {
+        } else if (comp_(get_key(node), value.first)) {
             if (node->right_) {
                 return insert_node(node->right_, value);
             } else {
@@ -439,6 +455,8 @@ public:
                 rebalance(node);
                 return std::pair< iterator, bool >(iterator(node->right_), true);
             }
+        } else {
+            return std::pair< iterator, bool >(iterator(node), false);
         }
     }
 
@@ -446,9 +464,9 @@ public:
         if (node == NULL)
             return 0;
 
-        if (get_key(node) > key) {
+        if (comp_(key, get_key(node))) {
             return erase_node(node->left_, key);
-        } else if (get_key(node) < key) {
+        } else if (comp_(get_key(node), key)) {
             return erase_node(node->right_, key);
         } else {
             if (node->left_ == NULL && node->right_ == NULL) {
@@ -666,7 +684,6 @@ public:
 
     node_type* find_node(node_type* node, const Key& key) { return NULL; }
 
-    // ----------------
     node_type* find_min_node(node_type* node) {
         if (node->left_)
             return find_min_node(node->left_);
@@ -678,6 +695,8 @@ public:
             return find_max_node(node->right_);
         return node;
     }
+
+    bool compare_key(node_type* lhs, node_type* rhs) { return comp_(get_key(lhs), get_key(rhs)); }
 
     void check() {
         if (!CHECK)
@@ -713,11 +732,11 @@ public:
 
         if (node->left_) {
             assert(node == node->left_->parent_);
-            assert(node->value_ > node->left_->value_);
+            assert(compare_key(node->left_, node));
         }
         if (node->right_) {
             assert(node == node->right_->parent_);
-            assert(node->value_ < node->right_->value_);
+            assert(compare_key(node, node->right_));
         }
 
         check_tree(node->left_);
