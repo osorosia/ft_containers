@@ -1,6 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
+#include "utils.hpp"
 #include "tree/avl_tree.h"
 #include <functional>
 #include <memory>

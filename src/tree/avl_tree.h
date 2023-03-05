@@ -1,9 +1,7 @@
 #ifndef AVL_TREE_H
 #define AVL_TREE_H
 
-#include "../utils/equal.hpp"
-#include "../utils/lexicographical_compare.hpp"
-#include "../utils/pair.hpp"
+#include "../utils.hpp"
 #include <cassert>
 #include <cmath>
 #include <functional>
