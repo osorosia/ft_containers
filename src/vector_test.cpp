@@ -165,8 +165,41 @@ void vector_test() {
     // insert, erase
     // --------------------------------------------------------
     // push_back, pop_back
+    {
+        ft_vector  ft_vec;
+        std_vector std_vec;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec.push_back(i);
+            std_vec.push_back(i);
+
+            vector_equal(ft_vec, std_vec);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec.pop_back();
+            std_vec.pop_back();
+
+            vector_equal(ft_vec, std_vec);
+        }
+    }
     // --------------------------------------------------------
     // resize
+    {
+        ft_vector  ft_vec;
+        std_vector std_vec;
+
+        ft_vec.resize(3, 1);
+        std_vec.resize(3, 1);
+
+        vector_equal(ft_vec, std_vec);
+
+        ft_vec.resize(10, 2);
+        std_vec.resize(10, 2);
+
+        vector_equal(ft_vec, std_vec);
+    }
+
     // --------------------------------------------------------
     // swap
     {
@@ -201,6 +234,45 @@ void vector_test() {
     }
     // --------------------------------------------------------
     // operator==, !=, <, <=, >, >=
+    {
+        for (int i0 = -1; i0 <= 1; i0++) {
+            for (int j0 = -1; j0 <= 1; j0++) {
+                for (int i1 = -1; i1 <= 1; i1++) {
+                    for (int j1 = -1; j1 <= 1; j1++) {
+                        ft_vector  ft_vec0;
+                        ft_vector  ft_vec1;
+                        std_vector std_vec0;
+                        std_vector std_vec1;
+
+                        ft_vec0.push_back(i0);
+                        ft_vec0.push_back(j0);
+                        ft_vec1.push_back(i1);
+
+                        std_vec0.push_back(i0);
+                        std_vec0.push_back(j0);
+                        std_vec1.push_back(i1);
+
+                        assert((ft_vec0 == ft_vec1) == (std_vec0 == std_vec1));
+                        assert((ft_vec0 != ft_vec1) == (std_vec0 != std_vec1));
+                        assert((ft_vec0 < ft_vec1) == (std_vec0 < std_vec1));
+                        assert((ft_vec0 <= ft_vec1) == (std_vec0 <= std_vec1));
+                        assert((ft_vec0 > ft_vec1) == (std_vec0 > std_vec1));
+                        assert((ft_vec0 >= ft_vec1) == (std_vec0 >= std_vec1));
+
+                        ft_vec1.push_back(j1);
+                        std_vec1.push_back(j1);
+
+                        assert((ft_vec0 == ft_vec1) == (std_vec0 == std_vec1));
+                        assert((ft_vec0 != ft_vec1) == (std_vec0 != std_vec1));
+                        assert((ft_vec0 < ft_vec1) == (std_vec0 < std_vec1));
+                        assert((ft_vec0 <= ft_vec1) == (std_vec0 <= std_vec1));
+                        assert((ft_vec0 > ft_vec1) == (std_vec0 > std_vec1));
+                        assert((ft_vec0 >= ft_vec1) == (std_vec0 >= std_vec1));
+                    }
+                }
+            }
+        }
+    }
 
     OK();
 }
