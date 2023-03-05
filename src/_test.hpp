@@ -14,6 +14,7 @@
 #include <iostream>
 #include <iterator>
 #include <map>
+#include <memory>
 #include <vector>
 
 #define END            "\033[0m"
