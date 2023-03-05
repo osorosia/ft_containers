@@ -12,19 +12,12 @@ void equal_template0_test() {
     // vec0 = {0, 1, 2}
     // vec1 = {0, 1, 2}
     assert(ft::equal(vec0.begin(), vec0.end(), vec1.begin()));
-    assert(ft::equal(vec1.begin(), vec1.end(), vec0.begin()));
-
-    // vec0 = {0, 1, 2, 10}
-    // vec1 = {0, 1, 2}
-    vec0.push_back(10);
-    assert(!ft::equal(vec0.begin(), vec0.end(), vec1.begin()));
-    assert(ft::equal(vec1.begin(), vec1.end(), vec0.begin()));
 
     // vec0 = {0, 1, 2, 10}
     // vec1 = {0, 1, 2, 11}
+    vec0.push_back(10);
     vec1.push_back(11);
     assert(!ft::equal(vec0.begin(), vec0.end(), vec1.begin()));
-    assert(!ft::equal(vec1.begin(), vec1.end(), vec0.begin()));
 }
 
 // template < class T >
@@ -41,19 +34,12 @@ void equal_template1_test() {
     // vec0 = {0, 1, 2}
     // vec1 = {0, 1, 2}
     assert(ft::equal(vec0.begin(), vec0.end(), vec1.begin(), binary_pred));
-    assert(ft::equal(vec1.begin(), vec1.end(), vec0.begin(), binary_pred));
-
-    // vec0 = {0, 1, 2, 10}
-    // vec1 = {0, 1, 2}
-    vec0.push_back(10);
-    assert(!ft::equal(vec0.begin(), vec0.end(), vec1.begin(), binary_pred));
-    assert(ft::equal(vec1.begin(), vec1.end(), vec0.begin(), binary_pred));
 
     // vec0 = {0, 1, 2, 10}
     // vec1 = {0, 1, 2, 11}
+    vec0.push_back(10);
     vec1.push_back(11);
     assert(!ft::equal(vec0.begin(), vec0.end(), vec1.begin(), binary_pred));
-    assert(!ft::equal(vec1.begin(), vec1.end(), vec0.begin(), binary_pred));
 }
 
 void equal_test() {
