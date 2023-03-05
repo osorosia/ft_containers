@@ -650,14 +650,14 @@ public:
         }
     }
 
-    int      get_height(node_type* node) { return node ? node->height_ : 0; }
-    key_type get_key(node_type* node) { return node->value_.first; }
-    bool     has_left(node_type* node) { return node->left_ != NULL; }
-    bool     has_right(node_type* node) { return node->right_ != NULL; }
-    bool     is_empty() { return root_ == NULL; }
-    bool     is_left(node_type* node) { return node && node == node->parent_->left_; }
-    bool     is_right(node_type* node) { return node && node == node->parent_->right_; }
-    bool     is_root(node_type* node) { return node == root_; }
+    int      get_height(node_type* node) const { return node ? node->height_ : 0; }
+    key_type get_key(node_type* node) const { return node->value_.first; }
+    bool     has_left(node_type* node) const { return node->left_ != NULL; }
+    bool     has_right(node_type* node) const { return node->right_ != NULL; }
+    bool     is_empty() const { return root_ == NULL; }
+    bool     is_left(node_type* node) const { return node && node == node->parent_->left_; }
+    bool     is_right(node_type* node) const { return node && node == node->parent_->right_; }
+    bool     is_root(node_type* node) const { return node == root_; }
     void     update_left(node_type* node, node_type* child) {
         node->left_ = child;
         if (child)
@@ -669,7 +669,7 @@ public:
             child->parent_ = node;
     }
     void update_root(node_type* node) {
-        root_ = node;
+        root_       = node;
         end_->left_ = node;
         if (node) {
             node->parent_ = end_;
@@ -688,7 +688,7 @@ public:
         node->height_ = std::max(get_height(node->left_), get_height(node->right_)) + 1;
     }
 
-    node_type* find_node(node_type* node, const Key& key) {
+    node_type* find_node(node_type* node, const Key& key) const {
         if (node == NULL)
             return NULL;
         if (comp_(key, get_key(node))) {

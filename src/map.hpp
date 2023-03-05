@@ -150,7 +150,7 @@ public:
     iterator  erase(iterator first, iterator last) { return tree_.erase(first, last); }
     size_type erase(const Key& key) { return tree_.erase(key); }
 
-    void swap(map& other) { tree_.swap(other); }
+    void swap(map& other) { tree_.swap(other.tree_); }
 
     //
     // Lookup

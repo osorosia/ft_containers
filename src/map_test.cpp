@@ -15,7 +15,7 @@ static void map_erase_helper(ft_map& ft_mp, std_map& std_mp, int key) {
     std_mp.erase(key);
 }
 
-static void equal_map(ft_map& ft_mp, std_map& std_mp) {
+static void map_equal(ft_map& ft_mp, std_map& std_mp) {
     assert(ft_mp.size() == std_mp.size());
 
     ft_map::iterator  ft_it  = ft_mp.begin();
@@ -66,12 +66,29 @@ void map_test() {
             assert((ft_mp.rbegin() == ft_mp.rend()) == (std_mp.rbegin() == std_mp.rend()));
         }
     }
-
     {
         ft_map  ft_mp;
         std_map std_mp;
 
         for (int i = 10; i > 0; i--) {
+            map_insert_helper(ft_mp, std_mp, i, i);
+
+            assert(ft_mp.begin()->first == std_mp.begin()->first);
+            assert(ft_mp.rbegin()->first == std_mp.rbegin()->first);
+
+            ft_map::iterator          ft_end_it   = ft_mp.end();
+            std_map::iterator         std_end_it  = std_mp.end();
+            ft_map::reverse_iterator  ft_rend_it  = ft_mp.rend();
+            std_map::reverse_iterator std_rend_it = std_mp.rend();
+            ft_end_it--;
+            std_end_it--;
+            ft_rend_it--;
+            std_rend_it--;
+
+            assert(ft_end_it->first == std_end_it->first);
+            assert(ft_rend_it->first == std_rend_it->first);
+            assert((ft_mp.begin() == ft_mp.end()) == (std_mp.begin() == std_mp.end()));
+            assert((ft_mp.rbegin() == ft_mp.rend()) == (std_mp.rbegin() == std_mp.rend()));
         }
     }
 
@@ -102,6 +119,7 @@ void map_test() {
 
     // --------------------------------------------------------
     // max_size
+    // TODO:
 
     // --------------------------------------------------------
     // clear
@@ -148,13 +166,50 @@ void map_test() {
             } else if (cases[i].op == "erase") {
                 map_erase_helper(ft_mp, std_mp, cases[i].val);
             }
-            equal_map(ft_mp, std_mp);
+            map_equal(ft_mp, std_mp);
         }
     }
+
     // --------------------------------------------------------
     // swap
+    {
+        ft_map  ft_mp0;
+        ft_map  ft_mp1;
+        std_map std_mp0;
+        std_map std_mp1;
+
+        for (int i = 0; i < 10; i++) {
+            map_insert_helper(ft_mp0, std_mp0, i, i);
+            map_insert_helper(ft_mp1, std_mp1, i + 10, i + 10);
+        }
+        ft_mp0.swap(ft_mp1);
+        std_mp0.swap(std_mp1);
+        map_equal(ft_mp0, std_mp0);
+        map_equal(ft_mp1, std_mp1);
+
+        ft::swap(ft_mp0, ft_mp1);
+        std::swap(std_mp0, std_mp1);
+        map_equal(ft_mp0, std_mp0);
+        map_equal(ft_mp1, std_mp1);
+    }
+
     // --------------------------------------------------------
     // count, find
+    {
+        ft_map  ft_mp;
+        std_map std_mp;
+
+        for (int i = 0; i < 10; i++) {
+            assert(ft_mp.count(i) == std_mp.count(i));
+            assert(ft_mp.find(i) == ft_mp.end());
+            assert(std_mp.find(i) == std_mp.end());
+
+            map_insert_helper(ft_mp, std_mp, i, i);
+
+            assert(ft_mp.count(i) == std_mp.count(i));
+            assert(ft_mp.find(i)->first == std_mp.find(i)->first);
+        }
+    }
     // --------------------------------------------------------
     // equal_range, lower_bound, upper_bound
     // --------------------------------------------------------
