@@ -39,7 +39,31 @@ void map_test() {
     TEST_NAME("map");
     // --------------------------------------------------------
     // (constructor)
-    // TODO:
+    { ft_map ft_mp; }
+    {
+        comp_greater      comp  = comp_greater();
+        ft_allocater_type alloc = ft_allocater_type();
+
+        ft::map< int, int, comp_greater > ft_mp(comp, alloc);
+    }
+    {
+        ft_map ft_mp0;
+        for (int i = 0; i < 10; i++) {
+            ft_mp0.insert(ft_value_type(i, i));
+        }
+
+        ft_map ft_mp1(ft_mp0.begin(), ft_mp0.end());
+        assert(ft_mp0 == ft_mp1);
+    }
+    {
+        ft_map ft_mp0;
+        for (int i = 0; i < 10; i++) {
+            ft_mp0.insert(ft_value_type(i, i));
+        }
+
+        ft_map ft_mp1(ft_mp0);
+        assert(ft_mp0 == ft_mp1);
+    }
 
     // --------------------------------------------------------
     // operator=
