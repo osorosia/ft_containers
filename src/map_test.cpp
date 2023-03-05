@@ -64,15 +64,71 @@ void map_test() {
     }
     // --------------------------------------------------------
     // get_allocator
-    // TODO:
     {
         ft_allocater_type  ft_alloc  = ft_allocater_type();
         std_allocater_type std_alloc = std_allocater_type();
+
+        ft_map  ft_mp(comp_less(), ft_alloc);
+        std_map std_mp(comp_less(), std_alloc);
+
+        assert(ft_mp.get_allocator() == ft_alloc);
+        assert(std_mp.get_allocator() == std_alloc);
     }
 
     // --------------------------------------------------------
     // at, operator[]
-    // TODO:
+    {
+        ft_map  ft_mp;
+        std_map std_mp;
+
+        for (int i = 0; i < 10; i++) {
+            map_insert_helper(ft_mp, std_mp, i, i);
+            assert(ft_mp[i] == std_mp[i]);
+            assert(ft_mp.at(i) == std_mp.at(i));
+        }
+
+        try {
+            ft_mp.at(-1);
+            assert(false);
+        } catch (std::exception& e) {
+        }
+
+        try {
+            ft_mp.at(10);
+            assert(false);
+        } catch (std::exception& e) {
+        }
+
+        try {
+            int key = -1;
+
+            ft_mp[key]  = 99;
+            std_mp[key] = 99;
+            assert(ft_mp[key] == std_mp[key]);
+            assert(ft_mp.at(key) == std_mp.at(key));
+            ft_mp[key]  = 9999;
+            std_mp[key] = 9999;
+            assert(ft_mp[key] == std_mp[key]);
+            assert(ft_mp.at(key) == std_mp.at(key));
+        } catch (std::exception& e) {
+            assert(false);
+        }
+
+        try {
+            int key = 10;
+
+            ft_mp[key]  = 99;
+            std_mp[key] = 99;
+            assert(ft_mp[key] == std_mp[key]);
+            assert(ft_mp.at(key) == std_mp.at(key));
+            ft_mp[key]  = 9999;
+            std_mp[key] = 9999;
+            assert(ft_mp[key] == std_mp[key]);
+            assert(ft_mp.at(key) == std_mp.at(key));
+        } catch (std::exception& e) {
+            assert(false);
+        }
+    }
     // --------------------------------------------------------
     // begin, end, rbegin, rend
     {
@@ -155,7 +211,6 @@ void map_test() {
 
     // --------------------------------------------------------
     // max_size
-    // TODO:
     {
         ft_map ft_mp;
         ft_mp.max_size();
@@ -352,7 +407,59 @@ void map_test() {
 
     // --------------------------------------------------------
     // key_comp, value_comp
-    // TODO:
+    {
+        typedef ft::map< int, int, comp_less >  ft_lt_map;
+        typedef std::map< int, int, comp_less > std_lt_map;
+
+        ft_lt_map  ft_mp;
+        std_lt_map std_mp;
+
+        ft_lt_map::key_compare    ft_k_comp  = ft_mp.key_comp();
+        ft_lt_map::value_compare  ft_v_comp  = ft_mp.value_comp();
+        std_lt_map::key_compare   std_k_comp = std_mp.key_comp();
+        std_lt_map::value_compare std_v_comp = std_mp.value_comp();
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                // key
+                assert(ft_k_comp(i, j) == std_k_comp(i, j));
+
+                // value
+                ft_value_type  ft_v0  = ft_value_type(i, i);
+                ft_value_type  ft_v1  = ft_value_type(j, j);
+                std_value_type std_v0 = std_value_type(i, i);
+                std_value_type std_v1 = std_value_type(j, j);
+                assert(ft_v_comp(ft_v0, ft_v1) == std_v_comp(std_v0, std_v1));
+            }
+        }
+    }
+    {
+        typedef ft::map< int, int, comp_greater >  ft_gt_map;
+        typedef std::map< int, int, comp_greater > std_gt_map;
+
+        ft_gt_map  ft_mp;
+        std_gt_map std_mp;
+
+        ft_gt_map::key_compare    ft_k_comp  = ft_mp.key_comp();
+        ft_gt_map::value_compare  ft_v_comp  = ft_mp.value_comp();
+        std_gt_map::key_compare   std_k_comp = std_mp.key_comp();
+        std_gt_map::value_compare std_v_comp = std_mp.value_comp();
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                // key
+                assert(ft_k_comp(i, j) == std_k_comp(i, j));
+
+                // value
+                ft_value_type  ft_v0  = ft_value_type(i, i);
+                ft_value_type  ft_v1  = ft_value_type(j, j);
+                std_value_type std_v0 = std_value_type(i, i);
+                std_value_type std_v1 = std_value_type(j, j);
+                assert(ft_v_comp(ft_v0, ft_v1) == std_v_comp(std_v0, std_v1));
+            }
+        }
+    }
+
     // --------------------------------------------------------
     // operator==, !=, <, <=, >, >=
     // TODO:
