@@ -187,7 +187,7 @@ class AvlTree {
 public:
     typedef Key                                     key_type;
     typedef T                                       mapped_type;
-    typedef ft::pair< const Key, T >               value_type;
+    typedef ft::pair< const Key, T >                value_type;
     typedef std::size_t                             size_type;
     typedef std::ptrdiff_t                          difference_type;
     typedef Compare                                 key_compare;
@@ -303,10 +303,8 @@ public:
     //
     void clear() { erase(begin(), end()); }
 
-    ft::pair< iterator, bool > insert(const value_type& value) {
-        return insert_node(root_, value);
-    }
-    iterator insert(iterator pos, const value_type& value) {
+    ft::pair< iterator, bool > insert(const value_type& value) { return insert_node(root_, value); }
+    iterator                   insert(iterator pos, const value_type& value) {
         (void)pos;
         return insert(value)->first;
     }
@@ -358,11 +356,11 @@ public:
     size_type count(const Key& key) const { return find(key) != end(); }
 
     iterator find(const Key& key) {
-        node_type* node = find_node(key);
+        node_type* node = find_node(root_, key);
         return node ? iterator(node) : end();
     }
     const_iterator find(const Key& key) const {
-        node_type* node = find_node(key);
+        node_type* node = find_node(root_, key);
         return node ? const_iterator(node) : end();
     }
 
@@ -680,7 +678,17 @@ public:
         node->height_ = std::max(get_height(node->left_), get_height(node->right_)) + 1;
     }
 
-    node_type* find_node(node_type* node, const Key& key) { return NULL; }
+    node_type* find_node(node_type* node, const Key& key) {
+        if (node == NULL)
+            return NULL;
+        if (comp_(key, get_key(node))) {
+            return find_node(node->left_, key);
+        } else if (comp_(get_key(node), key)) {
+            return find_node(node->right_, key);
+        } else {
+            return node;
+        }
+    }
 
     node_type* find_min_node(node_type* node) {
         if (node->left_)
