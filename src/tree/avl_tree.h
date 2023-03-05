@@ -182,12 +182,12 @@ bool operator!=(const const_tree_iterator< T >& lhs, const const_tree_iterator< 
 template < class Key,
            class T,
            class Compare   = std::less< Key >,
-           class Allocator = std::allocator< std::pair< const Key, T > > >
+           class Allocator = std::allocator< ft::pair< const Key, T > > >
 class AvlTree {
 public:
     typedef Key                                     key_type;
     typedef T                                       mapped_type;
-    typedef std::pair< const Key, T >               value_type;
+    typedef ft::pair< const Key, T >               value_type;
     typedef std::size_t                             size_type;
     typedef std::ptrdiff_t                          difference_type;
     typedef Compare                                 key_compare;
@@ -303,7 +303,7 @@ public:
     //
     void clear() { erase(begin(), end()); }
 
-    std::pair< iterator, bool > insert(const value_type& value) {
+    ft::pair< iterator, bool > insert(const value_type& value) {
         return insert_node(root_, value);
     }
     iterator insert(iterator pos, const value_type& value) {
@@ -366,11 +366,11 @@ public:
         return node ? const_iterator(node) : end();
     }
 
-    std::pair< iterator, iterator > equal_range(const Key& key) {
-        return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
+    ft::pair< iterator, iterator > equal_range(const Key& key) {
+        return ft::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
     }
-    std::pair< const_iterator, const_iterator > equal_range(const Key& key) const {
-        return std::pair< const_iterator, const_iterator >(lower_bound(key), upper_bound(key));
+    ft::pair< const_iterator, const_iterator > equal_range(const Key& key) const {
+        return ft::pair< const_iterator, const_iterator >(lower_bound(key), upper_bound(key));
     }
 
     iterator lower_bound(const Key& key) {
@@ -424,11 +424,11 @@ public:
         deallocate_node(node);
     }
 
-    std::pair< iterator, bool > insert_node(node_type* node, const value_type& value) {
+    ft::pair< iterator, bool > insert_node(node_type* node, const value_type& value) {
         if (root_ == NULL) {
             update_root(allocate_node(value));
             size_++;
-            return std::pair< iterator, bool >(iterator(root_), true);
+            return ft::pair< iterator, bool >(iterator(root_), true);
         }
 
         if (comp_(value.first, get_key(node))) {
@@ -440,7 +440,7 @@ public:
                 update_height_to_root(node);
                 size_++;
                 rebalance(node);
-                return std::pair< iterator, bool >(iterator(node->left_), true);
+                return ft::pair< iterator, bool >(iterator(node->left_), true);
             }
         } else if (comp_(get_key(node), value.first)) {
             if (node->right_) {
@@ -451,10 +451,10 @@ public:
                 update_height_to_root(node);
                 size_++;
                 rebalance(node);
-                return std::pair< iterator, bool >(iterator(node->right_), true);
+                return ft::pair< iterator, bool >(iterator(node->right_), true);
             }
         } else {
-            return std::pair< iterator, bool >(iterator(node), false);
+            return ft::pair< iterator, bool >(iterator(node), false);
         }
     }
 
