@@ -10,6 +10,8 @@
 #include <limits>
 #include <memory>
 
+// debug
+#define DEBUG false
 // check
 #define CHECK        false
 #define CHECK_HEIGHT true
@@ -18,6 +20,7 @@
 // print
 #define PRINT_HEIGHT false
 
+#if DEBUG
 #define DEBUG_NODE(node)                                                                           \
     {                                                                                              \
         std::cout << std::setw(16) << __func__ << ": " << std::setw(2) << node->value_.first;      \
@@ -33,6 +36,10 @@
             std::cout << "__";                                                                     \
         std::cout << std::endl;                                                                    \
     }
+#else
+#define DEBUG_NODE(node)                                                                           \
+    {}
+#endif
 
 namespace ft {
 
@@ -440,23 +447,25 @@ public:
             if (node->left_) {
                 return insert_node(node->left_, value);
             } else {
-                node->left_          = allocate_node(value);
+                node_type *new_node = allocate_node(value);
+                node->left_          = new_node;
                 node->left_->parent_ = node;
                 update_height_to_root(node);
                 size_++;
                 rebalance(node);
-                return ft::pair< iterator, bool >(iterator(node->left_), true);
+                return ft::pair< iterator, bool >(iterator(new_node), true);
             }
         } else if (comp_(get_key(node), value.first)) {
             if (node->right_) {
                 return insert_node(node->right_, value);
             } else {
-                node->right_          = allocate_node(value);
+                node_type *new_node = allocate_node(value);
+                node->right_          = new_node;
                 node->right_->parent_ = node;
                 update_height_to_root(node);
                 size_++;
                 rebalance(node);
-                return ft::pair< iterator, bool >(iterator(node->right_), true);
+                return ft::pair< iterator, bool >(iterator(new_node), true);
             }
         } else {
             return ft::pair< iterator, bool >(iterator(node), false);
@@ -522,7 +531,7 @@ public:
     void rotate(node_type* node) {
         int balance = get_balance(node);
 
-        if (std::abs(balance) <= 1)
+        if (-1 <= balance && balance <= 1)
             return;
         DEBUG_NODE(node);
 
