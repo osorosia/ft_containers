@@ -248,7 +248,31 @@ void vector_test() {
     // --------------------------------------------------------
     // erase
     {
-        
+        ft_vector  ft_vec;
+        std_vector std_vec;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec.push_back(i);
+            std_vec.push_back(i);
+        }
+        {
+            ft_vector::iterator  ft_it  = ft_vec.erase(ft_vec.begin() + 2);
+            std_vector::iterator std_it = std_vec.erase(std_vec.begin() + 2);
+            vector_equal(ft_vec, std_vec);
+            assert((ft_it - ft_vec.begin()) == (std_it - std_vec.begin()));
+        }
+        {
+            ft_vector::iterator  ft_it  = ft_vec.erase(ft_vec.begin() + 2, ft_vec.begin() + 5);
+            std_vector::iterator std_it = std_vec.erase(std_vec.begin() + 2, std_vec.begin() + 5);
+            vector_equal(ft_vec, std_vec);
+            assert((ft_it - ft_vec.begin()) == (std_it - std_vec.begin()));
+        }
+        {
+            ft_vector::iterator  ft_it  = ft_vec.erase(ft_vec.begin(), ft_vec.end());
+            std_vector::iterator std_it = std_vec.erase(std_vec.begin(), std_vec.end());
+            vector_equal(ft_vec, std_vec);
+            assert((ft_it - ft_vec.begin()) == (std_it - std_vec.begin()));
+        }
     }
     // --------------------------------------------------------
     // push_back, pop_back

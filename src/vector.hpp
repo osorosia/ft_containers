@@ -227,12 +227,22 @@ public:
     }
 
     iterator erase(iterator pos) {
-        // TODO:
-        return NULL;
+        return erase(pos, pos + 1);;
     };
     iterator erase(iterator first, iterator last) {
-        // TODO:
-        return NULL;
+        size_type erase_count = last - first;
+        size_type erase_pos   = first - begin_;
+
+        for (size_type i = erase_pos; i < size() - erase_count; i++) {
+            begin_[i] = begin_[i + erase_count];
+        }
+        
+        size_type new_size = size() - erase_count;
+        while (size() > new_size) {
+            pop_back();
+        }
+
+        return begin_ + erase_pos;
     };
 
     void push_back(const T& value) {
