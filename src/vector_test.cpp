@@ -232,6 +232,17 @@ void vector_test() {
             std_vec.insert(std_vec.begin() + 2, 5, 22);
             vector_equal(ft_vec, std_vec);
         }
+        {
+            std_vector ft_v;
+            std_vector std_v;
+            for (int i = 0; i < 10; i++) {
+                ft_v.push_back(i + 100);
+                std_v.push_back(i + 100);
+            }
+
+            ft_vec.insert(ft_vec.begin() + 2, ft_v.begin(), ft_v.end());
+            std_vec.insert(std_vec.begin() + 2, std_v.begin(), std_v.end());
+        }
     }
     // --------------------------------------------------------
     // push_back, pop_back
