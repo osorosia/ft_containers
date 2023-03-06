@@ -29,5 +29,20 @@ void is_integral_test() {
     assert(ft::is_integral< const int >::value);
     assert(ft::is_integral< const long >::value);
     assert(ft::is_integral< const long long >::value);
+
+    assert(ft::is_integral< const unsigned char >::value);
+    assert(ft::is_integral< const unsigned short >::value);
+    assert(ft::is_integral< const unsigned int >::value);
+    assert(ft::is_integral< const unsigned long >::value);
+    assert(ft::is_integral< const unsigned long long >::value);
+
+    assert(ft::is_integral< const signed char >::value);
+    assert(ft::is_integral< const signed short >::value);
+    assert(ft::is_integral< const signed int >::value);
+    assert(ft::is_integral< const signed long >::value);
+    assert(ft::is_integral< const signed long long >::value);
+
+    assert(!ft::is_integral< void* >::value);
+    assert(!ft::is_integral< const void* >::value);
     OK();
 }
