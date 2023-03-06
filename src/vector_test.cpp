@@ -212,7 +212,7 @@ void vector_test() {
         assert(ft_vec.capacity() == cap);
     }
     // --------------------------------------------------------
-    // insert, erase
+    // insert
     {
         ft_vector  ft_vec;
         std_vector std_vec;
@@ -242,7 +242,13 @@ void vector_test() {
 
             ft_vec.insert(ft_vec.begin() + 2, ft_v.begin(), ft_v.end());
             std_vec.insert(std_vec.begin() + 2, std_v.begin(), std_v.end());
+            vector_equal(ft_vec, std_vec);
         }
+    }
+    // --------------------------------------------------------
+    // erase
+    {
+        
     }
     // --------------------------------------------------------
     // push_back, pop_back

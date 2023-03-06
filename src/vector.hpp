@@ -208,7 +208,22 @@ public:
     template < class InputIt >
     typename ft::enable_if< !ft::is_integral< InputIt >::value, void >::type
     insert(const_iterator pos, InputIt first, InputIt last) {
-        // TODO:
+        size_type count = last - first;
+        if (count == 0)
+            return;
+
+        size_type insert_pos = pos - begin_;
+        reserve(size() + count);
+
+        for (size_type i = size() - 1; i >= insert_pos; i--) {
+            begin_[i + count] = begin_[i];
+        }
+
+        for (size_type i = insert_pos; i < insert_pos + count; i++) {
+            begin_[i] = *first;
+            first++;
+            end_++;
+        }
     }
 
     iterator erase(iterator pos) {
