@@ -5,13 +5,13 @@ typedef std::vector< int > std_vector;
 
 typedef std::allocator< int > allocater_type;
 
-void vector_equal(ft_vector& ft_vec, std_vector& std_vec) {
-    assert(ft_vec.size() == std_vec.size());
-
-    for (int i = 0; i < ft_vec.size(); i++) {
-        assert(ft_vec[i] == std_vec[i]);
+#define vector_equal(ft_vec, std_vec)                                                              \
+    {                                                                                              \
+        assert(ft_vec.size() == std_vec.size());                                                   \
+        for (int i = 0; i < ft_vec.size(); i++) {                                                  \
+            assert(ft_vec[i] == std_vec[i]);                                                       \
+        }                                                                                          \
     }
-}
 
 void vector_test() {
     TEST_NAME("vector");
@@ -213,7 +213,26 @@ void vector_test() {
     }
     // --------------------------------------------------------
     // insert, erase
-    // TODO:
+    {
+        ft_vector  ft_vec;
+        std_vector std_vec;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec.push_back(i);
+            std_vec.push_back(i);
+        }
+        {
+            ft_vector::iterator  ft_it  = ft_vec.insert(ft_vec.begin() + 2, 11);
+            std_vector::iterator std_it = std_vec.insert(std_vec.begin() + 2, 11);
+            vector_equal(ft_vec, std_vec);
+            assert((ft_it - ft_vec.begin()) == (std_it - std_vec.begin()));
+        }
+        {
+            ft_vec.insert(ft_vec.begin() + 2, 5, 22);
+            std_vec.insert(std_vec.begin() + 2, 5, 22);
+            vector_equal(ft_vec, std_vec);
+        }
+    }
     // --------------------------------------------------------
     // push_back, pop_back
     {
