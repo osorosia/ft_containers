@@ -18,10 +18,44 @@ void vector_test() {
 
     // --------------------------------------------------------
     // (constructor)
+    { ft_vector ft_vec; }
+    {
+        allocater_type alloc = allocater_type();
+        ft_vector      ft_vec(alloc);
+    }
+    {
+        allocater_type alloc = allocater_type();
+
+        ft_vector  ft_vec(10, 99, alloc);
+        std_vector std_vec(10, 99, alloc);
+        vector_equal(ft_vec, std_vec);
+    }
+    {
+        ft_vector  ft_vec0;
+        std_vector std_vec0;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec0.push_back(i);
+            std_vec0.push_back(i);
+        }
+
+        ft_vector  ft_vec1(ft_vec0);
+        std_vector std_vec1(std_vec0);
+        vector_equal(ft_vec0, std_vec0);
+        vector_equal(ft_vec1, std_vec1);
+    }
     // --------------------------------------------------------
     // operator=
     // --------------------------------------------------------
     // assign
+    {
+        ft_vector  ft_vec;
+        std_vector std_vec;
+
+        ft_vec.assign((std::size_t)10, 1);
+        std_vec.assign(10, 1);
+        vector_equal(ft_vec, std_vec);
+    }
     // --------------------------------------------------------
     // get_allocator
     {

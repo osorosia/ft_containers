@@ -59,7 +59,13 @@ public:
         , alloc_(alloc) {
         assign(first, last);
     }
-    vector(const vector& other) { assign(other.begin(), other.end()); }
+    vector(const vector& other)
+        : begin_(NULL)
+        , end_(NULL)
+        , end_cap_(NULL)
+        , alloc_(other.alloc_) {
+        *this = other;
+    }
 
     ~vector() {
         clear();
@@ -67,44 +73,27 @@ public:
     }
 
     vector& operator=(const vector& other) {
-        if (*this == other)
+        if (this == &other)
             return *this;
-        assign(other.begin(), other.end());
+        resize(other.size());
+        for (size_type i = 0; i < other.size(); i++) {
+            begin_[i] = other[i];
+        }
         return *this;
     }
 
     void assign(size_type count, const T& value) {
-        if (count > capacity()) {
-            // TODO: fix perf
-            reserve(count);
-        }
-        for (iterator it = begin_; it < begin_ + count; it++) {
-            if (it >= end_) {
-                alloc_.construct(it, value);
-            } else {
-                *it = value;
-            }
-        }
-        while (size() > count) {
-            pop_back();
+        clear();
+        for (size_type i = 0; i < count; i++) {
+            push_back(value);
         }
     }
     template < class InputIt >
-    void assign(InputIt first, InputIt last) {
-        size_type count = last - first;
-        if (count > capacity()) {
-            // TODO: fix perf
-            reserve(count);
-        }
-        for (iterator it = begin_; it < begin + count; it++, first++) {
-            if (it >= end_) {
-                alloc_.construct(it, *first);
-            } else {
-                *it = *first;
-            }
-        }
-        while (size() > count) {
-            pop_back();
+    typename ft::enable_if< !ft::is_integral< InputIt >::value, void >::type assign(InputIt first,
+                                                                                    InputIt last) {
+        clear();
+        for (iterator it = first; it != last; it++) {
+            push_back(*it);
         }
     }
 
