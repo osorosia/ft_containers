@@ -1,4 +1,4 @@
-#include "_test.hpp"
+#include "../src/_test.hpp"
 
 int main() {
     vector_test();

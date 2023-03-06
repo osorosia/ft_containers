@@ -11,7 +11,7 @@
 #include <memory>
 
 // check
-#define CHECK        true
+#define CHECK        false
 #define CHECK_HEIGHT true
 #define CHECK_AVL    true
 #define CHECK_SIZE   true

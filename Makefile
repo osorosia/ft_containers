@@ -2,7 +2,6 @@ CXX = c++
 CXXFLAGS = -std=c++98 # -Wall -Wextra -Werror
 DEPFLAGS = -MMD -MP
 
-TEST_NAME = test.out
 TEST_SRCS = $(wildcard src/*.cpp src/*/*.cpp)
 TEST_OBJS = $(TEST_SRCS:src/%.cpp=obj/%.o)
 DEPS = $(TEST_SRCS:src/%.cpp=obj/%.d)
@@ -10,12 +9,17 @@ DEPS = $(TEST_SRCS:src/%.cpp=obj/%.d)
 OBJS_DIR := $(sort $(dir $(TEST_OBJS)))
 OBJS_DIR := $(addsuffix .keep, $(OBJS_DIR))
 
-all: $(TEST_NAME)
+# unit test
+UNIT_TEST_NAME = unit_test.out
+UNIT_TEST_OBJ = test/unit_test.o
+
+
+all: $(UNIT_TEST_NAME)
 
 -include $(DEPS)
 
-$(TEST_NAME): $(TEST_OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(TEST_OBJS)
+$(UNIT_TEST_NAME): $(UNIT_TEST_OBJ) $(TEST_OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 obj/%.o: src/%.cpp $(OBJS_DIR)
 	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -o $@ -c $<
@@ -33,8 +37,8 @@ fclean: clean
 
 re: fclean all
 
-test: $(TEST_NAME)
-	./$(TEST_NAME) > log.md
+test: $(UNIT_TEST_NAME)
+	./$(UNIT_TEST_NAME) > log.md
 
 debug deb: $(TEST_NAME)
 	valgrind ./$(TEST_NAME) > log.md
