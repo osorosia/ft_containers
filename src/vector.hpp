@@ -171,6 +171,18 @@ public:
         alloc_deallocate(old_begin, old_cap);
     }
 
+    void reserve_optimal(size_type cap) {
+        size_type new_cap = capacity();
+    
+        while (new_cap < cap) {
+            new_cap *= 2;
+        }
+        if (new_cap > max_size())
+            throw std::length_error("vector");
+
+        reserve(new_cap);
+    }
+
     size_type capacity() const { return end_cap_ - begin_; }
 
     //
@@ -194,7 +206,7 @@ public:
             return;
 
         size_type insert_pos = pos - begin_;
-        reserve(size() + count);
+        reserve_optimal(size() + count);
 
         for (size_type i = size() - 1; i >= insert_pos; i--) {
             begin_[i + count] = begin_[i];
@@ -213,7 +225,7 @@ public:
             return;
 
         size_type insert_pos = pos - begin_;
-        reserve(size() + count);
+        reserve_optimal(size() + count);
 
         for (size_type i = size() - 1; i >= insert_pos; i--) {
             begin_[i + count] = begin_[i];
@@ -247,8 +259,7 @@ public:
 
     void push_back(const T& value) {
         if (size() + 1 > capacity()) {
-            // TODO: fix performance
-            reserve(size() + 1);
+            reserve_optimal(size() + 1);
         }
         alloc_construct(end_++, value);
     }
@@ -265,8 +276,7 @@ public:
             }
             end_ = begin_ + count;
         } else if (count > size()) {
-            // TODO: fix performance
-            reserve(count);
+            reserve_optimal(count);
             for (; size() < count; end_++) {
                 alloc_construct(end_, value);
             }
