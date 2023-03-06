@@ -46,6 +46,22 @@ void vector_test() {
     }
     // --------------------------------------------------------
     // operator=
+    {
+        ft_vector  ft_vec0;
+        std_vector std_vec0;
+        ft_vector  ft_vec1;
+        std_vector std_vec1;
+
+        for (int i = 0; i < 10; i++) {
+            ft_vec0.push_back(i);
+            std_vec0.push_back(i);
+        }
+
+        ft_vec1  = ft_vec0;
+        std_vec1 = std_vec0;
+        vector_equal(ft_vec0, std_vec0);
+        vector_equal(ft_vec1, std_vec1);
+    }
     // --------------------------------------------------------
     // assign
     {
@@ -197,6 +213,7 @@ void vector_test() {
     }
     // --------------------------------------------------------
     // insert, erase
+    // TODO:
     // --------------------------------------------------------
     // push_back, pop_back
     {
