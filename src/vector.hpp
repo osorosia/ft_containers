@@ -173,6 +173,8 @@ public:
 
     void reserve_optimal(size_type cap) {
         size_type new_cap = capacity();
+        if (new_cap == 0)
+            new_cap = 256;
     
         while (new_cap < cap) {
             new_cap *= 2;

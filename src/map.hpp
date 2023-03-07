@@ -131,7 +131,7 @@ public:
     //
     // Capacity
     //
-    bool      empty() { return begin() == end(); }
+    bool      empty() { return size() == 0; }
     size_type size() const { return tree_.size(); }
     size_type max_size() const { return tree_.max_size(); }
 

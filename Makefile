@@ -24,6 +24,9 @@ UNIT_TEST_SRC = test/unit_test.cpp
 FT_BENCH_TEST_NAME = ft_bench_test.out
 STD_BENCH_TEST_NAME = std_bench_test.out
 BENCH_TEST_SRC = test/bench_test.cpp
+BENCH_CALC_NAME = bench_calc.out
+BENCH_CALC_SRC = test/bench_calc.cpp
+
 
 .PHONY: all
 all: unit
@@ -42,11 +45,14 @@ $(UNIT_TEST_NAME): $(UNIT_TEST_SRC) $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # bench test
-$(FT_BENTH_TEST_NAME): $(BENCH_TEST_SRC) $(TEST_OBJS)
+$(FT_BENCH_TEST_NAME): $(BENCH_TEST_SRC) $(TEST_OBJS)
+	$(CXX) $(CXXFLAGS) -D FT $(INCS) -o $@ $^
+
+$(STD_BENCH_TEST_NAME): $(BENCH_TEST_SRC) $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-$(STD_BENTH_TEST_NAME): $(BENCH_TEST_SRC) $(TEST_OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+$(BENCH_CALC_NAME): $(BENCH_CALC_SRC)
+	$(CXX) -o $@ $^
 
 obj/%.o: src/%.cpp $(OBJS_DIR)
 	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -o $@ -c $<
@@ -55,12 +61,16 @@ $(OBJS_DIR):
 	mkdir -p $(@D)
 	touch $@
 
-.PHONY: unit
-unit: $(UNIT_TEST_NAME)
+.PHONY: unit u
+unit u: $(UNIT_TEST_NAME)
 	./$(UNIT_TEST_NAME) > log.md
 
-.PHONY: bench
-bench: $(FT_BENTH_TEST_NAME)
+.PHONY: bench b
+bench b: $(FT_BENCH_TEST_NAME) $(STD_BENCH_TEST_NAME) $(BENCH_CALC_NAME)
+	./$(FT_BENCH_TEST_NAME) > ft_bench.log
+	./$(STD_BENCH_TEST_NAME)  > std_bench.log
+	sdiff ft_bench.log std_bench.log || true
+	./$(BENCH_CALC_NAME)
 
 .PHONY: subject sub
 subject sub: $(STD_SUBJECT_TEST_NAME) $(FT_SUBJECT_TEST_NAME)
