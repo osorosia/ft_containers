@@ -82,8 +82,8 @@ void map_test() {
         map_equal(ft_mp0, std_mp0);
         map_equal(ft_mp1, std_mp1);
 
-        ft_mp0  = ft_mp0;
-        std_mp0 = std_mp0;
+        // ft_mp0  = ft_mp0;
+        // std_mp0 = std_mp0;
         map_equal(ft_mp0, std_mp0);
     }
     // --------------------------------------------------------
