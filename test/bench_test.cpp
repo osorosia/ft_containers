@@ -281,14 +281,16 @@ void vector_bench() {
         vector_init(vec0);
         vector_init(vec1);
 
+        bool b;
         CLOCK_START("vector/operator==, etc");
-        vec0 == vec1;
-        vec0 != vec1;
-        vec0 < vec1;
-        vec0 <= vec1;
-        vec0 > vec1;
-        vec0 >= vec1;
+        b = vec0 == vec1;
+        b = vec0 != vec1;
+        b = vec0 < vec1;
+        b = vec0 <= vec1;
+        b = vec0 > vec1;
+        b = vec0 >= vec1;
         CLOCK_END();
+        (void)b;
     }
 }
 
@@ -365,6 +367,7 @@ void map_bench() {
             {
                 for (int i = 0; i < COUNT; i++) {
                     map_int::iterator it = mp.begin();
+                    (void)it;
                 }
             }
             CLOCK_END();
@@ -375,6 +378,7 @@ void map_bench() {
             {
                 for (int i = 0; i < COUNT; i++) {
                     map_int::iterator it = mp.end();
+                    (void)it;
                 }
             }
             CLOCK_END();
@@ -385,6 +389,7 @@ void map_bench() {
             {
                 for (int i = 0; i < COUNT; i++) {
                     map_int::reverse_iterator it = mp.rbegin();
+                    (void)it;
                 }
             }
             CLOCK_END();
@@ -395,6 +400,7 @@ void map_bench() {
             {
                 for (int i = 0; i < COUNT; i++) {
                     map_int::reverse_iterator it = mp.rend();
+                    (void)it;
                 }
             }
             CLOCK_END();
@@ -410,6 +416,7 @@ void map_bench() {
             CLOCK_START("map/empty");
             for (int i = 0; i < COUNT; i++) {
                 bool n = mp.empty();
+                (void)n;
             }
             CLOCK_END();
         }
@@ -417,6 +424,7 @@ void map_bench() {
             CLOCK_START("map/size");
             for (int i = 0; i < COUNT; i++) {
                 std::size_t sz = mp.size();
+                (void)sz;
             }
             CLOCK_END();
         }
@@ -424,6 +432,7 @@ void map_bench() {
             CLOCK_START("map/max_size");
             for (int i = 0; i < COUNT; i++) {
                 std::size_t sz = mp.max_size();
+                (void)sz;
             }
             CLOCK_END();
         }
@@ -535,14 +544,16 @@ void map_bench() {
         map_init(mp0);
         map_init(mp1);
 
+        bool b;
         CLOCK_START("map/operator==, etc");
-        mp0 == mp1;
-        mp0 != mp1;
-        mp0 < mp1;
-        mp0 <= mp1;
-        mp0 > mp1;
-        mp0 >= mp1;
+        b = mp0 == mp1;
+        b = mp0 != mp1;
+        b = mp0 < mp1;
+        b = mp0 <= mp1;
+        b = mp0 > mp1;
+        b = mp0 >= mp1;
         CLOCK_END();
+        (void)b;
     }
 }
 
