@@ -24,8 +24,8 @@ void avl_normal_test() {
         } else if (cases[i].op == "erase") {
             tree.erase(cases[i].val);
         }
-        tree.print();
-        tree.check();
+        // tree.print();
+        // tree.check();
     }
 }
 

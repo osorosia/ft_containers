@@ -166,20 +166,6 @@ public:
         alloc_deallocate(old_begin, old_cap);
     }
 
-    void reserve_optimal(size_type cap) {
-        size_type new_cap = capacity();
-        if (new_cap == 0)
-            new_cap = 256;
-
-        while (new_cap < cap) {
-            new_cap *= 2;
-        }
-        if (new_cap > max_size())
-            throw std::length_error("vector");
-
-        reserve(new_cap);
-    }
-
     size_type capacity() const { return end_cap_ - begin_; }
 
     //
@@ -307,17 +293,30 @@ private:
     pointer        end_cap_;
     allocator_type alloc_;
 
+    void    alloc_construct(pointer p, const_reference val) { alloc_.construct(p, val); }
+    void    alloc_destroy(pointer p) { alloc_.destroy(p); }
+    pointer alloc_allocate(size_type n) { alloc_.allocate(n); }
+    void    alloc_deallocate() { alloc_.deallocate(begin_, capacity()); }
+    void    alloc_deallocate(pointer p, size_type n) { alloc_.deallocate(p, n); }
+
     void destroy_until(reverse_iterator rend) {
         for (reverse_iterator riter = rbegin(); riter != rend; riter++, end_--) {
             // &*riter: reverse_iterator -> pointer
             alloc_destroy(&*riter);
         }
     }
-    void    alloc_construct(pointer p, const_reference val) { alloc_.construct(p, val); }
-    void    alloc_destroy(pointer p) { alloc_.destroy(p); }
-    pointer alloc_allocate(size_type n) { alloc_.allocate(n); }
-    void    alloc_deallocate() { alloc_.deallocate(begin_, capacity()); }
-    void    alloc_deallocate(pointer p, size_type n) { alloc_.deallocate(p, n); }
+    void reserve_optimal(size_type cap) {
+        size_type new_cap = capacity();
+        if (new_cap == 0)
+            new_cap = 256;
+
+        while (new_cap < cap) {
+            new_cap *= 2;
+        }
+        if (new_cap > max_size())
+            throw std::length_error("vector");
+        reserve(new_cap);
+    }
 };
 
 //

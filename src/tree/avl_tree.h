@@ -213,12 +213,14 @@ public:
     typedef Node< value_type >                                      node_type;
     typedef typename Allocator::template rebind< node_type >::other node_allocator_type;
 
+private:
     node_type*          root_;
     node_type*          end_;
     size_type           size_;
     node_allocator_type node_alloc_;
     key_compare         comp_;
 
+public:
     AvlTree()
         : root_(NULL)
         , size_(0)
@@ -412,7 +414,7 @@ public:
     //
     key_compare key_comp() const { return comp_; }
 
-    // private:--------------------------------------------
+private:
     node_type* allocate_node(const value_type& value) {
         node_type* node = node_alloc_.allocate(1);
         node_alloc_.construct(node, value);
