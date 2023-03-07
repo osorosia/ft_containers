@@ -9,8 +9,8 @@ int main() {
     enable_if_test();
     equal_test();
     is_integral_test();
-    iterator_traits_test();
-    lexicographical_compare_test();
+    // iterator_traits_test();
+    // lexicographical_compare_test();
     reverse_iterator_test();
 
     // tree

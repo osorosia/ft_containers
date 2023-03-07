@@ -29,7 +29,7 @@ BENCH_CALC_SRC = test/bench_calc.cpp
 
 
 .PHONY: all
-all: unit
+all: $(FT_SUBJECT_TEST_NAME) $(STD_SUBJECT_TEST_NAME) $(UNIT_TEST_NAME) $(FT_BENCH_TEST_NAME) $(STD_BENCH_TEST_NAME) $(BENCH_CALC_NAME)
 
 -include $(DEPS)
 
