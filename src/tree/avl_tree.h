@@ -215,6 +215,7 @@ public:
 
 private:
     node_type*          root_;
+    node_type*          begin_;
     node_type*          end_;
     size_type           size_;
     node_allocator_type node_alloc_;
@@ -223,6 +224,7 @@ private:
 public:
     AvlTree()
         : root_(NULL)
+        , begin_(NULL)
         , size_(0)
         , node_alloc_(node_allocator_type())
         , comp_(key_compare()) {
@@ -231,6 +233,7 @@ public:
 
     explicit AvlTree(const Compare& comp, const Allocator& alloc = Allocator())
         : root_(NULL)
+        , begin_(NULL)
         , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {
@@ -243,6 +246,7 @@ public:
             const Compare&   comp  = Compare(),
             const Allocator& alloc = Allocator())
         : root_(NULL)
+        , begin_(NULL)
         , size_(0)
         , node_alloc_(alloc)
         , comp_(comp) {
@@ -252,6 +256,7 @@ public:
 
     AvlTree(const AvlTree& other)
         : root_(NULL)
+        , begin_(NULL)
         , size_(0)
         , node_alloc_(node_allocator_type())
         , comp_(key_compare()) {
@@ -269,8 +274,9 @@ public:
             return *this;
         }
         deallocate_tree(root_);
-        size_ = 0;
-        root_ = NULL;
+        size_  = 0;
+        root_  = NULL;
+        begin_ = NULL;
         insert(other.begin(), other.end());
         return *this;
     }
@@ -283,14 +289,12 @@ public:
     iterator begin() {
         if (size_ == 0)
             return end();
-        node_type* node = find_min_node(root_);
-        return iterator(node);
+        return iterator(begin_);
     }
     const_iterator begin() const {
         if (size_ == 0)
             return end();
-        node_type* node = find_min_node(root_);
-        return const_iterator(node);
+        return const_iterator(begin_);
     }
 
     iterator       end() { return iterator(end_); }
@@ -320,7 +324,8 @@ public:
     void clear() {
         deallocate_tree(root_);
         update_root(NULL);
-        size_ = 0;
+        size_  = 0;
+        begin_ = NULL;
     }
 
     ft::pair< iterator, bool > insert(const value_type& value) { return insert_node(root_, value); }
@@ -352,18 +357,21 @@ public:
 
     void swap(AvlTree& other) {
         node_type*          root_tmp       = root_;
+        node_type*          begin_tmp      = begin_;
         node_type*          end_tmp        = end_;
         size_type           size_tmp       = size_;
         node_allocator_type node_alloc_tmp = node_alloc_;
         key_compare         comp_tmp       = comp_;
 
         root_       = other.root_;
+        begin_      = other.begin_;
         end_        = other.end_;
         size_       = other.size_;
         node_alloc_ = other.node_alloc_;
         comp_       = other.comp_;
 
         other.root_       = root_tmp;
+        other.begin_      = begin_tmp;
         other.end_        = end_tmp;
         other.size_       = size_tmp;
         other.node_alloc_ = node_alloc_tmp;
@@ -446,6 +454,7 @@ private:
         if (root_ == NULL) {
             update_root(allocate_node(value));
             size_++;
+            update_begin();
             return ft::pair< iterator, bool >(iterator(root_), true);
         }
 
@@ -459,6 +468,7 @@ private:
                 update_height_to_root(node);
                 size_++;
                 rebalance(node);
+                update_begin();
                 return ft::pair< iterator, bool >(iterator(new_node), true);
             }
         } else if (comp_(get_key(node), value.first)) {
@@ -471,6 +481,7 @@ private:
                 update_height_to_root(node);
                 size_++;
                 rebalance(node);
+                update_begin();
                 return ft::pair< iterator, bool >(iterator(new_node), true);
             }
         } else {
@@ -516,6 +527,7 @@ private:
                 rebalance(min_parent);
             }
             deallocate_node(node);
+            update_begin();
             return 1;
         }
     }
@@ -672,6 +684,7 @@ private:
     bool     is_left(node_type* node) const { return node && node == node->parent_->left_; }
     bool     is_right(node_type* node) const { return node && node == node->parent_->right_; }
     bool     is_root(node_type* node) const { return node == root_; }
+    void     update_begin() { begin_ = size_ > 0 ? find_min_node(root_) : NULL; }
     void     update_left(node_type* node, node_type* child) {
         node->left_ = child;
         if (child)
