@@ -26,11 +26,6 @@ public:
     typedef ft::reverse_iterator< iterator >       reverse_iterator;
     typedef ft::reverse_iterator< const_iterator > const_reverse_iterator;
 
-    pointer        begin_;
-    pointer        end_;
-    pointer        end_cap_;
-    allocator_type alloc_;
-
     //
     // Member functions
     //
@@ -246,9 +241,7 @@ public:
         end_ += count;
     }
 
-    iterator erase(iterator pos) {
-        return erase(pos, pos + 1);
-    };
+    iterator erase(iterator pos) { return erase(pos, pos + 1); };
     iterator erase(iterator first, iterator last) {
         size_type erase_count = last - first;
         size_type erase_pos   = first - begin_;
@@ -257,6 +250,9 @@ public:
             begin_[i] = begin_[i + erase_count];
         }
         size_type new_size = size() - erase_count;
+        for (iterator it = begin_ + new_size; it != end_; it++) {
+            alloc_destroy(it);
+        }
         end_ = begin_ + new_size;
 
         return begin_ + erase_pos;
@@ -306,6 +302,11 @@ public:
     }
 
 private:
+    pointer        begin_;
+    pointer        end_;
+    pointer        end_cap_;
+    allocator_type alloc_;
+
     void destroy_until(reverse_iterator rend) {
         for (reverse_iterator riter = rbegin(); riter != rend; riter++, end_--) {
             // &*riter: reverse_iterator -> pointer
