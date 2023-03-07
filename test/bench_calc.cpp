@@ -31,17 +31,18 @@ int main() {
         if (!getline(std_ifs, std_line))
             break;
 
-        // 奇数行はテストケース名
         if (row % 2 == 0) {
             cout << YELLOW << left << setw(24) << ft_line << END << " ";
-        }
-        // 奇数行はクロック数
-        else {
+        } else {
             double ft_clock  = stod(ft_line);
             double std_clock = stod(std_line);
             double amp       = ft_clock / std_clock;
             if (amp > 20)
                 cout << RED;
+            else if (amp > 10)
+                cout << MAGENTA;
+            else if (amp > 5)
+                cout << GREEN;
             cout << amp << END << endl;
         }
     }
