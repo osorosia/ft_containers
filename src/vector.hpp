@@ -248,7 +248,6 @@ public:
 
     iterator erase(iterator pos) {
         return erase(pos, pos + 1);
-        ;
     };
     iterator erase(iterator first, iterator last) {
         size_type erase_count = last - first;
@@ -257,11 +256,8 @@ public:
         for (size_type i = erase_pos; i < size() - erase_count; i++) {
             begin_[i] = begin_[i + erase_count];
         }
-
         size_type new_size = size() - erase_count;
-        while (size() > new_size) {
-            pop_back();
-        }
+        end_ = begin_ + new_size;
 
         return begin_ + erase_pos;
     };

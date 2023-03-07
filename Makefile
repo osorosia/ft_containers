@@ -36,7 +36,6 @@ all: unit
 # subject test
 $(FT_SUBJECT_TEST_NAME): $(SUBJECT_TEST_SRC) $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -D FT $(INCS) -o $@ $^
-
 $(STD_SUBJECT_TEST_NAME): $(SUBJECT_TEST_SRC) $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
@@ -47,7 +46,6 @@ $(UNIT_TEST_NAME): $(UNIT_TEST_SRC) $(TEST_OBJS)
 # bench test
 $(FT_BENCH_TEST_NAME): $(BENCH_TEST_SRC) $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -D FT $(INCS) -o $@ $^
-
 $(STD_BENCH_TEST_NAME): $(BENCH_TEST_SRC) $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
