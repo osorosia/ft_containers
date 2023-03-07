@@ -315,7 +315,11 @@ public:
     //
     // Modifiers
     //
-    void clear() { erase(begin(), end()); }
+    void clear() {
+        deallocate_tree(root_);
+        update_root(NULL);
+        size_ = 0;
+    }
 
     ft::pair< iterator, bool > insert(const value_type& value) { return insert_node(root_, value); }
     iterator                   insert(iterator pos, const value_type& value) {
@@ -447,7 +451,7 @@ public:
             if (node->left_) {
                 return insert_node(node->left_, value);
             } else {
-                node_type *new_node = allocate_node(value);
+                node_type* new_node  = allocate_node(value);
                 node->left_          = new_node;
                 node->left_->parent_ = node;
                 update_height_to_root(node);
@@ -459,7 +463,7 @@ public:
             if (node->right_) {
                 return insert_node(node->right_, value);
             } else {
-                node_type *new_node = allocate_node(value);
+                node_type* new_node   = allocate_node(value);
                 node->right_          = new_node;
                 node->right_->parent_ = node;
                 update_height_to_root(node);
