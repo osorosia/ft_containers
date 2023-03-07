@@ -282,7 +282,7 @@ void vector_bench() {
         vector_init(vec0);
         vector_init(vec1);
 
-        CLOCK_START("map/operator==, etc");
+        CLOCK_START("vector/operator==, etc");
         vec0 == vec1;
         vec0 != vec1;
         vec0 < vec1;
