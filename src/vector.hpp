@@ -175,7 +175,7 @@ public:
         size_type new_cap = capacity();
         if (new_cap == 0)
             new_cap = 256;
-    
+
         while (new_cap < cap) {
             new_cap *= 2;
         }
@@ -210,14 +210,18 @@ public:
         size_type insert_pos = pos - begin_;
         reserve_optimal(size() + count);
 
-        for (size_type i = size() - 1; i >= insert_pos; i--) {
-            begin_[i + count] = begin_[i];
+        if (size() > 0) {
+            for (size_type i = size() - 1; i >= insert_pos; i--) {
+                begin_[i + count] = begin_[i];
+                if (i == 0)
+                    break;
+            }
         }
 
         for (size_type i = insert_pos; i < insert_pos + count; i++) {
             begin_[i] = value;
-            end_++;
         }
+        end_ += count;
     }
     template < class InputIt >
     typename ft::enable_if< !ft::is_integral< InputIt >::value, void >::type
@@ -228,20 +232,23 @@ public:
 
         size_type insert_pos = pos - begin_;
         reserve_optimal(size() + count);
-
-        for (size_type i = size() - 1; i >= insert_pos; i--) {
-            begin_[i + count] = begin_[i];
+        if (size() > 0) {
+            for (size_type i = size() - 1; i >= insert_pos; i--) {
+                begin_[i + count] = begin_[i];
+                if (i == 0)
+                    break;
+            }
         }
 
         for (size_type i = insert_pos; i < insert_pos + count; i++) {
-            begin_[i] = *first;
-            first++;
-            end_++;
+            begin_[i] = *(first++);
         }
+        end_ += count;
     }
 
     iterator erase(iterator pos) {
-        return erase(pos, pos + 1);;
+        return erase(pos, pos + 1);
+        ;
     };
     iterator erase(iterator first, iterator last) {
         size_type erase_count = last - first;
@@ -250,7 +257,7 @@ public:
         for (size_type i = erase_pos; i < size() - erase_count; i++) {
             begin_[i] = begin_[i + erase_count];
         }
-        
+
         size_type new_size = size() - erase_count;
         while (size() > new_size) {
             pop_back();

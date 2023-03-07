@@ -218,8 +218,7 @@ void vector_bench() {
         vector_init(vec1);
 
         CLOCK_START("vector/insert");
-        // TODO:
-        // vec1.insert(vec1.begin(), COUNT);
+        vec1.insert(vec1.begin(), vec0.begin(), vec0.end());
         CLOCK_END();
     }
     // --------------------------------------------------------

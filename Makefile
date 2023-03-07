@@ -69,7 +69,7 @@ unit u: $(UNIT_TEST_NAME)
 bench b: $(FT_BENCH_TEST_NAME) $(STD_BENCH_TEST_NAME) $(BENCH_CALC_NAME)
 	./$(FT_BENCH_TEST_NAME) > ft_bench.log
 	./$(STD_BENCH_TEST_NAME)  > std_bench.log
-	sdiff ft_bench.log std_bench.log || true
+	sdiff --width=56 ft_bench.log std_bench.log || true
 	./$(BENCH_CALC_NAME)
 
 .PHONY: subject sub

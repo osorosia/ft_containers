@@ -222,6 +222,12 @@ void vector_test() {
             std_vec.push_back(i);
         }
         {
+            ft_vector::iterator  ft_it  = ft_vec.insert(ft_vec.begin(), 11);
+            std_vector::iterator std_it = std_vec.insert(std_vec.begin(), 11);
+            vector_equal(ft_vec, std_vec);
+            assert((ft_it - ft_vec.begin()) == (std_it - std_vec.begin()));
+        }
+        {
             ft_vector::iterator  ft_it  = ft_vec.insert(ft_vec.begin() + 2, 11);
             std_vector::iterator std_it = std_vec.insert(std_vec.begin() + 2, 11);
             vector_equal(ft_vec, std_vec);
