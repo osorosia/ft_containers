@@ -317,6 +317,7 @@ void map_bench() {
         CLOCK_START("map/get_allocater");
         for (int i = 0; i < COUNT; i++) {
             map_int::allocator_type alloc = mp.get_allocator();
+            (void)alloc;
         }
         CLOCK_END();
     }
