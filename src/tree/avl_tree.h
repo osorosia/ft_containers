@@ -58,15 +58,15 @@ struct Node {
         : left_(NULL)
         , right_(NULL)
         , parent_(NULL)
-        , height_(1)
-        , value_(value_type()) {}
+        , value_(value_type())
+        , height_(1) {}
 
     Node(value_type value)
         : left_(NULL)
         , right_(NULL)
         , parent_(NULL)
-        , height_(1)
-        , value_(value) {}
+        , value_(value)
+        , height_(1) {}
 
     node_type* next() {
         if (right_)

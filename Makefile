@@ -1,5 +1,5 @@
 CXX = c++
-CXXFLAGS = -std=c++98 -g # -Wall -Wextra -Werror
+CXXFLAGS = -std=c++98 -g -Wall -Wextra -Werror
 DEPFLAGS = -MMD -MP
 
 TEST_SRCS = $(wildcard src/*.cpp src/*/*.cpp)

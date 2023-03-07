@@ -245,7 +245,7 @@ void map_test() {
     {
         ft_map ft_mp;
 
-        for (int i = 1; i < 10; i++) {
+        for (size_t i = 1; i < 10; i++) {
             ft_mp[i] = i;
             assert(ft_mp.size() == i);
         }
@@ -253,7 +253,7 @@ void map_test() {
         assert(ft_mp.size() == 0);
         assert(ft_mp.begin() == ft_mp.end());
 
-        for (int i = 1; i < 10; i++) {
+        for (size_t i = 1; i < 10; i++) {
             ft_mp[i] = i;
             assert(ft_mp.size() == i);
         }
@@ -279,7 +279,7 @@ void map_test() {
             {"erase", 2},
         };
 
-        for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+        for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
             if (cases[i].op == "insert") {
                 map_insert_helper(ft_mp, std_mp, cases[i].val, cases[i].val);
             } else if (cases[i].op == "erase") {

@@ -8,7 +8,7 @@ typedef std::allocator< int > allocater_type;
 #define vector_equal(ft_vec, std_vec)                                                              \
     {                                                                                              \
         assert(ft_vec.size() == std_vec.size());                                                   \
-        for (int i = 0; i < ft_vec.size(); i++) {                                                  \
+        for (size_t i = 0; i < ft_vec.size(); i++) {                                               \
             assert(ft_vec[i] == std_vec[i]);                                                       \
         }                                                                                          \
     }
@@ -103,12 +103,14 @@ void vector_test() {
         try {
             ft_vec.at(left - 1);
             assert(false);
-        } catch (std::out_of_range e) {
+        } catch (std::out_of_range& e) {
+            (void)e;
         }
         try {
             ft_vec.at(right);
             assert(false);
-        } catch (std::out_of_range e) {
+        } catch (std::out_of_range& e) {
+            (void)e;
         }
     }
     // --------------------------------------------------------
@@ -186,7 +188,7 @@ void vector_test() {
     {
         ft_vector ft_vec;
 
-        for (int i = 0; i < 10; i++) {
+        for (size_t i = 0; i < 10; i++) {
             ft_vec.push_back(i);
             assert(ft_vec.capacity() >= i + 1);
         }

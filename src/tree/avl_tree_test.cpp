@@ -16,7 +16,7 @@ void avl_normal_test() {
         {"erase", 2},
     };
 
-    for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+    for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
         std::cout << "# " << cases[i].op << " " << cases[i].val << std::endl;
         if (cases[i].op == "insert") {
             value_type val = value_type(cases[i].val, i);
