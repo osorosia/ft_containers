@@ -1,6 +1,6 @@
 # ft_containers
 
-42(https://42.fr/en/homepage/)の課題として、C++98のSTLのコンテナであるvectorとmapを再実装しました。
+42 (https://42.fr/en/homepage/) の課題として、C++98のSTLのコンテナであるvectorとmapを再実装しました。
 
 要件として下記が指定されています。
 - 名前空間をftとする
@@ -9,7 +9,7 @@
 - 十分なテストを用意する
 - メモリリーク禁止
 
-cppreference.com(https://en.cppreference.com/w/)のC++98/03の仕様に則って再実装しました。
+cppreference.com (https://en.cppreference.com/w/) のC++98/03の仕様に則って再実装しました。
 
 ```sh
 $ c++ -v
