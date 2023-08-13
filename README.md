@@ -1,45 +1,31 @@
 # ft_containers
 
-## TODO
-- [ ] vector
-  - [ ] Iterator invalidation
-  - [ ] Member types
-  - [ ] Member functions
-    - [ ] Normal
-    - [ ] Element access
-    - [ ] Iteraotrs
-    - [ ] Capacity
-    - [ ] Modifiers
-  - [ ] Non-member functions
-    - [x] operator
-    - [ ] std::swap
+42(https://42.fr/en/homepage/)の課題として、C++98のSTLのコンテナであるvectorとmapを再実装しました。
 
-- [ ] map
+要件として下記が指定されています。
+- 名前空間をftとする
+- 全てのmember functions, non-member functions, overloadsを実装する
+- 本家STLより20倍以上遅くならない
+- 十分なテストを用意する
+- メモリリーク禁止
 
-- [x] std::iterator_traits
-- [x] std::enable_if
-- [ ] std::is_integral
-- [x] std::equal 
-- [x] std::lexicographical_compale
-- [x] std::pair
-  - [x] Member types
-    - [x] first_type
-    - [x] second_type
-  - [x] Member objects
-    - [x] first
-    - [x] second
-  - [x] Member functions
-    - [x] (constructor)
-    - [x] operator=
-  - [x] Non-member fucntions
-    - [x] make_pair
-    - [x] operator=
-    - [x] operator==
-    - [x] operator!=
-    - [x] operator<
-    - [x] operator<=
-    - [x] operator>
-    - [x] operator>=
-- std::make_pair (-> pair)
+cppreference.com(https://en.cppreference.com/w/)のC++98/03の仕様に則って再実装しました。
 
+```sh
+$ c++ -v
+gcc version 11.3.0 (Ubuntu 11.3.0-1ubuntu1~22.04)
 
+# unit test
+$ make unit
+          vector: OK
+             map: OK
+            pair: OK
+       enable_if: OK
+           equal: OK
+     is_integral: OK
+reverse_iterator: OK
+        avl_tree: OK
+
+# benchmark test
+$ make bench
+```
